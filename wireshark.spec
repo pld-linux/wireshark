@@ -9,7 +9,6 @@ Group(de):	Netzwerkwesen
 Group(pl):	Sieciowe
 Source0:	http://ethereal.zing.org/distribution/%{name}-%{version}.tar.gz
 Source1:	%{name}.desktop
-Patch0:		%{name}-paths.patch
 URL:		http://ethereal.zing.org/
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Requires:	gtk+ >= 1.2
@@ -42,7 +41,6 @@ wtyczek (plug-ins).
 
 %prep
 %setup -q
-%patch -p1
 
 %build
 # don't remove -DINET6=1 because --enable-ipv6 doesn't work properly
@@ -51,10 +49,10 @@ CFLAGS="%{!?debug:$RPM_OPT_FLAGS}%{?debug:-O -g} -I/usr/include/pcap -DINET6=1"
 	--enable-zlib \
 	--disable-snmp \
 	--enable-pcap \
-	--with-gnu-ld \
 	--enable-ipv6 \
 	--disable-static \
 	--with-plugindir=%{_libdir}/ethereal
+
 %{__make}
 
 %install
