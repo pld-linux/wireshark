@@ -1,4 +1,3 @@
 #!/bin/sh
 echo "podaj has³o roota" 
-su -c ethereal
-
+exec su -c ethereal
