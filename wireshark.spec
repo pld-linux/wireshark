@@ -69,7 +69,7 @@ install %{SOURCE1} $RPM_BUILD_ROOT%{_applnkdir}/Network/Misc
 gzip -9nf AUTHORS NEWS README* doc/randpkt.txt \
 	doc/README.developer $RPM_BUILD_ROOT%{_mandir}/man1/*
 
-strip --strip-unneeded $RPM_BUILD_ROOT%{_libdir}/ethereal//*.so
+strip --strip-unneeded $RPM_BUILD_ROOT%{_libdir}/ethereal/*.so
 
 %clean
 rm -rf $RPM_BUILD_ROOT
