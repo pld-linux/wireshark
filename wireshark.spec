@@ -49,7 +49,6 @@ export LDFLAGS CFLAGS
 	--disable-snmp \
 	--enable-pcap \
 	--with-gnu-ld \
-	--with-plugin=%{_libdir}/ethereal/plugins \
 	--disable-static
 make
 
@@ -64,8 +63,7 @@ install %{SOURCE1} $RPM_BUILD_ROOT%{_applnkdir}/Networking/
 gzip -9nf AUTHORS NEWS README* doc/randpkt.txt doc/proto_tree \
 	doc/README.developer $RPM_BUILD_ROOT%{_mandir}/man1/*
 
-find $RPM_BUILD_ROOT%{_libdir}/ethereal/plugins -type f -name "*.so" \
-| xargs -n1 strip --strip-unneeded
+strip --strip-unneeded $RPM_BUILD_ROOT%{_libdir}/ethereal/plugins/%{version}/*.so
 
 %clean
 rm -rf $RPM_BUILD_ROOT
