@@ -2,6 +2,7 @@
 Name=Ethereal
 Comment=Ethereal Network Analyzer
 Comment[pl]=Ethereal - analizator ruchu w sieci
+Icon=ethereal.png
 Exec=ethereal
 Terminal=0
 Type=Application
