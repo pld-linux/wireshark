@@ -44,7 +44,7 @@ wtyczek (plug-ins).
 
 %build
 # don't remove -DINET6=1 because --enable-ipv6 doesn't work properly
-CFLAGS="%{?debug:-O0 -g}%{!?debug:$RPM_OPT_FLAGS} -I/usr/include/pcap -DINET6=1"
+CFLAGS="%{rpmcflags} -I/usr/include/pcap -DINET6=1"
 %configure \
 	--enable-zlib \
 	--disable-snmp \
