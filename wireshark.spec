@@ -1,5 +1,6 @@
 #
-# --with gtk1	builds gtk+1 based ethereal binary
+# --with gtk1		builds gtk+1 based ethereal binary
+# --without snmp	builds without snmp support
 #
 
 Summary:	Network traffic and protocol analyzer
@@ -7,15 +8,14 @@ Summary(es):	Analizador de tráfico de red
 Summary(pl):	Analizator ruchu i protoko³ów sieciowych
 Summary(pt_BR):	Analisador de tráfego de rede
 Name:		ethereal
-Version:	0.9.12
-Release:	3
+Version:	0.9.13
+Release:	1
 License:	GPL
 Group:		Networking
 Source0:	http://www.ethereal.com/distribution/%{name}-%{version}.tar.bz2
-# Source0-md5: b25d815f98293f78f72ac0db75637496
+# Source0-md5:	a533a13d175be1f8c2be188ac8f4c7ea
 Source1:	%{name}.desktop
 Source2:	%{name}.su-start-script
-Patch0:		%{name}-distcc.patch
 URL:		http://www.ethereal.com/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -147,7 +147,6 @@ Ethereal.
 
 %prep
 %setup -q
-%patch0 -p1
 
 %build
 rm -f missing
