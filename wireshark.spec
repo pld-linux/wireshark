@@ -32,8 +32,6 @@ Requires:	libpcap >= 0.4
 Requires:	ethereal-common = %{version}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
-%define		_prefix		/usr/X11R6
-%define		_mandir		%{_prefix}/man
 %define		_sysconfdir	/usr/share/misc
 
 %description
