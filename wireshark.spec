@@ -1,8 +1,8 @@
 Summary:	Network traffic and protocol analyzer
 Summary(pl):	Analizator ruchu i protoko³ów sieciowych
 Name:		ethereal
-Version:	0.8.12
-Release:	2
+Version:	0.8.13
+Release:	1
 License:	GPL
 Group:		Networking
 Group(de):	Netzwerkwesen
@@ -46,7 +46,7 @@ wtyczek (plug-ins).
 
 %build
 # don't remove -DINET6=1 because --enable-ipv6 doesn't work properly
-CFLAGS="$RPM_OPT_FLAGS -I/usr/include/pcap -DINET6=1"
+CFLAGS="%{!?debug:$RPM_OPT_FLAGS}%{?debug:-O -g} -I/usr/include/pcap -DINET6=1"
 %configure \
 	--enable-zlib \
 	--disable-snmp \
