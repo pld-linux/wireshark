@@ -8,5 +8,5 @@ Exec=xterm -e ethereal_su
 Terminal=false
 Type=Application
 Encoding=UTF-8
-Categories=Network;
+Categories=GTK;Network;
 # vi: encoding=utf-8
