@@ -11,7 +11,7 @@ Summary(ru):	Анализатор сетевого траффика
 Summary(uk):	Анал╕затор мережевого траф╕ку
 Name:		ethereal
 Version:	0.9.15
-Release:	1
+Release:	2
 License:	GPL
 Group:		Networking
 Source0:	http://www.ethereal.com/distribution/%{name}-%{version}.tar.bz2
@@ -30,7 +30,7 @@ BuildRequires:	gtk+2-devel
 %endif
 BuildRequires:	libpcap-devel >= 0.4
 BuildRequires:	libtool
-BuildRequires:	openssl-devel >= 0.9.6j
+BuildRequires:	openssl-devel >= 0.9.6k
 BuildRequires:	perl-devel
 %{!?_without_snmp:BuildRequires:	ucd-snmp-devel}
 BuildRequires:	zlib-devel
