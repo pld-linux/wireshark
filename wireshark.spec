@@ -213,11 +213,11 @@ rm -rf $RPM_BUILD_ROOT
 %{_applnkdir}/Network/Misc/*
 %{_pixmapsdir}/*
 %{_mandir}/man1/ethereal.1*
-%{_mandir}/man4/ethereal-filter.4*
 
 %files common
 %defattr(644,root,root,755)
 %doc AUTHORS ChangeLog FAQ NEWS README{,.[lv]*} doc/{randpkt.txt,README.*}
+%{_mandir}/man4/ethereal-filter.4*
 
 %files tools
 %defattr(644,root,root,755)
