@@ -6,6 +6,8 @@ Summary:	Network traffic and protocol analyzer
 Summary(es):	Analizador de tráfico de red
 Summary(pl):	Analizator ruchu i protoko³ów sieciowych
 Summary(pt_BR):	Analisador de tráfego de rede
+Summary(ru):	áÎÁÌÉÚÁÔÏÒ ÓÅÔÅ×ÏÇÏ ÔÒÁÆÆÉËÁ
+Summary(uk):	áÎÁÌ¦ÚÁÔÏÒ ÍÅÒÅÖÅ×ÏÇÏ ÔÒÁÆ¦ËÕ
 Name:		ethereal
 Version:	0.9.12
 Release:	2
@@ -33,6 +35,7 @@ BuildRequires:	zlib-devel
 Requires:	libpcap >= 0.4
 Requires:	%{name}-common
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
+Obsoletes:	ethereal-gnome
 
 %define                _prefix         /usr/X11R6
 
@@ -59,6 +62,14 @@ wtyczek (plug-ins).
 
 %description -l pt_BR
 O Ethereal é um analisador de protocolo de rede baseado no GTK+.
+
+%description -l ru
+Ethereal - ÜÔÏ ÁÎÁÌÉÚÁÔÏÒ ÓÅÔÅ×ÏÇÏ ÔÒÁÆÆÉËÁ ÄÌÑ Unix-ÐÏÄÏÂÎÙÈ ïó. ïÎ
+ÂÁÚÉÒÕÅÔÓÑ ÎÁ GTK+ É libpcap.
+
+%description -l uk
+Ethereal - ÃÅ ÁÎÁÌ¦ÚÁÔÏÒ ÍÅÒÅÖÅ×ÏÇÏ ÔÒÁÆ¦ËÕ ÄÌÑ Unix-ÐÏÄ¦ÂÎÉÈ ïó. ÷¦Î
+ÂÁÚÕ¤ÔØÓÑ ÎÁ GTK+ ÔÁ libpcap.
 
 %package common
 Summary:	Network traffic and protocol analyzer - common files
@@ -89,7 +100,6 @@ wtyczek (plug-ins).
 %description common -l pt_BR
 O Ethereal é um analisador de protocolo de rede baseado no GTK+.
 
-
 %package -n ethereal-tools
 Summary:	Tools for manipulating capture files
 Summary(pl):	Narzêdzia do obróbki plików z przechwyconymi pakietami sieciowymi
@@ -109,10 +119,10 @@ Zestaw narzêdzi do obróbki plików z przechwyconymi pakietami. Zawiera:
 - text2cap - do generowania pliku cap z szesnastkowego zrzutu ASCII
   pakietów.
 
-
 %package -n tethereal
 Summary:	Text-mode network traffic and protocol analyzer
 Summary(pl):	Tekstowy analizator ruchu i protoko³ów sieciowych
+Summary(pt_BR):	Analisador modo texto de tráfego de rede (sniffer)
 Group:		Networking
 Requires:	ethereal-common = %{version}
 Requires:	libpcap >= 0.4
@@ -133,10 +143,12 @@ sieciowych!) jest wy¶wietlony na ekranie. Natywnym formatem plików
 tetherala jest format libpcap, tak wiêc jest on kompatybilny z
 tcpdumpem i innymi podobnymi narzêdziami.
 
+%description tethereal -l pt_BR
+Esta é uma versão para modo texto do analisador de tráfego de rede
+Ethereal.
 
 %prep
 %setup -q
-
 %patch0 -p1
 
 %build
