@@ -168,7 +168,7 @@ cd ..
 	--enable-randpkt \
 	%{!?_with_gtk1:--enable-gtk2} \
 	--with-plugindir=%{_libdir}/%{name} \
-	%{!?_without_snmp:--without-snmp}
+	%{?_without_snmp:--without-net-snmp --without-ucdsnmp}
 
 %{__make}
 
@@ -184,6 +184,9 @@ install %{SOURCE2} $RPM_BUILD_ROOT%{_bindir}/%{name}_su
 install image/ethereal48x48-trans.png \
 	$RPM_BUILD_ROOT%{_pixmapsdir}/%{name}.png
 
+# plugins *.la are useless - *.so are loaded through gmodule
+rm -f $RPM_BUILD_ROOT%{_libdir}/%{name}/plugins/%{version}/*.la
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -194,7 +197,6 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_libdir}/%{name}/plugins
 %dir %{_libdir}/%{name}/plugins/%{version}
 %attr(755,root,root) %{_libdir}/%{name}/plugins/%{version}/*.so
-%{_libdir}/%{name}/plugins/%{version}/*.la
 %{_datadir}/%{name}
 %{_applnkdir}/Network/Misc/*
 %{_pixmapsdir}/*
