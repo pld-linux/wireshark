@@ -1,8 +1,8 @@
 Summary:	Network traffic and protocol analyzer
 Summary(pl):	Analizator ruchu i protoko³ów sieciowych
 Name:		ethereal
-Version:	0.8.8
-Release:	2
+Version:	0.8.9
+Release:	1
 License:	GPL
 Group:		Networking
 Group(pl):	Sieciowe
@@ -41,7 +41,7 @@ wtyczek (plug-ins).
 
 %prep
 %setup -q
-%patch -p0
+%patch -p1
 
 %build
 LDFLAGS="-s"
@@ -54,7 +54,8 @@ export LDFLAGS CFLAGS
 	--enable-pcap \
 	--with-gnu-ld \
 	--enable-ipv6 \
-	--disable-static
+	--disable-static \
+	--with-plugindir=%{_libdir}/ethereal
 %{__make}
 
 %install
@@ -65,10 +66,10 @@ install -d $RPM_BUILD_ROOT%{_applnkdir}/Network/Misc
 
 install %{SOURCE1} $RPM_BUILD_ROOT%{_applnkdir}/Network/Misc
 
-gzip -9nf AUTHORS NEWS README* doc/randpkt.txt doc/proto_tree \
+gzip -9nf AUTHORS NEWS README* doc/randpkt.txt \
 	doc/README.developer $RPM_BUILD_ROOT%{_mandir}/man1/*
 
-strip --strip-unneeded $RPM_BUILD_ROOT%{_libdir}/ethereal/plugins/%{version}/*.so
+strip --strip-unneeded $RPM_BUILD_ROOT%{_libdir}/ethereal//*.so
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -81,6 +82,4 @@ rm -rf $RPM_BUILD_ROOT
 %config %{_sysconfdir}/manuf
 %{_mandir}/man1/*
 %dir %{_libdir}/ethereal
-%dir %{_libdir}/ethereal/plugins
-%dir %{_libdir}/ethereal/plugins/%{version}/
-%{_libdir}/ethereal/plugins/%{version}/*
+%attr(755,root,root) %{_libdir}/ethereal/*
