@@ -59,11 +59,11 @@ make
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT%{_applnkdir}/Networking
+install -d $RPM_BUILD_ROOT%{_applnkdir}/Network/Misc
 
 make DESTDIR=$RPM_BUILD_ROOT install
 
-install %{SOURCE1} $RPM_BUILD_ROOT%{_applnkdir}/Networking/
+install %{SOURCE1} $RPM_BUILD_ROOT%{_applnkdir}/Network/Misc
 
 gzip -9nf AUTHORS NEWS README* doc/randpkt.txt doc/proto_tree \
 	doc/README.developer $RPM_BUILD_ROOT%{_mandir}/man1/*
@@ -77,7 +77,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc *.gz doc/*.gz
 %attr(755,root,root) %{_bindir}/*
-%{_applnkdir}/Networking/ethereal.desktop
+%{_applnkdir}/Network/Misc/ethereal.desktop
 %config %{_sysconfdir}/manuf
 %{_mandir}/man1/*
 %dir %{_libdir}/ethereal
