@@ -1,0 +1,3 @@
+- updated to 0.10.7
+- added --with-ssl required by krb5 (--with krb5 only)
+- release 0.1
