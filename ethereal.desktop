@@ -1,9 +1,10 @@
 [Desktop Entry]
 Name=Ethereal
 Comment=Ethereal Network Analyzer
-Comment[ja]=The Ethereal •Õ•√•»•Ô°º•Ø°¶•¢• •È•§•∂°º
+Comment[ja]=The Ethereal „Éç„ÉÉ„Éà„ÉØ„Éº„ÇØ„Éª„Ç¢„Éä„É©„Ç§„Ç∂„Éº
 Comment[pl]=Ethereal - analizator ruchu w sieci
 Icon=ethereal.png
 Exec=xterm -e ethereal_su
 Terminal=0
 Type=Application
+# vi: encoding=utf-8
