@@ -11,7 +11,7 @@ Summary(ru):	áÎÁÌÉÚÁÔÏÒ ÓÅÔÅ×ÏÇÏ ÔÒÁÆÆÉËÁ
 Summary(uk):	áÎÁÌ¦ÚÁÔÏÒ ÍÅÒÅÖÅ×ÏÇÏ ÔÒÁÆ¦ËÕ
 Name:		ethereal
 Version:	0.10.3
-Release:	1
+Release:	3
 License:	GPL
 Group:		Networking
 Source0:	http://www.ethereal.com/distribution/all-versions/%{name}-%{version}.tar.bz2
@@ -34,8 +34,8 @@ BuildRequires:	openssl-devel >= 0.9.6m
 BuildRequires:	perl-devel
 %{!?_without_snmp:BuildRequires:	ucd-snmp-devel}
 BuildRequires:	zlib-devel
+Requires:	%{name}-common = %{version}-%{release}
 Requires:	libpcap >= 0.4
-Requires:	%{name}-common = %{version}
 Requires:	pango-modules
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Obsoletes:	ethereal-gnome
@@ -80,6 +80,7 @@ Ethereal - ÃÅ ÁÎÁÌ¦ÚÁÔÏÒ ÍÅÒÅÖÅ×ÏÇÏ ÔÒÁÆ¦ËÕ ÄÌÑ Unix-ÐÏÄ¦ÂÎÉÈ ïó. ÷¦Î
 Summary:	Network traffic and protocol analyzer - common files
 Summary(pl):	Analizator ruchu i protoko³ów sieciowych - wspólne pliki
 Group:		Networking
+Requires:	libwiretap = %{version}-%{release}
 
 %description common
 Ethereal is the name for powerful graphical network sniffer, traffic
@@ -117,7 +118,7 @@ Ethereal - ÃÅ ÁÎÁÌ¦ÚÁÔÏÒ ÍÅÒÅÖÅ×ÏÇÏ ÔÒÁÆ¦ËÕ ÄÌÑ Unix-ÐÏÄ¦ÂÎÉÈ ïó. ÷¦Î
 Summary:	Tools for manipulating capture files
 Summary(pl):	Narzêdzia do obróbki plików z przechwyconymi pakietami sieciowymi
 Group:		Networking
-Requires:	%{name}-common = %{version}
+Requires:	%{name}-common = %{version}-%{release}
 
 %description tools
 Set of tools for manipulating capture files. Contains:
@@ -137,7 +138,7 @@ Summary:	Text-mode network traffic and protocol analyzer
 Summary(pl):	Tekstowy analizator ruchu i protoko³ów sieciowych
 Summary(pt_BR):	Analisador modo texto de tráfego de rede (sniffer)
 Group:		Networking
-Requires:	%{name}-common = %{version}
+Requires:	%{name}-common = %{version}-%{release}
 Requires:	libpcap >= 0.4
 
 %description -n tethereal
@@ -160,6 +161,22 @@ tcpdumpem i innymi podobnymi narzêdziami.
 Esta é uma versão para modo texto do analisador de tráfego de rede
 Ethereal.
 
+%package -n libwiretap
+Summary:	Packet capture and analysis libraries
+Summary(pl):	Biblioteki do przechwytywania i analizy pakietów
+Group:		Development/Libraries
+
+%description -n libwiretap
+Wiretap is a library that is being developed as a future replacement
+for libpcap, the current standard Unix library for packet capturing.
+EPAN is Ethereal Protocol ANalyzer Library.
+
+%description -n libwiretap -l pl
+Biblioteka Wiretap rozwijana jest jako przysz³y nastepca biblioteki
+libpcap, obecnie standardu przechwytywania pakietów w systemach Unix.
+Biblioteka EPAN to biblioteka analizatora protoko³ów Ethereala
+(Ethereal Protocol ANalyzer Library).
+
 %package -n libwiretap-devel
 Summary:	Packet capture library
 Summary(pl):	Biblioteka do przechwytywania pakietów
@@ -169,14 +186,18 @@ Requires:	gtk+-devel >= 1.2
 %else
 Requires:	gtk+2-devel
 %endif
+Requires:	libwiretap = %{version}-%{release}
 
 %description -n libwiretap-devel
-Wiretap is a library that is being developed as a future replacement for
-libpcap, the current standard Unix library for packet capturing.
+Wiretap is a library that is being developed as a future replacement
+for libpcap, the current standard Unix library for packet capturing.
+Thos package contains files necessary for programming using Wiretap
+library.
 
 %description -n libwiretap-devel -l pl
-Biblioteka rozwijana jako przysz³y nastepca biblioteki libpcap, obecnie
-standardu przechwytywania pakietów w systemach Unix.
+Biblioteka Wiretap rozwijana jest jako przysz³y nastepca biblioteki
+libpcap, obecnie standardu przechwytywania pakietów w systemach Unix.
+Pakiet zawiera pliki dla programistów korzystaj±cych z tej biblioteki.
 
 %prep
 %setup -q
@@ -244,6 +265,7 @@ rm -rf $RPM_BUILD_ROOT
 %files common
 %defattr(644,root,root,755)
 %doc AUTHORS ChangeLog FAQ NEWS README{,.[lv]*} doc/{randpkt.txt,README.*}
+%attr(755,root,root) %{_libdir}/libethereal.so.*.*.*
 %{_mandir}/man4/ethereal-filter.4*
 
 %files tools
@@ -264,8 +286,13 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/tethereal
 %{_mandir}/man1/tethereal*
 
-%files -n libwiretap-devel
+%files -n libwiretap
 %defattr(644,root,root,755)
 %doc wiretap/{README*,AUTHORS,NEWS,ChangeLog}
+%attr(755,root,root) %{_libdir}/libwiretap.so.*.*.*
+
+%files -n libwiretap-devel
+%defattr(644,root,root,755)
 %{_includedir}/wiretap
-%{_libdir}/lib*.so*
+%{_libdir}/libwiretap.so
+%{_libdir}/libwiretap.la
