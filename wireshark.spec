@@ -2,7 +2,7 @@ Summary:	Network traffic and protocol analyzer
 Summary(pl):	Analizator ruchu i protoko³ów sieciowych
 Name:		ethereal
 Version:	0.9.3
-Release:	1
+Release:	2
 License:	GPL
 Group:		Networking
 Source0:	http://www.ethereal.com/distribution/%{name}-%{version}.tar.gz
@@ -15,7 +15,7 @@ BuildRequires:	libtool
 BuildRequires:	flex
 BuildRequires:	gtk+-devel >= 1.2
 BuildRequires:	libpcap-devel >= 0.4
-BuildRequires:	ucd-snmp-devel >= 4.2.3
+BuildRequires:	ucd-snmp-devel >= 4.2.5
 BuildRequires:	zlib-devel
 BuildRequires:	perl-devel
 Requires:	libpcap >= 0.4
