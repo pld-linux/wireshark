@@ -11,13 +11,13 @@ Source2:	%{name}.su-start-script
 URL:		http://www.ethereal.com/
 BuildRequires:	autoconf
 BuildRequires:	automake
-BuildRequires:	libtool
 BuildRequires:	flex
 BuildRequires:	gtk+-devel >= 1.2
 BuildRequires:	libpcap-devel >= 0.4
+BuildRequires:	libtool
+BuildRequires:	perl-devel
 BuildRequires:	ucd-snmp-devel >= 4.2.5
 BuildRequires:	zlib-devel
-BuildRequires:	perl-devel
 Requires:	libpcap >= 0.4
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -81,14 +81,12 @@ install %{SOURCE1} $RPM_BUILD_ROOT%{_applnkdir}/Network/Misc
 install image/ethereal48x48-trans.png $RPM_BUILD_ROOT%{_datadir}/pixmaps/ethereal.png
 install %{SOURCE2} $RPM_BUILD_ROOT%{_bindir}/ethereal_su
 
-gzip -9nf AUTHORS NEWS README* doc/randpkt.txt doc/README.developer
-
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc *.gz doc/*.gz
+%doc AUTHORS NEWS README* doc/randpkt.txt doc/README.developer
 %attr(755,root,root) %{_bindir}/*
 %{_applnkdir}/Network/Misc/ethereal.desktop
 %{_sysconfdir}/manuf
