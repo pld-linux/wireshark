@@ -12,7 +12,7 @@ Summary(ru):	Анализатор сетевого траффика
 Summary(uk):	Анал╕затор мережевого траф╕ку
 Name:		ethereal
 Version:	0.10.6
-Release:	1
+Release:	0.9
 License:	GPL
 Group:		Networking
 Source0:	ftp://ftp.ethereal.com/pub/ethereal/all-versions/%{name}-%{version}.tar.bz2
@@ -36,6 +36,7 @@ BuildRequires:	libtool
 %{?with_snmp:BuildRequires:	net-snmp-devel}
 BuildRequires:	openssl-devel >= 0.9.7d
 BuildRequires:	perl-devel
+BuildRequires:	xcursor-devel
 BuildRequires:	zlib-devel
 Requires:	%{name}-common = %{version}-%{release}
 Requires:	libpcap >= 0.4
