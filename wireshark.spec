@@ -21,6 +21,7 @@ URL:		http://www.ethereal.com/
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	flex
+BuildRequires:	gtk+2-devel
 BuildRequires:	gtk+-devel >= 1.2
 BuildRequires:	libpcap-devel >= 0.4
 BuildRequires:	libtool
@@ -109,8 +110,8 @@ cd ..
 	--disable-tethereal \
 	--disable-idl2eth \
 	--enable-ipv6 \
-	--disable-randpkt \
-	--disable-text2pcap \
+	--enable-randpkt \
+	--enable-text2pcap \
 	--enable-zlib \
 	--with-pcap \
 	--with-plugindir=%{_libdir}/ethereal \
