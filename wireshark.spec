@@ -1,14 +1,15 @@
 Summary:	Network traffic and protocol analyzer
 Summary(pl):	Analizator ruchu i protoko³ów sieciowych
 Name:		ethereal
-Version:	0.8.10
+Version:	0.8.12
 Release:	1
 License:	GPL
 Group:		Networking
+Group(de):	Netzwerkwesen
 Group(pl):	Sieciowe
 Source0:	http://ethereal.zing.org/distribution/%{name}-%{version}.tar.gz
-Source1:	ethereal.desktop
-Patch0:		ethereal-paths.patch
+Source1:	%{name}.desktop
+Patch0:		%{name}-paths.patch
 URL:		http://ethereal.zing.org/
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Requires:	gtk+ >= 1.2
@@ -44,10 +45,8 @@ wtyczek (plug-ins).
 %patch -p1
 
 %build
-LDFLAGS="-s"
 # don't remove -DINET6=1 because --enable-ipv6 doesn't work properly
 CFLAGS="$RPM_OPT_FLAGS -I/usr/include/pcap -DINET6=1"
-export LDFLAGS CFLAGS
 %configure \
 	--enable-zlib \
 	--disable-snmp \
@@ -60,14 +59,15 @@ export LDFLAGS CFLAGS
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT%{_applnkdir}/Network/Misc
+install -d $RPM_BUILD_ROOT{%{_applnkdir}/Network/Misc,%{_datadir}/pixmaps}
 
 %{__make} DESTDIR=$RPM_BUILD_ROOT install
 
 install %{SOURCE1} $RPM_BUILD_ROOT%{_applnkdir}/Network/Misc
+install images/ethereal48x48-trans.png ethereal.png
 
-gzip -9nf AUTHORS NEWS README* doc/randpkt.txt \
-	doc/README.developer $RPM_BUILD_ROOT%{_mandir}/man1/*
+gzip -9nf AUTHORS NEWS README* doc/randpkt.txt doc/README.developer \
+	$RPM_BUILD_ROOT%{_mandir}/man1/*
 
 strip --strip-unneeded $RPM_BUILD_ROOT%{_libdir}/ethereal/*.so
 
@@ -81,5 +81,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_applnkdir}/Network/Misc/ethereal.desktop
 %config %{_sysconfdir}/manuf
 %{_mandir}/man1/*
+%{_datadir}/pixmaps/*
 %dir %{_libdir}/ethereal
 %attr(755,root,root) %{_libdir}/ethereal/*
