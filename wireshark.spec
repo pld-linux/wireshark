@@ -16,6 +16,7 @@ BuildRequires:	gtk+-devel >= 1.2
 BuildRequires:	libpcap-devel >= 0.4
 BuildRequires:	ucd-snmp-devel
 BuildRequires:	zlib-devel
+BuildRequires:	perl-devel
 Requires:	libpcap >= 0.4
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
