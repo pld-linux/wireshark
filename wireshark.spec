@@ -15,6 +15,9 @@ Requires:	gtk+ >= 1.2
 Requires:	libpcap >= 0.4
 BuildRequires:	libpcap-devel >= 0.4
 BuildRequires:	zlib-devel
+BuildRequires:	XFree86-devel
+BuildRequires:	glib-devel >= 1.2
+BuildRequires:	gtk+-devel >= 1.2
 
 %define		_prefix		/usr/X11R6
 %define		_mandir		%{_prefix}/man
