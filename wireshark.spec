@@ -7,6 +7,8 @@ Summary:	Network traffic and protocol analyzer
 Summary(es):	Analizador de trАfico de red
 Summary(pl):	Analizator ruchu i protokoЁСw sieciowych
 Summary(pt_BR):	Analisador de trАfego de rede
+Summary(ru):	Анализатор сетевого траффика
+Summary(uk):	Анал╕затор мережевого траф╕ку
 Name:		ethereal
 Version:	0.9.15
 Release:	1
@@ -59,6 +61,14 @@ wtyczek (plug-ins).
 
 %description -l pt_BR
 O Ethereal И um analisador de protocolo de rede baseado no GTK+.
+
+%description -l ru
+Ethereal - это анализатор сетевого траффика для Unix-подобных ОС. Он
+базируется на GTK+ и libpcap.
+
+%description -l uk
+Ethereal - це анал╕затор мережевого траф╕ку для Unix-под╕бних ОС. В╕н
+базу╓ться на GTK+ та libpcap.
 
 %package common
 Summary:	Network traffic and protocol analyzer - common files
