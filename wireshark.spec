@@ -10,11 +10,11 @@ Summary(es):	Analizador de tráfico de red
 Summary(pl):	Analizator ruchu i protoko³ów sieciowych
 Summary(pt_BR): Analisador de tráfego de rede
 Name:		ethereal
-Version:	0.9.10
+Version:	0.9.11
 Release:	1
 License:	GPL
 Group:		Networking
-Source0:	http://www.ethereal.com/distribution/%{name}-%{version}.tar.gz
+Source0:	http://www.ethereal.com/distribution/%{name}-%{version}.tar.bz2
 Source1:	%{name}.desktop
 Source2:	%{name}.su-start-script
 URL:		http://www.ethereal.com/
