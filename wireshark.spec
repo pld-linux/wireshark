@@ -114,7 +114,7 @@ cd ..
 	--enable-text2pcap \
 	--enable-zlib \
 	--with-pcap \
-	--with-plugindir=%{_libdir}/ethereal \
+	--with-plugins=%{_libdir}/ethereal \
 	--with-ssl \
 	--with-ucdsnmp
 
