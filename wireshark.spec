@@ -1,7 +1,7 @@
 #
 # Conditional build:
-# _with_gtk1	- builds gtk+1 (not gtk+2) based ethereal binary
-# _without_snmp	- builds without snmp support
+%bcond_with gtk1		# builds gtk+1 (not gtk+2) based ethereal binary
+%bcond_without snmp		# builds without snmp support
 #
 Summary:	Network traffic and protocol analyzer
 Summary(es):	Analizador de tráfico de red
@@ -14,7 +14,7 @@ Version:	0.10.0
 Release:	1
 License:	GPL
 Group:		Networking
-Source0:	http://www.ethereal.com/distribution/%{name}-%{version}.tar.bz2
+Source0:	http://www.ethereal.com/distribution/all-versions/%{name}-%{version}.tar.bz2
 # Source0-md5:	dea23de328137aef684a7fdaaa7de093
 Source1:	%{name}.desktop
 Source2:	%{name}.su-start-script
@@ -25,14 +25,14 @@ BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	elfutils-devel
 BuildRequires:	flex
-%if %{?_with_gtk1:1}0
+%if %{with gtk1}
 BuildRequires:	gtk+-devel >= 1.2
 %else
 BuildRequires:	gtk+2-devel
 %endif
 BuildRequires:	libpcap-devel >= 0.4
 BuildRequires:	libtool
-%{!?_without_snmp:BuildRequires:	net-snmp-devel}
+%{?with_snmp:BuildRequires:	net-snmp-devel}
 BuildRequires:	openssl-devel >= 0.9.7c
 BuildRequires:	perl-devel
 BuildRequires:	zlib-devel
@@ -181,9 +181,9 @@ cd ..
 %configure \
 	--enable-randpkt \
 	--enable-dftest \
-	%{!?_with_gtk1:--enable-gtk2} \
+	%{!?with_gtk1:--enable-gtk2} \
 	--with-plugindir=%{_libdir}/%{name} \
-	%{?_without_snmp:--without-net-snmp --without-ucdsnmp}
+	%{!?with_snmp:--without-net-snmp --without-ucdsnmp}
 
 %{__make}
 
