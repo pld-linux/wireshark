@@ -30,7 +30,7 @@ BuildRequires:	gtk+2-devel
 %endif
 BuildRequires:	libpcap-devel >= 0.4
 BuildRequires:	libtool
-BuildRequires:	openssl-devel >= 0.9.6k
+BuildRequires:	openssl-devel >= 0.9.6m
 BuildRequires:	perl-devel
 %{!?_without_snmp:BuildRequires:	ucd-snmp-devel}
 BuildRequires:	zlib-devel
