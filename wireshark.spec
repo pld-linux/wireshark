@@ -10,12 +10,12 @@ Summary(pt_BR):	Analisador de trАfego de rede
 Summary(ru):	Анализатор сетевого траффика
 Summary(uk):	Анал╕затор мережевого траф╕ку
 Name:		ethereal
-Version:	0.9.15
+Version:	0.9.16
 Release:	1
 License:	GPL
 Group:		Networking
 Source0:	http://www.ethereal.com/distribution/%{name}-%{version}.tar.bz2
-# Source0-md5:	4702c6ff619ff6e59d224688a118644c
+# Source0-md5:	ab33d191f3cca324e5c819e9e4c034e1
 Source1:	%{name}.desktop
 Source2:	%{name}.su-start-script
 URL:		http://www.ethereal.com/
@@ -213,6 +213,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_applnkdir}/Network/Misc/*
 %{_pixmapsdir}/*
 %{_mandir}/man1/ethereal.1*
+%{_mandir}/man4/ethereal-filter.4*
 
 %files common
 %defattr(644,root,root,755)
