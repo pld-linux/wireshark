@@ -2,7 +2,7 @@ Summary:	Network traffic and protocol analyzer
 Summary(pl):	Analizator ruchu i protoko³ów sieciowych
 Name:		ethereal
 Version:	0.8.12
-Release:	1
+Release:	2
 License:	GPL
 Group:		Networking
 Group(de):	Netzwerkwesen
@@ -66,10 +66,7 @@ install -d $RPM_BUILD_ROOT{%{_applnkdir}/Network/Misc,%{_datadir}/pixmaps}
 install %{SOURCE1} $RPM_BUILD_ROOT%{_applnkdir}/Network/Misc
 install image/ethereal48x48-trans.png $RPM_BUILD_ROOT%{_datadir}/pixmaps/ethereal.png
 
-gzip -9nf AUTHORS NEWS README* doc/randpkt.txt doc/README.developer \
-	$RPM_BUILD_ROOT%{_mandir}/man1/*
-
-strip --strip-unneeded $RPM_BUILD_ROOT%{_libdir}/ethereal/*.so
+gzip -9nf AUTHORS NEWS README* doc/randpkt.txt doc/README.developer
 
 %clean
 rm -rf $RPM_BUILD_ROOT
