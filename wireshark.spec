@@ -1,7 +1,7 @@
 Summary:	Network traffic and protocol analyzer
 Summary(pl):	Analizator ruchu i protoko³ów sieciowych
 Name:		ethereal
-Version:	0.8.4
+Version:	0.8.5
 Release:	1
 License:	GPL
 Group:		Networking
@@ -61,8 +61,8 @@ make DESTDIR=$RPM_BUILD_ROOT install
 install -d $RPM_BUILD_ROOT%{_datadir}/applnk/Networking
 install %{SOURCE1} $RPM_BUILD_ROOT%{_datadir}/applnk/Networking/
 
-gzip -9nf AUTHORS ChangeLog NEWS README* doc/randpkt.txt \
-	doc/proto_tree $RPM_BUILD_ROOT%{_mandir}/man1/*
+gzip -9nf AUTHORS NEWS README* doc/randpkt.txt doc/proto_tree \
+	doc/README.developer $RPM_BUILD_ROOT%{_mandir}/man1/*
 
 find $RPM_BUILD_ROOT%{_libdir}/ethereal/plugins -type f -name "*.so" \
 | xargs -n1 strip -s
@@ -78,5 +78,5 @@ rm -rf $RPM_BUILD_ROOT
 %config %{_sysconfdir}/manuf
 %{_mandir}/man1/*
 %dir %{_libdir}/ethereal
-%dir %{_libdir}/ethereal/plugins/0.8/
-%{_libdir}/ethereal/plugins/0.8/*
+%dir %{_libdir}/ethereal/plugins/%{version}/
+%{_libdir}/ethereal/plugins/%{version}/*
