@@ -1,0 +1,13 @@
+#!/bin/sh
+ID=`which id`
+echo $ID
+IDN=`$ID -u`
+
+if [ $IDN -ne 0 ] ; then
+	echo "Ethereal needs administrator capabilities"
+	echo "Give root password (you have to be in wheel group):" 
+	exec su -c ethereal
+	exit 1
+else
+	ethereal
+fi
