@@ -1,11 +1,12 @@
---- plugins.c.orig	Thu Apr 13 12:53:44 2000
-+++ plugins.c	Fri Apr 14 11:16:34 2000
+diff -Nru ethereal-0.8.9/plugins.c ethereal-0.8.9.new/plugins.c
+--- ethereal-0.8.9/plugins.c	Fri Jun  9 16:16:02 2000
++++ ethereal-0.8.9.new/plugins.c	Fri Jun  9 16:17:54 2000
 @@ -70,7 +70,7 @@
- static gchar std_plug_dir[] = "c:/program files/ethereal/plugins/0.8.8";
- static gchar local_plug_dir[] = "c:/ethereal/plugins/0.8.8";
+ static gchar std_plug_dir[] = "c:/program files/ethereal/plugins/0.8.9";
+ static gchar local_plug_dir[] = "c:/ethereal/plugins/0.8.9";
  #else
--static gchar std_plug_dir[] = "/usr/lib/ethereal/plugins/0.8.8";
-+static gchar std_plug_dir[] = "/usr/X11R6/lib/ethereal/plugins/0.8.8";
- static gchar local_plug_dir[] = "/usr/local/lib/ethereal/plugins/0.8.8";
+-static gchar std_plug_dir[] = "/usr/lib/ethereal/plugins/0.8.9";
++static gchar std_plug_dir[] = "/usr/X11R6/lib/ethereal";
+ static gchar local_plug_dir[] = "/usr/local/lib/ethereal/plugins/0.8.9";
  #endif
  static gchar *user_plug_dir = NULL;
