@@ -94,11 +94,11 @@ cd epan
 rm -f missing
 %{__aclocal}
 %{__autoconf}
-%{__automake}
+automake -a -c --foreign
 cd ../wiretap
 %{__aclocal}
 %{__autoconf}
-%{__automake}
+automake -a -c --foreign
 cd ..
 %configure \
 	--disable-static \
