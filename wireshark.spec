@@ -162,24 +162,21 @@ Esta é uma versão para modo texto do analisador de tráfego de rede
 Ethereal.
 
 %package -n libwiretap
-Summary:	Packet capture and analysis libraries
-Summary(pl):	Biblioteki do przechwytywania i analizy pakietów
-Group:		Development/Libraries
+Summary:	Packet capture and analysis library
+Summary(pl):	Biblioteka do przechwytywania i analizy pakietów
+Group:		Libraries
 
 %description -n libwiretap
 Wiretap is a library that is being developed as a future replacement
 for libpcap, the current standard Unix library for packet capturing.
-EPAN is Ethereal Protocol ANalyzer Library.
 
 %description -n libwiretap -l pl
 Biblioteka Wiretap rozwijana jest jako przysz³y nastepca biblioteki
 libpcap, obecnie standardu przechwytywania pakietów w systemach Unix.
-Biblioteka EPAN to biblioteka analizatora protoko³ów Ethereala
-(Ethereal Protocol ANalyzer Library).
 
 %package -n libwiretap-devel
-Summary:	Packet capture library
-Summary(pl):	Biblioteka do przechwytywania pakietów
+Summary:	Header files for libwiretap packet capture library
+Summary(pl):	Pliki nag³ówkowe biblioteki libwiretap do przechwytywania pakietów
 Group:		Development/Libraries
 %if %{with gtk1}
 Requires:	gtk+-devel >= 1.2
@@ -248,6 +245,12 @@ install wiretap/*.h $RPM_BUILD_ROOT%{_includedir}/wiretap
 
 %clean
 rm -rf $RPM_BUILD_ROOT
+
+%post	common -p /sbin/ldconfig
+%postun	common -p /sbin/ldconfig
+
+%post	-n libwiretap -p /sbin/ldconfig
+%postun	-n libwiretap -p /sbin/ldconfig
 
 %files
 %defattr(644,root,root,755)
