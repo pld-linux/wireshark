@@ -1,11 +1,11 @@
 #
 # --with gtk1	builds gtk+1 based ethereal binary
 #
- 
+
 Summary:	Network traffic and protocol analyzer
 Summary(es):	Analizador de tráfico de red
 Summary(pl):	Analizator ruchu i protoko³ów sieciowych
-Summary(pt_BR): Analisador de tráfego de rede
+Summary(pt_BR):	Analisador de tráfego de rede
 Name:		ethereal
 Version:	0.9.12
 Release:	1
@@ -89,10 +89,10 @@ O Ethereal é um analisador de protocolo de rede baseado no GTK+.
 
 
 %package -n ethereal-tools
-Summary:        Tools for manipulating capture files
-Summary(pl):    Narzêdzia do obróbki plików z przechwyconymi pakietami sieciowymi
-Group:          Networking
-Requires:       ethereal-common = %{version}
+Summary:	Tools for manipulating capture files
+Summary(pl):	Narzêdzia do obróbki plików z przechwyconymi pakietami sieciowymi
+Group:		Networking
+Requires:	ethereal-common = %{version}
 
 %description -n ethereal-tools
 Set of tools for manipulating capture files. Contains:
@@ -106,20 +106,20 @@ Zestaw narzêdzi do obróbki plików z przechwyconymi pakietami. Zawiera:
 - mergecap - do ³±czenia dwóch plików w jeden,
 - text2cap - do generowania pliku cap z szesnastkowego zrzutu ASCII
   pakietów.
-  
+
 
 %package -n tethereal
-Summary:        Text-mode network traffic and protocol analyzer
-Summary(pl):    Tekstowy analizator ruchu i protoko³ów sieciowych
+Summary:	Text-mode network traffic and protocol analyzer
+Summary(pl):	Tekstowy analizator ruchu i protoko³ów sieciowych
 Group:		Networking
 Requires:	ethereal-common = %{version}
 Requires:	libpcap >= 0.4
 
 %description -n tethereal
-Tethereal is a network protocol analyzer.  It lets you capture packet
+Tethereal is a network protocol analyzer. It lets you capture packet
 data from a live network, or read packets from a previously saved
 capture file, either printing a decoded form of those packets to the
-standard output or writing the packets to a file.  Tethereal's native
+standard output or writing the packets to a file. Tethereal's native
 capture file format is libpcap format, which is also the format used
 by tcpdump and various other tools.
 
@@ -128,8 +128,8 @@ Tethereal jest analizatorem protoko³ów sieciowych. Pozwala na
 przechwytywanie pakietów z sieci lub wczytywanie danych z pliku.
 Zdekodowany wynik (a tethereal zna ponad 100 rozmaitych protoko³ów
 sieciowych!) jest wy¶wietlony na ekranie. Natywnym formatem plików
-tetherala jest format libpcap, tak wiêc jest on kompatybilny
-z tcpdumpem i innymi podobnymi narzêdziami.
+tetherala jest format libpcap, tak wiêc jest on kompatybilny z
+tcpdumpem i innymi podobnymi narzêdziami.
 
 
 %prep
@@ -174,15 +174,14 @@ cd ..
 
 %install
 rm -rf $RPM_BUILD_ROOT
+install -d $RPM_BUILD_ROOT{%{_applnkdir}/Network/Misc,%{_pixmapsdir}}
 
 %{__make} DESTDIR=$RPM_BUILD_ROOT install
-
-install -d $RPM_BUILD_ROOT{%{_applnkdir}/Network/Misc,%{_pixmapsdir}}
 
 install %{SOURCE1} $RPM_BUILD_ROOT%{_applnkdir}/Network/Misc
 install %{SOURCE2} $RPM_BUILD_ROOT%{_bindir}/%{name}_su
 install image/ethereal48x48-trans.png \
-    $RPM_BUILD_ROOT%{_pixmapsdir}/%{name}.png
+	$RPM_BUILD_ROOT%{_pixmapsdir}/%{name}.png
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -209,8 +208,8 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/tethereal
 %{_mandir}/man1/tethereal*
 
-
-%files 
+%files
+%defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/ethereal
 %dir %{_libdir}/%{name}
 %dir %{_libdir}/%{name}/plugins
