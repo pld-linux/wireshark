@@ -11,7 +11,7 @@ Summary(pl):	Analizator ruchu i protoko³ów sieciowych
 Summary(pt_BR): Analisador de tráfego de rede
 Name:		ethereal
 Version:	0.9.6
-Release:	2
+Release:	3
 License:	GPL
 Group:		Networking
 Source0:	http://www.ethereal.com/distribution/%{name}-%{version}.tar.gz
@@ -138,6 +138,7 @@ rm -rf $RPM_BUILD_ROOT
 %doc doc/randpkt.txt doc/README.*
 
 %files 
+%defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/*
 %{_applnkdir}/Network/Misc/ethereal.desktop
 %{_sysconfdir}/manuf
