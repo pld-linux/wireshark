@@ -64,7 +64,7 @@ install -d $RPM_BUILD_ROOT{%{_applnkdir}/Network/Misc,%{_datadir}/pixmaps}
 %{__make} DESTDIR=$RPM_BUILD_ROOT install
 
 install %{SOURCE1} $RPM_BUILD_ROOT%{_applnkdir}/Network/Misc
-install images/ethereal48x48-trans.png ethereal.png
+install image/ethereal48x48-trans.png ethereal.png
 
 gzip -9nf AUTHORS NEWS README* doc/randpkt.txt doc/README.developer \
 	$RPM_BUILD_ROOT%{_mandir}/man1/*
