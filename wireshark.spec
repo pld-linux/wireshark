@@ -5,10 +5,6 @@ Version:	0.8.18
 Release:	12
 License:	GPL
 Group:		Networking
-Group(de):	Netzwerkwesen
-Group(es):	Red
-Group(pl):	Sieciowe
-Group(pt_BR):	Rede
 Source0:	ftp://ethereal.zing.org/pub/ethereal/%{name}-%{version}.tar.gz
 Source1:	%{name}.desktop
 Source2:	%{name}.su-start-script
