@@ -156,15 +156,15 @@ rm -f missing
 %{__automake}
 cd epan
 rm -f missing
-cp ../ltmain.sh .
 %{__aclocal} -I ../aclocal-fallback
 %{__autoconf}
-%{__automake}
+# don't use --force here
+automake -a -c --foreign
 cd ../wiretap
-cp ../ltmain.sh .
 %{__aclocal} -I ../aclocal-fallback
 %{__autoconf}
-%{__automake}
+# don't use --force here
+automake -a -c --foreign
 cd ..
 %configure \
 		--enable-randpkt \
