@@ -1,7 +1,9 @@
 Summary:	Network traffic and protocol analyzer
+Summary(es): Analizador de tráfico de red.
 Summary(pl):	Analizator ruchu i protoko³ów sieciowych
+Summary(pt_BR): Analisador de tráfego de rede
 Name:		ethereal
-Version:	0.9.4
+Version:	0.9.5
 Release:	1
 License:	GPL
 Group:		Networking
@@ -15,6 +17,7 @@ BuildRequires:	flex
 BuildRequires:	gtk+-devel >= 1.2
 BuildRequires:	libpcap-devel >= 0.4
 BuildRequires:	libtool
+BuildRequires:	openssl-devel
 BuildRequires:	perl-devel
 BuildRequires:	ucd-snmp-devel >= 4.2.5
 BuildRequires:	zlib-devel
@@ -34,6 +37,9 @@ severeal useful features, including a rich display filter language,
 the ability to view the ASCII contents of a TCP connection and plug-in
 capabilities.
 
+%description -l es
+Analizador de tráfico de red.
+
 %description -l pl
 Ethereal jest potê¿nym, graficznym snifferem, analizatorem ruchu oraz
 protoko³ów sieciowych opartym na bibliotekach GTK+ oraz libpcap.
@@ -43,31 +49,40 @@ u¿ytecznych cech, takich jak rozbudowany jêzyk filtrów wy¶wietlania,
 mo¿liwo¶æ ogl±dania przebiegu sesji TCP oraz mo¿liwo¶æ do³±czania
 wtyczek (plug-ins).
 
+%description -l pt_BR
+O Ethereal é um analisador de protocolo de rede baseado no GTK+.
+
 %prep
 %setup -q
 
 %build
-# don't remove -DINET6=1 because --enable-ipv6 doesn't work properly
-#CFLAGS="%{rpmcflags} -I/usr/include/pcap -DINET6=1"
-#libtoolize --copy --force
-#aclocal
-#autoconf
-#automake -a -c -f
-#(cd epan
-#aclocal
-#autoconf
-#automake -a -c)
-#(cd wiretap
-#aclocal
-#autoconf
-#automake -a -c)
-%configure2_13 \
-	--enable-zlib \
-	--with-ucdsnmp \
-	--enable-pcap \
-	--enable-ipv6 \
+rm -f missing
+%{__libtoolize}
+aclocal
+%{__autoconf}
+%{__automake}
+cd epan
+rm -f missing
+aclocal
+%{__autoconf}
+%{__automake}
+cd ../wiretap
+aclocal
+%{__autoconf}
+%{__automake}
+cd ..
+%configure \
 	--disable-static \
-	--with-plugindir=%{_libdir}/ethereal
+	--enable-editcap \
+	--enable-mergecap \
+	--enable-ipv6 \
+	--enable-randpkt \
+	--enable-text2pcap \
+	--enable-zlib \
+	--with-pcap \
+	--with-plugindir=%{_libdir}/ethereal \
+	--with-ssl \
+	--with-ucdsnmp
 
 %{__make}
 
