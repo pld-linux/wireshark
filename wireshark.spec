@@ -205,6 +205,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/idl2eth*
 
 %files -n tethereal
+%defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/tethereal
 %{_mandir}/man1/tethereal*
 
