@@ -158,8 +158,8 @@ Esta é uma versão para modo texto do analisador de tráfego de rede
 Ethereal.
 
 %package -n libwiretap
-Summary:	Packet capture and analysis libraries
-Summary(pl):	Biblioteki do przechwytywania i analizy pakietów
+Summary:	Packet capture and analysis library
+Summary(pl):	Biblioteka do przechwytywania i analizy pakietów
 Group:		Libraries
 
 %description -n libwiretap
