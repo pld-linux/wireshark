@@ -165,10 +165,10 @@ cd ../wiretap
 automake -a -c --foreign
 cd ..
 %configure \
-		--enable-randpkt \
-%{!?_with_gtk1:	--enable-gtk2} \
-		--with-plugindir=%{_libdir}/%{name} \
-%{!?_without_snmp: --without-snmp}
+	--enable-randpkt \
+	%{!?_with_gtk1:--enable-gtk2} \
+	--with-plugindir=%{_libdir}/%{name} \
+	%{!?_without_snmp:--without-snmp}
 
 %{__make}
 
