@@ -28,9 +28,9 @@ BuildRequires:	gtk+2-devel
 %endif
 BuildRequires:	libpcap-devel >= 0.4
 BuildRequires:	libtool
-%{!?_without_snmp:BuildRequires:	ucd-snmp-devel}
 BuildRequires:	openssl-devel >= 0.9.6j
 BuildRequires:	perl-devel
+%{!?_without_snmp:BuildRequires:	ucd-snmp-devel}
 BuildRequires:	zlib-devel
 Requires:	libpcap >= 0.4
 Requires:	%{name}-common
@@ -189,8 +189,8 @@ cd ..
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_applnkdir}/Network/Misc,%{_pixmapsdir}}
 
-
-%{__make} DESTDIR=$RPM_BUILD_ROOT install
+%{__make} install \
+	DESTDIR=$RPM_BUILD_ROOT
 
 install %{SOURCE1} $RPM_BUILD_ROOT%{_applnkdir}/Network/Misc
 install %{SOURCE2} $RPM_BUILD_ROOT%{_bindir}/%{name}_su
