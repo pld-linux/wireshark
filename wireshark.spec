@@ -15,12 +15,13 @@ Summary(pl):	Analizator ruchu i protoko³ów sieciowych
 Summary(pt_BR): Analisador de tráfego de rede
 Name:		ethereal
 Version:	0.9.11
-Release:	3
+Release:	4
 License:	GPL
 Group:		Networking
 Source0:	http://www.ethereal.com/distribution/%{name}-%{version}.tar.bz2
 Source1:	%{name}.desktop
 Source2:	%{name}.su-start-script
+Patch0:		%{name}-distcc.patch
 URL:		http://www.ethereal.com/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -32,7 +33,7 @@ BuildRequires:	gtk+2-devel
 %endif
 BuildRequires:	libpcap-devel >= 0.4
 BuildRequires:	libtool
-BuildRequires:	net-snmp-devel
+%{!?_without_snmp:BuildRequires:	net-snmp-devel}
 BuildRequires:	openssl-devel >= 0.9.7
 BuildRequires:	perl-devel
 BuildRequires:	zlib-devel
@@ -96,6 +97,8 @@ O Ethereal é um analisador de protocolo de rede baseado no GTK+.
 %prep
 %setup -q
 
+%patch0 -p1
+
 %build
 rm -f missing
 %{__libtoolize}
@@ -119,7 +122,9 @@ cd ..
 		--disable-tethereal \
 		--disable-text2pcap \
 %{!?_with_gtk1:	--enable-gtk2} \
-		--with-plugindir=%{_libdir}/%{name}
+		--with-plugindir=%{_libdir}/%{name} \
+%{!?_without_snmp: --without-snmp}
+
 %{__make}
 
 %install
