@@ -55,7 +55,7 @@ export LDFLAGS CFLAGS
 	--with-gnu-ld \
 	--enable-ipv6 \
 	--disable-static
-make
+%{__make}
 
 %install
 rm -rf $RPM_BUILD_ROOT
