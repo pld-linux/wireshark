@@ -1,7 +1,7 @@
 Summary:	Network traffic and protocol analyzer
 Summary(pl):	Analizator ruchu i protoko³ów sieciowych
 Name:		ethereal
-Version:	0.8.5
+Version:	0.8.6
 Release:	1
 License:	GPL
 Group:		Networking
@@ -79,5 +79,5 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/*
 %dir %{_libdir}/ethereal
 %dir %{_libdir}/ethereal/plugins
-%dir %{_libdir}/ethereal/plugins/%{version}/
-%{_libdir}/ethereal/plugins/%{version}/*
+%dir %{_libdir}/ethereal/plugins/0.8.5/
+%{_libdir}/ethereal/plugins/0.8.5/*
