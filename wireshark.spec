@@ -1,28 +1,43 @@
+#
+# --with gtk1	builds gtk+1 based ethereal binary
+#
+
 Summary:	Network traffic and protocol analyzer
+Summary(es):	Analizador de tráfico de red
 Summary(pl):	Analizator ruchu i protoko³ów sieciowych
+Summary(pt_BR):	Analisador de tráfego de rede
+Summary(ru):	áÎÁÌÉÚÁÔÏÒ ÓÅÔÅ×ÏÇÏ ÔÒÁÆÆÉËÁ
+Summary(uk):	áÎÁÌ¦ÚÁÔÏÒ ÍÅÒÅÖÅ×ÏÇÏ ÔÒÁÆ¦ËÕ
 Name:		ethereal
-Version:	0.8.18
-Release:	2
+Version:	0.9.13
+Release:	1
 License:	GPL
 Group:		Networking
-Group(de):	Netzwerkwesen
-Group(pl):	Sieciowe
-Source0:	ftp://ethereal.zing.org/pub/ethereal/%{name}-%{version}.tar.gz
+Source0:	http://www.ethereal.com/distribution/%{name}-%{version}.tar.bz2
+# Source0-md5:	a533a13d175be1f8c2be188ac8f4c7ea
 Source1:	%{name}.desktop
 Source2:	%{name}.su-start-script
-URL:		http://ethereal.zing.org/
+URL:		http://www.ethereal.com/
+BuildRequires:	autoconf
+BuildRequires:	automake
 BuildRequires:	flex
+%if %{?_with_gtk1:1}0
 BuildRequires:	gtk+-devel >= 1.2
+%else
+BuildRequires:	gtk+2-devel
+%endif
 BuildRequires:	libpcap-devel >= 0.4
-BuildRequires:	ucd-snmp-devel
-BuildRequires:	zlib-devel
+BuildRequires:	libtool
+%{!?_without_snmp:BuildRequires:	ucd-snmp-devel}
+BuildRequires:	openssl-devel >= 0.9.6j
 BuildRequires:	perl-devel
+BuildRequires:	zlib-devel
 Requires:	libpcap >= 0.4
+Requires:	%{name}-common
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
+Obsoletes:	ethereal-gnome
 
-%define		_prefix		/usr/X11R6
-%define		_mandir		%{_prefix}/man
-%define		_sysconfdir	/usr/share/misc
+%define                _prefix         /usr/X11R6
 
 %description
 Ethereal is the name for powerful graphical network sniffer, traffic
@@ -33,6 +48,9 @@ severeal useful features, including a rich display filter language,
 the ability to view the ASCII contents of a TCP connection and plug-in
 capabilities.
 
+%description -l es
+Analizador de tráfico de red.
+
 %description -l pl
 Ethereal jest potê¿nym, graficznym snifferem, analizatorem ruchu oraz
 protoko³ów sieciowych opartym na bibliotekach GTK+ oraz libpcap.
@@ -42,44 +60,178 @@ u¿ytecznych cech, takich jak rozbudowany jêzyk filtrów wy¶wietlania,
 mo¿liwo¶æ ogl±dania przebiegu sesji TCP oraz mo¿liwo¶æ do³±czania
 wtyczek (plug-ins).
 
+%description -l pt_BR
+O Ethereal é um analisador de protocolo de rede baseado no GTK+.
+
+%description -l ru
+Ethereal - ÜÔÏ ÁÎÁÌÉÚÁÔÏÒ ÓÅÔÅ×ÏÇÏ ÔÒÁÆÆÉËÁ ÄÌÑ Unix-ÐÏÄÏÂÎÙÈ ïó. ïÎ
+ÂÁÚÉÒÕÅÔÓÑ ÎÁ GTK+ É libpcap.
+
+%description -l uk
+Ethereal - ÃÅ ÁÎÁÌ¦ÚÁÔÏÒ ÍÅÒÅÖÅ×ÏÇÏ ÔÒÁÆ¦ËÕ ÄÌÑ Unix-ÐÏÄ¦ÂÎÉÈ ïó. ÷¦Î
+ÂÁÚÕ¤ÔØÓÑ ÎÁ GTK+ ÔÁ libpcap.
+
+%package common
+Summary:	Network traffic and protocol analyzer - common files
+Summary(pl):	Analizator ruchu i protoko³ów sieciowych - wspólne pliki
+Group:		Networking
+
+%description common
+Ethereal is the name for powerful graphical network sniffer, traffic
+and protocol analyzer based on GTK+ and libpcap libraries. It lets you
+capture and interactively browse the contents of network frames with
+vast knowledge of more than 100 network protocols. Ethereal has
+severeal useful features, including a rich display filter language,
+the ability to view the ASCII contents of a TCP connection and plug-in
+capabilities.
+
+%description common -l es
+Analizador de tráfico de red.
+
+%description common -l pl
+Ethereal jest potê¿nym, graficznym snifferem, analizatorem ruchu oraz
+protoko³ów sieciowych opartym na bibliotekach GTK+ oraz libpcap.
+Umo¿liwia on przechwytywanie oraz intereaktywn± analizê zawarto¶ci
+ramek oraz ponad stu protoko³ów sieciowych. Ethereal posiada wiele
+u¿ytecznych cech, takich jak rozbudowany jêzyk filtrów wy¶wietlania,
+mo¿liwo¶æ ogl±dania przebiegu sesji TCP oraz mo¿liwo¶æ do³±czania
+wtyczek (plug-ins).
+
+%description common -l pt_BR
+O Ethereal é um analisador de protocolo de rede baseado no GTK+.
+
+%package -n ethereal-tools
+Summary:	Tools for manipulating capture files
+Summary(pl):	Narzêdzia do obróbki plików z przechwyconymi pakietami sieciowymi
+Group:		Networking
+Requires:	ethereal-common = %{version}
+
+%description -n ethereal-tools
+Set of tools for manipulating capture files. Contains:
+- editcap - Edit and/or translate the format of capture files
+- mergecap - Merges two capture files into one
+- text2cap - Generate a capture file from an ASCII hexdump of packets
+
+%description -n ethereal-tools -l pl
+Zestaw narzêdzi do obróbki plików z przechwyconymi pakietami. Zawiera:
+- editcap - do edycji plików i t³umaczenia ich na inne formaty,
+- mergecap - do ³±czenia dwóch plików w jeden,
+- text2cap - do generowania pliku cap z szesnastkowego zrzutu ASCII
+  pakietów.
+
+%package -n tethereal
+Summary:	Text-mode network traffic and protocol analyzer
+Summary(pl):	Tekstowy analizator ruchu i protoko³ów sieciowych
+Summary(pt_BR):	Analisador modo texto de tráfego de rede (sniffer)
+Group:		Networking
+Requires:	ethereal-common = %{version}
+Requires:	libpcap >= 0.4
+
+%description -n tethereal
+Tethereal is a network protocol analyzer. It lets you capture packet
+data from a live network, or read packets from a previously saved
+capture file, either printing a decoded form of those packets to the
+standard output or writing the packets to a file. Tethereal's native
+capture file format is libpcap format, which is also the format used
+by tcpdump and various other tools.
+
+%description -n tethereal -l pl
+Tethereal jest analizatorem protoko³ów sieciowych. Pozwala na
+przechwytywanie pakietów z sieci lub wczytywanie danych z pliku.
+Zdekodowany wynik (a tethereal zna ponad 100 rozmaitych protoko³ów
+sieciowych!) jest wy¶wietlony na ekranie. Natywnym formatem plików
+tetherala jest format libpcap, tak wiêc jest on kompatybilny z
+tcpdumpem i innymi podobnymi narzêdziami.
+
+%description -n tethereal -l pt_BR
+Esta é uma versão para modo texto do analisador de tráfego de rede
+Ethereal.
+
 %prep
 %setup -q
 
 %build
-# don't remove -DINET6=1 because --enable-ipv6 doesn't work properly
-CFLAGS="%{rpmcflags} -I/usr/include/pcap -DINET6=1"
+rm -f missing
+%{__libtoolize}
+%{__aclocal}
+%{__autoconf}
+%{__automake}
+cd epan
+rm -f missing
+%{__aclocal}
+%{__autoconf}
+automake -a -c --foreign
+cd ../wiretap
+%{__aclocal}
+%{__autoconf}
+automake -a -c --foreign
+cd ..
 %configure \
-	--enable-zlib \
-	--with-ucdsnmp \
-	--enable-pcap \
-	--enable-ipv6 \
-	--disable-static \
-	--with-plugindir=%{_libdir}/ethereal
+		--enable-editcap \
+		--enable-idl2eth \
+		--enable-mergecap \
+		--enable-tethereal \
+		--enable-editcap \
+		--enable-mergecap \
+		--enable-ipv6 \
+		--enable-randpkt \
+		--enable-text2pcap \
+		--enable-zlib \
+		--with-pcap \
+		--with-ssl \
+%{!?_with_gtk1:	--enable-gtk2} \
+		--with-plugindir=%{_libdir}/%{name} \
+%{!?_without_snmp: --without-snmp}
 
 %{__make}
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_applnkdir}/Network/Misc,%{_datadir}/pixmaps}
+install -d $RPM_BUILD_ROOT{%{_applnkdir}/Network/Misc,%{_pixmapsdir}}
+
 
 %{__make} DESTDIR=$RPM_BUILD_ROOT install
 
 install %{SOURCE1} $RPM_BUILD_ROOT%{_applnkdir}/Network/Misc
-install image/ethereal48x48-trans.png $RPM_BUILD_ROOT%{_datadir}/pixmaps/ethereal.png
-install %{SOURCE2} $RPM_BUILD_ROOT%{_bindir}/ethereal_su
-
-gzip -9nf AUTHORS NEWS README* doc/randpkt.txt doc/README.developer
+install %{SOURCE2} $RPM_BUILD_ROOT%{_bindir}/%{name}_su
+install image/ethereal48x48-trans.png \
+	$RPM_BUILD_ROOT%{_pixmapsdir}/%{name}.png
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
+%files common
+%defattr(644,root,root,755)
+%doc AUTHORS ChangeLog FAQ NEWS README{,.[lv]*} doc/{randpkt.txt,README.*}
+
+%files tools
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_bindir}/editcap
+%attr(755,root,root) %{_bindir}/mergecap
+%attr(755,root,root) %{_bindir}/randpkt
+%attr(755,root,root) %{_bindir}/text2pcap
+%attr(755,root,root) %{_bindir}/ethereal_su
+%attr(755,root,root) %{_bindir}/idl2eth
+%{_mandir}/man1/editcap*
+%{_mandir}/man1/mergecap*
+%{_mandir}/man1/text2pcap*
+%{_mandir}/man1/idl2eth*
+
+%files -n tethereal
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_bindir}/tethereal
+%{_mandir}/man1/tethereal*
+
+
 %files
 %defattr(644,root,root,755)
-%doc *.gz doc/*.gz
-%attr(755,root,root) %{_bindir}/*
-%{_applnkdir}/Network/Misc/ethereal.desktop
-%{_sysconfdir}/manuf
-%{_mandir}/man1/*
+%attr(755,root,root) %{_bindir}/ethereal
+%dir %{_libdir}/%{name}
+%dir %{_libdir}/%{name}/plugins
+%dir %{_libdir}/%{name}/plugins/%{version}
+%{_libdir}/%{name}/plugins/%{version}/*.la
+%attr(755,root,root) %{_libdir}/%{name}/plugins/%{version}/*.so
+%{_datadir}/%{name}
+%{_applnkdir}/Network/Misc/*
 %{_pixmapsdir}/*
-%dir %{_libdir}/ethereal
-%attr(755,root,root) %{_libdir}/ethereal/*
+%{_mandir}/man1/ethereal.1*
