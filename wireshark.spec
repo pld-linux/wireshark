@@ -120,13 +120,19 @@ Requires:	%{name}-common = %{version}-%{release}
 
 %description tools
 Set of tools for manipulating capture files. Contains:
+- capinfo - Prints informatio about binary capture files
+- dftest - Shows display filter byte-code
 - editcap - Edit and/or translate the format of capture files
+- idl2eth - Corba IDL to Ethereal Plugin Generator
 - mergecap - Merges two capture files into one
 - text2cap - Generate a capture file from an ASCII hexdump of packets
 
 %description tools -l pl
 Zestaw narzêdzi do obróbki plików z przechwyconymi pakietami. Zawiera:
+- capinfo - Wy¶wietla informacje o binarnych plikach zrzutu,
+- dftest - Wy¶wietla byte-code filtrów wy¶wietlania
 - editcap - do edycji plików i t³umaczenia ich na inne formaty,
+- idl2eth - Konwerter Corba IDL do pluginów Ethereal,
 - mergecap - do ³±czenia dwóch plików w jeden,
 - text2cap - do generowania pliku cap z szesnastkowego zrzutu ASCII
   pakietów.
@@ -265,12 +271,14 @@ rm -rf $RPM_BUILD_ROOT
 
 %files tools
 %defattr(644,root,root,755)
+%attr(755,root,root) %{_bindir}/capinfo
 %attr(755,root,root) %{_bindir}/dftest
 %attr(755,root,root) %{_bindir}/editcap
 %attr(755,root,root) %{_bindir}/idl2eth
 %attr(755,root,root) %{_bindir}/mergecap
 %attr(755,root,root) %{_bindir}/text2pcap
 %attr(755,root,root) %{_bindir}/randpkt
+%{_mandir}/man1/capinfo*
 %{_mandir}/man1/editcap*
 %{_mandir}/man1/idl2eth*
 %{_mandir}/man1/mergecap*
