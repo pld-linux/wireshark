@@ -12,7 +12,7 @@ Summary(ru):	áÎÁÌÉÚÁÔÏÒ ÓÅÔÅ×ÏÇÏ ÔÒÁÆÆÉËÁ
 Summary(uk):	áÎÁÌ¦ÚÁÔÏÒ ÍÅÒÅÖÅ×ÏÇÏ ÔÒÁÆ¦ËÕ
 Name:		ethereal
 Version:	0.10.6
-Release:	0.1
+Release:	1
 License:	GPL
 Group:		Networking
 Source0:	ftp://ftp.ethereal.com/pub/ethereal/all-versions/%{name}-%{version}.tar.bz2
@@ -120,19 +120,19 @@ Requires:	%{name}-common = %{version}-%{release}
 
 %description tools
 Set of tools for manipulating capture files. Contains:
-- capinfo - Prints informatio about binary capture files
-- dftest - Shows display filter byte-code
-- editcap - Edit and/or translate the format of capture files
-- idl2eth - Corba IDL to Ethereal Plugin Generator
-- mergecap - Merges two capture files into one
-- text2cap - Generate a capture file from an ASCII hexdump of packets
+- capinfo - prints informatio about binary capture files,
+- dftest - shows display filter byte-code,
+- editcap - edit and/or translate the format of capture files,
+- idl2eth - corba IDL to Ethereal Plugin Generator,
+- mergecap - merges two capture files into one,
+- text2cap - generate a capture file from an ASCII hexdump of packets.
 
 %description tools -l pl
 Zestaw narzêdzi do obróbki plików z przechwyconymi pakietami. Zawiera:
-- capinfo - Wy¶wietla informacje o binarnych plikach zrzutu,
-- dftest - Wy¶wietla byte-code filtrów wy¶wietlania
+- capinfo - wy¶wietla informacje o binarnych plikach zrzutu,
+- dftest - pokazuje byte-code filtrów wy¶wietlania,
 - editcap - do edycji plików i t³umaczenia ich na inne formaty,
-- idl2eth - Konwerter Corba IDL do pluginów Ethereal,
+- idl2eth - konwerter Corba IDL do pluginów Ethereal,
 - mergecap - do ³±czenia dwóch plików w jeden,
 - text2cap - do generowania pliku cap z szesnastkowego zrzutu ASCII
   pakietów.
