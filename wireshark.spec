@@ -8,7 +8,7 @@ Summary(pl):	Analizator ruchu i protoko³ów sieciowych
 Summary(pt_BR): Analisador de tráfego de rede
 Name:		ethereal
 Version:	0.9.11
-Release:	4.1
+Release:	5
 License:	GPL
 Group:		Networking
 Source0:	http://www.ethereal.com/distribution/%{name}-%{version}.tar.bz2
@@ -24,7 +24,6 @@ BuildRequires:	gtk+-devel >= 1.2
 %else
 BuildRequires:	gtk+2-devel
 %endif
-BuildRequires:	libelf-devel
 BuildRequires:	libpcap-devel >= 0.4
 BuildRequires:	libtool
 %{!?_without_snmp:BuildRequires:	net-snmp-devel}
@@ -198,9 +197,12 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/mergecap
 %attr(755,root,root) %{_bindir}/randpkt
 %attr(755,root,root) %{_bindir}/text2pcap
+%attr(755,root,root) %{_bindir}/ethereal_su
+%attr(755,root,root) %{_bindir}/idl2eth
 %{_mandir}/man1/editcap*
 %{_mandir}/man1/mergecap*
 %{_mandir}/man1/text2pcap*
+%{_mandir}/man1/idl2eth*
 
 %files -n tethereal
 %attr(755,root,root) %{_bindir}/tethereal
