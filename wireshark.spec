@@ -1,7 +1,7 @@
 #
 # Conditional build:
-%bcond_with gtk1		# builds gtk+1 (not gtk+2) based ethereal binary
-%bcond_without snmp		# builds without snmp support
+%bcond_with	gtk1		# builds gtk+1 (not gtk+2) based ethereal binary
+%bcond_without	snmp		# builds without snmp support
 #
 Summary:	Network traffic and protocol analyzer
 Summary(es):	Analizador de tráfico de red
@@ -34,11 +34,11 @@ BuildRequires:	libtool
 BuildRequires:	openssl-devel >= 0.9.7c
 BuildRequires:	perl-devel
 BuildRequires:	zlib-devel
+Requires:	%{name}-common = %{version}-%{release}
 Requires:	libpcap >= 0.4
-Requires:	%{name}-common = %{version}
 Requires:	pango-modules
-BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Obsoletes:	ethereal-gnome
+BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
 Ethereal is the name for powerful graphical network sniffer, traffic
@@ -113,7 +113,7 @@ Ethereal - ÃÅ ÁÎÁÌ¦ÚÁÔÏÒ ÍÅÒÅÖÅ×ÏÇÏ ÔÒÁÆ¦ËÕ ÄÌÑ Unix-ÐÏÄ¦ÂÎÉÈ ïó. ÷¦Î
 Summary:	Tools for manipulating capture files
 Summary(pl):	Narzêdzia do obróbki plików z przechwyconymi pakietami sieciowymi
 Group:		Networking
-Requires:	%{name}-common = %{version}
+Requires:	%{name}-common = %{version}-%{release}
 
 %description tools
 Set of tools for manipulating capture files. Contains:
@@ -133,7 +133,7 @@ Summary:	Text-mode network traffic and protocol analyzer
 Summary(pl):	Tekstowy analizator ruchu i protoko³ów sieciowych
 Summary(pt_BR):	Analisador modo texto de tráfego de rede (sniffer)
 Group:		Networking
-Requires:	%{name}-common = %{version}
+Requires:	%{name}-common = %{version}-%{release}
 Requires:	libpcap >= 0.4
 
 %description -n tethereal
@@ -178,13 +178,11 @@ standardu przechwytywania pakietów w systemach Unix.
 %setup -q
 
 %build
-rm -f missing
 %{__libtoolize}
 %{__aclocal} -I aclocal-fallback
 %{__autoconf}
 %{__automake}
 cd epan
-rm -f missing
 %{__aclocal} -I ../aclocal-fallback
 %{__autoconf}
 # don't use --force here
