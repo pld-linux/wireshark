@@ -6,13 +6,16 @@ Release:	10
 License:	GPL
 Group:		Networking
 Group(de):	Netzwerkwesen
+Group(es):	Red
 Group(pl):	Sieciowe
+Group(pt_BR):	Rede
 Source0:	ftp://ethereal.zing.org/pub/ethereal/%{name}-%{version}.tar.gz
 Source1:	%{name}.desktop
 Source2:	%{name}.su-start-script
 URL:		http://ethereal.zing.org/
 BuildRequires:	autoconf
 BuildRequires:	automake
+BuildRequires:	libtool
 BuildRequires:	flex
 BuildRequires:	gtk+-devel >= 1.2
 BuildRequires:	libpcap-devel >= 0.4
