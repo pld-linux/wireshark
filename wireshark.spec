@@ -5,13 +5,17 @@
 # If you know how to do it better feel free to do so.
 #
 # ethereal an ethereal-common are built from this spec
+#
+# --with gtk1	builds gtk+1 based ethereal binary
+#
+ 
 Summary:	Network traffic and protocol analyzer
 Summary(es):	Analizador de tráfico de red
 Summary(pl):	Analizator ruchu i protoko³ów sieciowych
 Summary(pt_BR): Analisador de tráfego de rede
 Name:		ethereal
 Version:	0.9.11
-Release:	2
+Release:	3
 License:	GPL
 Group:		Networking
 Source0:	http://www.ethereal.com/distribution/%{name}-%{version}.tar.bz2
@@ -21,7 +25,11 @@ URL:		http://www.ethereal.com/
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	flex
+%if %{?_with_gtk1:1}0
+BuildRequires:	gtk+-devel >= 1.2
+%else
 BuildRequires:	gtk+2-devel
+%endif
 BuildRequires:	libpcap-devel >= 0.4
 BuildRequires:	libtool
 BuildRequires:	net-snmp-devel
@@ -29,7 +37,7 @@ BuildRequires:	openssl-devel >= 0.9.7
 BuildRequires:	perl-devel
 BuildRequires:	zlib-devel
 Requires:	libpcap >= 0.4
-Obsoletes:	%{name}-common
+Requires:	%{name}-common
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -56,6 +64,35 @@ wtyczek (plug-ins).
 %description -l pt_BR
 O Ethereal é um analisador de protocolo de rede baseado no GTK+.
 
+%package common
+Summary:	Network traffic and protocol analyzer - common files
+Summary(pl):	Analizator ruchu i protoko³ów sieciowych - wspólne pliki
+Group:		Networking
+
+%description common
+Ethereal is the name for powerful graphical network sniffer, traffic
+and protocol analyzer based on GTK+ and libpcap libraries. It lets you
+capture and interactively browse the contents of network frames with
+vast knowledge of more than 100 network protocols. Ethereal has
+severeal useful features, including a rich display filter language,
+the ability to view the ASCII contents of a TCP connection and plug-in
+capabilities.
+
+%description common -l es
+Analizador de tráfico de red.
+
+%description common -l pl
+Ethereal jest potê¿nym, graficznym snifferem, analizatorem ruchu oraz
+protoko³ów sieciowych opartym na bibliotekach GTK+ oraz libpcap.
+Umo¿liwia on przechwytywanie oraz intereaktywn± analizê zawarto¶ci
+ramek oraz ponad stu protoko³ów sieciowych. Ethereal posiada wiele
+u¿ytecznych cech, takich jak rozbudowany jêzyk filtrów wy¶wietlania,
+mo¿liwo¶æ ogl±dania przebiegu sesji TCP oraz mo¿liwo¶æ do³±czania
+wtyczek (plug-ins).
+
+%description common -l pt_BR
+O Ethereal é um analisador de protocolo de rede baseado no GTK+.
+
 %prep
 %setup -q
 
@@ -76,13 +113,13 @@ cd ../wiretap
 automake -a -c --foreign
 cd ..
 %configure \
-	--disable-editcap \
-	--disable-idl2eth \
-	--disable-mergecap \
-	--disable-tethereal \
-	--disable-text2pcap \
-	--enable-gtk2 \
-	--with-plugindir=%{_libdir}/%{name}
+		--disable-editcap \
+		--disable-idl2eth \
+		--disable-mergecap \
+		--disable-tethereal \
+		--disable-text2pcap \
+%{!?_with_gtk1:	--enable-gtk2} \
+		--with-plugindir=%{_libdir}/%{name}
 %{__make}
 
 %install
@@ -100,9 +137,11 @@ install image/ethereal48x48-trans.png \
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%files 
+%files common
 %defattr(644,root,root,755)
 %doc AUTHORS ChangeLog FAQ NEWS README{,.[lv]*} doc/{randpkt.txt,README.*}
+
+%files 
 %attr(755,root,root) %{_bindir}/*
 %dir %{_libdir}/%{name}
 %dir %{_libdir}/%{name}/plugins
