@@ -213,6 +213,7 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/ethereal
+%attr(755,root,root) %{_bindir}/%{name}_su
 %dir %{_libdir}/%{name}
 %dir %{_libdir}/%{name}/plugins
 %dir %{_libdir}/%{name}/plugins/%{version}
@@ -231,7 +232,6 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/dftest
 %attr(755,root,root) %{_bindir}/editcap
-%attr(755,root,root) %{_bindir}/ethereal_su
 %attr(755,root,root) %{_bindir}/idl2eth
 %attr(755,root,root) %{_bindir}/mergecap
 %attr(755,root,root) %{_bindir}/text2pcap
