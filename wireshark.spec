@@ -29,12 +29,12 @@ useful features, including a rich display filter language, the ability
 to view the ASCII contents of a TCP connection and plug-in capabilities.
 
 %description -l pl
-Ethereal jest potê¿nym, graficznym, snifferem, analizatorem ruchu oraz 
+Ethereal jest potê¿nym, graficznym snifferem, analizatorem ruchu oraz 
 protoko³ów sieciowych opartym na bibliotekach GTK+ oraz libpcap. Umo¿liwia
-on przechwytywanie oraz intereaktywne analizowanie zawarto¶ci ramek oraz
+on przechwytywanie oraz intereaktywn± analizê zawarto¶ci ramek oraz
 ponad stu protoko³ów sieciowych. Ethereal posiada wiele u¿ytecznych cech,
 takich jak rozbudowany jêzyk filtrów wy¶wietlania, mo¿liwo¶æ ogl±dania
-przebiegu sesji TCP oraz mo¿liwo¶æ do³¶czania wtyczek (plug-ins).
+przebiegu sesji TCP oraz mo¿liwo¶æ do³±czania wtyczek (plug-ins).
 
  
 %prep
