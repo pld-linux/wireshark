@@ -1,25 +1,26 @@
 Summary:	Network traffic and protocol analyzer
 Summary(pl):	Analizator ruchu i protoko³ów sieciowych
 Name:		ethereal
-Version:	0.8.15
+Version:	0.8.18
 Release:	1
 License:	GPL
 Group:		Networking
 Group(de):	Netzwerkwesen
 Group(pl):	Sieciowe
-Source0:	http://ethereal.zing.org/distribution/%{name}-%{version}.tar.gz
+Source0:	ftp://ethereal.zing.org/pub/ethereal/%{name}-%{version}.tar.gz
 Source1:	%{name}.desktop
 URL:		http://ethereal.zing.org/
-BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
-Requires:	gtk+ >= 1.2
-Requires:	libpcap >= 0.4
-BuildRequires:	libpcap-devel >= 0.4
-BuildRequires:	zlib-devel
+BuildRequires:	flex
 BuildRequires:	gtk+-devel >= 1.2
+BuildRequires:	libpcap-devel >= 0.4
+BuildRequires:	ucd-snmp-devel
+BuildRequires:	zlib-devel
+Requires:	libpcap >= 0.4
+BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_prefix		/usr/X11R6
 %define		_mandir		%{_prefix}/man
-%define		_sysconfdir	/etc
+%define		_sysconfdir	/usr/share/misc
 
 %description
 Ethereal is the name for powerful graphical network sniffer, traffic
@@ -47,7 +48,7 @@ wtyczek (plug-ins).
 CFLAGS="%{rpmcflags} -I/usr/include/pcap -DINET6=1"
 %configure \
 	--enable-zlib \
-	--disable-snmp \
+	--with-ucdsnmp \
 	--enable-pcap \
 	--enable-ipv6 \
 	--disable-static \
@@ -74,7 +75,7 @@ rm -rf $RPM_BUILD_ROOT
 %doc *.gz doc/*.gz
 %attr(755,root,root) %{_bindir}/*
 %{_applnkdir}/Network/Misc/ethereal.desktop
-%config %{_sysconfdir}/manuf
+%{_sysconfdir}/manuf
 %{_mandir}/man1/*
 %{_pixmapsdir}/*
 %dir %{_libdir}/ethereal
