@@ -186,12 +186,12 @@ cd ..
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_applnkdir}/Network/Misc,%{_pixmapsdir}}
+install -d $RPM_BUILD_ROOT{%{_desktopdir},%{_pixmapsdir}}
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
-install %{SOURCE1} $RPM_BUILD_ROOT%{_applnkdir}/Network/Misc
+install %{SOURCE1} $RPM_BUILD_ROOT%{_desktopdir}
 install %{SOURCE2} $RPM_BUILD_ROOT%{_bindir}/%{name}_su
 install image/ethereal48x48-trans.png \
 	$RPM_BUILD_ROOT%{_pixmapsdir}/%{name}.png
@@ -210,7 +210,7 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_libdir}/%{name}/plugins/%{version}
 %attr(755,root,root) %{_libdir}/%{name}/plugins/%{version}/*.so
 %{_datadir}/%{name}
-%{_applnkdir}/Network/Misc/*
+%{_desktopdir}/*
 %{_pixmapsdir}/*
 %{_mandir}/man1/ethereal.1*
 
