@@ -14,7 +14,7 @@ Version:	0.9.10
 Release:	1
 License:	GPL
 Group:		Networking
-Source0:	http://www.ethereal.com/distribution/%{name}-%{version}.tar.gz
+Source0:	http://www.ethereal.com/distribution/%{name}-%{version}.tar.bz2
 Source1:	%{name}.desktop
 Source2:	%{name}.su-start-script
 URL:		http://www.ethereal.com/
