@@ -11,7 +11,7 @@ Summary(ru):	áÎÁÌÉÚÁÔÏÒ ÓÅÔÅ×ÏÇÏ ÔÒÁÆÆÉËÁ
 Summary(uk):	áÎÁÌ¦ÚÁÔÏÒ ÍÅÒÅÖÅ×ÏÇÏ ÔÒÁÆ¦ËÕ
 Name:		ethereal
 Version:	0.10.0a
-Release:	1
+Release:	2
 License:	GPL
 Group:		Networking
 Source0:	http://www.ethereal.com/distribution/all-versions/%{name}-%{version}.tar.bz2
@@ -156,6 +156,24 @@ tcpdumpem i innymi podobnymi narzêdziami.
 Esta é uma versão para modo texto do analisador de tráfego de rede
 Ethereal.
 
+%package -n libwiretap-devel
+Summary:	Packet capture library
+Summary(pl):	Biblioteka do przechwytywania pakietów
+Group:		Development/Libraries
+%if %{with gtk1}
+Requires:	gtk+-devel >= 1.2
+%else
+Requires:	gtk+2-devel
+%endif
+
+%description -n libwiretap-devel
+Wiretap is a library that is being developed as a future replacement for
+libpcap, the current standard Unix library for packet capturing.
+
+%description -n libwiretap-devel -l pl
+Biblioteka rozwijana jako przysz³y nastepca biblioteki libpcap, obecnie
+standardu przechwytywania pakietów w systemach Unix.
+
 %prep
 %setup -q
 
@@ -188,7 +206,7 @@ cd ..
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_desktopdir},%{_pixmapsdir}}
+install -d $RPM_BUILD_ROOT{%{_desktopdir},%{_pixmapsdir},%{_includedir}/wiretap}
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
@@ -197,6 +215,9 @@ install %{SOURCE1} $RPM_BUILD_ROOT%{_desktopdir}
 install %{SOURCE2} $RPM_BUILD_ROOT%{_bindir}/%{name}_su
 install image/ethereal48x48-trans.png \
 	$RPM_BUILD_ROOT%{_pixmapsdir}/%{name}.png
+
+install wiretap/*.a $RPM_BUILD_ROOT%{_libdir}
+install wiretap/*.h $RPM_BUILD_ROOT%{_includedir}/wiretap
 
 # plugins *.la are useless - *.so are loaded through gmodule
 rm -f $RPM_BUILD_ROOT%{_libdir}/%{name}/plugins/%{version}/*.la
@@ -239,3 +260,9 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/tethereal
 %{_mandir}/man1/tethereal*
+
+%files -n libwiretap-devel
+%defattr(644,root,root,755)
+%doc wiretap/{README*,AUTHORS,NEWS,ChangeLog}
+%{_includedir}/wiretap
+%{_libdir}/lib*.a
