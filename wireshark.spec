@@ -10,12 +10,12 @@ Summary(pt_BR):	Analisador de trАfego de rede
 Summary(ru):	Анализатор сетевого траффика
 Summary(uk):	Анал╕затор мережевого траф╕ку
 Name:		ethereal
-Version:	0.10.2
-Release:	2
+Version:	0.10.3
+Release:	1
 License:	GPL
 Group:		Networking
 Source0:	http://www.ethereal.com/distribution/all-versions/%{name}-%{version}.tar.bz2
-# Source0-md5:	0a989aeac595db09eae722c350498e40
+# Source0-md5:	6902272eb5304f57db76bf91abe453d1
 Source1:	%{name}.desktop
 Source2:	%{name}.su-start-script
 URL:		http://www.ethereal.com/
@@ -214,7 +214,7 @@ install %{SOURCE2} $RPM_BUILD_ROOT%{_bindir}/%{name}_su
 install image/ethereal48x48-trans.png \
 	$RPM_BUILD_ROOT%{_pixmapsdir}/%{name}.png
 
-install wiretap/*.a $RPM_BUILD_ROOT%{_libdir}
+#install wiretap/*.a $RPM_BUILD_ROOT%{_libdir}
 install wiretap/*.h $RPM_BUILD_ROOT%{_includedir}/wiretap
 
 # plugins *.la are useless - *.so are loaded through gmodule
@@ -263,4 +263,4 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc wiretap/{README*,AUTHORS,NEWS,ChangeLog}
 %{_includedir}/wiretap
-%{_libdir}/lib*.a
+%{_libdir}/lib*.so*
