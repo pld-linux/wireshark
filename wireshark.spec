@@ -52,7 +52,7 @@ CFLAGS="%{rpmcflags} -I/usr/include/pcap -DINET6=1"
 libtoolize --copy --force
 aclocal
 autoconf
-automake -a -c
+automake -a -c -f
 (cd epan
 aclocal
 autoconf
