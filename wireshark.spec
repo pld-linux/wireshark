@@ -26,7 +26,7 @@ BuildRequires:	flex
 %if %{with gtk1}
 BuildRequires:	gtk+-devel >= 1.2
 %else
-BuildRequires:	gtk+2-devel
+BuildRequires:	gtk+2-devel >= 2.0.0
 %endif
 BuildRequires:	libpcap-devel >= 0.4
 BuildRequires:	libtool
@@ -76,6 +76,7 @@ Ethereal - ÃÅ ÁÎÁÌ¦ÚÁÔÏÒ ÍÅÒÅÖÅ×ÏÇÏ ÔÒÁÆ¦ËÕ ÄÌÑ Unix-ÐÏÄ¦ÂÎÉÈ ïó. ÷¦Î
 Summary:	Network traffic and protocol analyzer - common files
 Summary(pl):	Analizator ruchu i protoko³ów sieciowych - wspólne pliki
 Group:		Networking
+Requires:	libwiretap = %{version}-%{release}
 
 %description common
 Ethereal is the name for powerful graphical network sniffer, traffic
@@ -156,23 +157,36 @@ tcpdumpem i innymi podobnymi narzêdziami.
 Esta é uma versão para modo texto do analisador de tráfego de rede
 Ethereal.
 
+%package -n libwiretap
+Summary:	Packet capture and analysis libraries
+Summary(pl):	Biblioteki do przechwytywania i analizy pakietów
+Group:		Libraries
+
+%description -n libwiretap
+Wiretap is a library that is being developed as a future replacement
+for libpcap, the current standard Unix library for packet capturing.
+
+%description -n libwiretap -l pl
+Biblioteka Wiretap rozwijana jest jako przysz³y nastepca biblioteki
+libpcap, obecnie standardu przechwytywania pakietów w systemach Unix.
+
 %package -n libwiretap-devel
-Summary:	Packet capture library
-Summary(pl):	Biblioteka do przechwytywania pakietów
+Summary:	Header files for libwiretap packet capture library
+Summary(pl):	Pliki nag³ówkowe biblioteki libwiretap do przechwytywania pakietów
 Group:		Development/Libraries
+Requires:	libwiretap = %{version}-%{release}
 %if %{with gtk1}
 Requires:	gtk+-devel >= 1.2
 %else
-Requires:	gtk+2-devel
+Requires:	gtk+2-devel >= 2.0.0
 %endif
 
 %description -n libwiretap-devel
-Wiretap is a library that is being developed as a future replacement for
-libpcap, the current standard Unix library for packet capturing.
+Header files for libwiretap packet capture library.
 
 %description -n libwiretap-devel -l pl
-Biblioteka rozwijana jako przysz³y nastepca biblioteki libpcap, obecnie
-standardu przechwytywania pakietów w systemach Unix.
+Pliki nag³ówkowe biblioteki libwiretap s³u¿±cej do przechwytywania
+pakietów.
 
 %prep
 %setup -q
@@ -214,14 +228,22 @@ install %{SOURCE2} $RPM_BUILD_ROOT%{_bindir}/%{name}_su
 install image/ethereal48x48-trans.png \
 	$RPM_BUILD_ROOT%{_pixmapsdir}/%{name}.png
 
-#install wiretap/*.a $RPM_BUILD_ROOT%{_libdir}
 install wiretap/*.h $RPM_BUILD_ROOT%{_includedir}/wiretap
 
 # plugins *.la are useless - *.so are loaded through gmodule
 rm -f $RPM_BUILD_ROOT%{_libdir}/%{name}/plugins/%{version}/*.la
 
+# no headers installed for this library
+rm -f $RPM_BUILD_ROOT%{_libdir}/libethereal.{so,la}
+
 %clean
 rm -rf $RPM_BUILD_ROOT
+
+%post	common -p /sbin/ldconfig
+%postun	common -p /sbin/ldconfig
+
+%post	-n libwiretap -p /sbin/ldconfig
+%postun	-n libwiretap -p /sbin/ldconfig
 
 %files
 %defattr(644,root,root,755)
@@ -239,6 +261,7 @@ rm -rf $RPM_BUILD_ROOT
 %files common
 %defattr(644,root,root,755)
 %doc AUTHORS ChangeLog FAQ NEWS README{,.[lv]*} doc/{randpkt.txt,README.*}
+%attr(755,root,root) %{_libdir}/libethereal.so.*.*.*
 %{_mandir}/man4/ethereal-filter.4*
 
 %files tools
@@ -259,8 +282,13 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/tethereal
 %{_mandir}/man1/tethereal*
 
-%files -n libwiretap-devel
+%files -n libwiretap
 %defattr(644,root,root,755)
 %doc wiretap/{README*,AUTHORS,NEWS,ChangeLog}
+%attr(755,root,root) %{_libdir}/libwiretap.so.*.*.*
+
+%files -n libwiretap-devel
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libwiretap.so
+%{_libdir}/libwiretap.la
 %{_includedir}/wiretap
-%{_libdir}/lib*.so*
