@@ -89,16 +89,16 @@ wtyczek (plug-ins).
 %build
 rm -f missing
 %{__libtoolize}
-aclocal
+%{__aclocal}
 %{__autoconf}
 %{__automake}
 cd epan
 rm -f missing
-aclocal
+%{__aclocal}
 %{__autoconf}
 %{__automake}
 cd ../wiretap
-aclocal
+%{__aclocal}
 %{__autoconf}
 %{__automake}
 cd ..
