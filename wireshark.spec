@@ -24,7 +24,7 @@ BuildRequires:	flex
 BuildRequires:	gtk+-devel >= 1.2
 BuildRequires:	libpcap-devel >= 0.4
 BuildRequires:	libtool
-BuildRequires:	openssl-devel
+BuildRequires:	openssl-devel >= 0.9.7
 BuildRequires:	perl-devel
 BuildRequires:	ucd-snmp-devel >= 4.2.6
 BuildRequires:	zlib-devel
