@@ -19,13 +19,13 @@ Source2:	%{name}.su-start-script
 URL:		http://www.ethereal.com/
 BuildRequires:	autoconf
 BuildRequires:	automake
+BuildRequires:	elfutils-devel
 BuildRequires:	flex
 %if %{?_with_gtk1:1}0
 BuildRequires:	gtk+-devel >= 1.2
 %else
 BuildRequires:	gtk+2-devel
 %endif
-BuildRequires:	libelf-devel
 BuildRequires:	libpcap-devel >= 0.4
 BuildRequires:	libtool
 %{!?_without_snmp:BuildRequires:	net-snmp-devel}
