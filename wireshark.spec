@@ -1,14 +1,14 @@
 Summary:	Network traffic and protocol analyzer
 Summary(pl):	Analizator ruchu i protoko³ów sieciowych
 Name:		ethereal
-Version:	0.8.18
-Release:	12
+Version:	0.9.3
+Release:	1
 License:	GPL
 Group:		Networking
-Source0:	ftp://ethereal.zing.org/pub/ethereal/%{name}-%{version}.tar.gz
+Source0:	http://www.ethereal.com/distribution/%{name}-%{version}.tar.gz
 Source1:	%{name}.desktop
 Source2:	%{name}.su-start-script
-URL:		http://ethereal.zing.org/
+URL:		http://www.ethereal.com/
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	libtool
@@ -48,20 +48,20 @@ wtyczek (plug-ins).
 
 %build
 # don't remove -DINET6=1 because --enable-ipv6 doesn't work properly
-CFLAGS="%{rpmcflags} -I/usr/include/pcap -DINET6=1"
-libtoolize --copy --force
-aclocal
-autoconf
-automake -a -c -f
-(cd epan
-aclocal
-autoconf
-automake -a -c)
-(cd wiretap
-aclocal
-autoconf
-automake -a -c)
-%configure \
+#CFLAGS="%{rpmcflags} -I/usr/include/pcap -DINET6=1"
+#libtoolize --copy --force
+#aclocal
+#autoconf
+#automake -a -c -f
+#(cd epan
+#aclocal
+#autoconf
+#automake -a -c)
+#(cd wiretap
+#aclocal
+#autoconf
+#automake -a -c)
+%configure2_13 \
 	--enable-zlib \
 	--with-ucdsnmp \
 	--enable-pcap \
