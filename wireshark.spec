@@ -1,6 +1,7 @@
 #
 # Conditional build:
 %bcond_with	gtk1		# builds gtk+1 (not gtk+2) based ethereal binary
+%bcond_without	krb5		# builds without kerberos5 support (via heimdal)
 %bcond_without	snmp		# builds without snmp support
 #
 Summary:	Network traffic and protocol analyzer
@@ -11,7 +12,7 @@ Summary(ru):	Анализатор сетевого траффика
 Summary(uk):	Анал╕затор мережевого траф╕ку
 Name:		ethereal
 Version:	0.10.3
-Release:	4
+Release:	5
 License:	GPL
 Group:		Networking
 Source0:	http://www.ethereal.com/distribution/all-versions/%{name}-%{version}.tar.bz2
@@ -19,6 +20,7 @@ Source0:	http://www.ethereal.com/distribution/all-versions/%{name}-%{version}.ta
 Source1:	%{name}.desktop
 Source2:	%{name}.su-start-script
 URL:		http://www.ethereal.com/
+BuildRequires:	adns-devel
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	elfutils-devel
@@ -28,6 +30,7 @@ BuildRequires:	gtk+-devel >= 1.2
 %else
 BuildRequires:	gtk+2-devel >= 2.0.0
 %endif
+%{?with_krb5:BuildRequires:	heimdal-devel}
 BuildRequires:	libpcap-devel >= 0.4
 BuildRequires:	libtool
 %{?with_snmp:BuildRequires:	net-snmp-devel}
@@ -210,9 +213,11 @@ cd ..
 %configure \
 	--enable-randpkt \
 	--enable-dftest \
+	--enable-threads \
 	%{!?with_gtk1:--enable-gtk2} \
-	--with-plugindir=%{_libdir}/%{name} \
-	%{!?with_snmp:--without-net-snmp --without-ucdsnmp}
+	%{?with_krb5:--with-krb5} \
+	%{!?with_snmp:--without-net-snmp --without-ucdsnmp} \
+	--with-plugindir=%{_libdir}/%{name}
 
 %{__make}
 
