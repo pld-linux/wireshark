@@ -76,6 +76,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_applnkdir}/Network/Misc/ethereal.desktop
 %config %{_sysconfdir}/manuf
 %{_mandir}/man1/*
-%{_datadir}/pixmaps/*
+%{_pixmapsdir}/*
 %dir %{_libdir}/ethereal
 %attr(755,root,root) %{_libdir}/ethereal/*
