@@ -11,7 +11,7 @@ Summary(pl):	Analizator ruchu i protoko³ów sieciowych
 Summary(pt_BR): Analisador de tráfego de rede
 Name:		ethereal
 Version:	0.9.11
-Release:	1
+Release:	2
 License:	GPL
 Group:		Networking
 Source0:	http://www.ethereal.com/distribution/%{name}-%{version}.tar.bz2
@@ -21,7 +21,7 @@ URL:		http://www.ethereal.com/
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	flex
-BuildRequires:	gtk+-devel >= 1.2
+BuildRequires:	gtk+2-devel
 BuildRequires:	libpcap-devel >= 0.4
 BuildRequires:	libtool
 BuildRequires:	net-snmp-devel
@@ -29,10 +29,7 @@ BuildRequires:	openssl-devel >= 0.9.7
 BuildRequires:	perl-devel
 BuildRequires:	zlib-devel
 Requires:	libpcap >= 0.4
-Requires:	ethereal-common = %{version}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
-
-%define		_sysconfdir	/usr/share/misc
 
 %description
 Ethereal is the name for powerful graphical network sniffer, traffic
@@ -58,29 +55,6 @@ wtyczek (plug-ins).
 %description -l pt_BR
 O Ethereal é um analisador de protocolo de rede baseado no GTK+.
 
-%package common
-Summary: 	Network traffic and protocol analyzer - common files
-Summary(pl): 	Analizator ruchu i protoko³ów sieciowych - wspólne pliki
-Group:		Networking
-
-%description common
-Ethereal is the name for powerful graphical network sniffer, traffic
-and protocol analyzer based on GTK+ and libpcap libraries. It lets you
-capture and interactively browse the contents of network frames with
-vast knowledge of more than 100 network protocols. Ethereal has
-severeal useful features, including a rich display filter language,
-the ability to view the ASCII contents of a TCP connection and plug-in
-capabilities.
-
-%description common -l pl
-Ethereal jest potê¿nym, graficznym snifferem, analizatorem ruchu oraz
-protoko³ów sieciowych opartym na bibliotekach GTK+ oraz libpcap.
-Umo¿liwia on przechwytywanie oraz intereaktywn± analizê zawarto¶ci
-ramek oraz ponad stu protoko³ów sieciowych. Ethereal posiada wiele
-u¿ytecznych cech, takich jak rozbudowany jêzyk filtrów wy¶wietlania,
-mo¿liwo¶æ ogl±dania przebiegu sesji TCP oraz mo¿liwo¶æ do³±czania
-wtyczek (plug-ins).
-
 %prep
 %setup -q
 
@@ -101,46 +75,40 @@ cd ../wiretap
 automake -a -c --foreign
 cd ..
 %configure \
-	--disable-static \
 	--disable-editcap \
+	--disable-idl2eth \
 	--disable-mergecap \
 	--disable-tethereal \
-	--disable-idl2eth \
-	--enable-ipv6 \
-	--disable-randpkt \
 	--disable-text2pcap \
-	--enable-zlib \
-	--with-pcap \
-	--with-plugindir=%{_libdir}/ethereal \
-	--with-ssl \
-	--with-ucdsnmp
-
+	--enable-gtk2 \
+	--with-plugindir=%{_libdir}/%{name}
 %{__make}
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_applnkdir}/Network/Misc,%{_datadir}/pixmaps}
 
 %{__make} DESTDIR=$RPM_BUILD_ROOT install
 
+install -d $RPM_BUILD_ROOT{%{_applnkdir}/Network/Misc,%{_pixmapsdir}}
+
 install %{SOURCE1} $RPM_BUILD_ROOT%{_applnkdir}/Network/Misc
-install image/ethereal48x48-trans.png $RPM_BUILD_ROOT%{_datadir}/pixmaps/ethereal.png
-install %{SOURCE2} $RPM_BUILD_ROOT%{_bindir}/ethereal_su
+install %{SOURCE2} $RPM_BUILD_ROOT%{_bindir}/%{name}_su
+install image/ethereal48x48-trans.png \
+    $RPM_BUILD_ROOT%{_pixmapsdir}/%{name}.png
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%files common
-%defattr(644,root,root,755)
-%doc AUTHORS NEWS README README.linux README.vmware FAQ ChangeLog
-%doc doc/randpkt.txt doc/README.*
-
 %files 
 %defattr(644,root,root,755)
+%doc AUTHORS ChangeLog FAQ NEWS README{,.[lv]*} doc/{randpkt.txt,README.*}
 %attr(755,root,root) %{_bindir}/*
-%{_applnkdir}/Network/Misc/ethereal.desktop
-%{_sysconfdir}/manuf
-%{_mandir}/man1/*
+%dir %{_libdir}/%{name}
+%dir %{_libdir}/%{name}/plugins
+%dir %{_libdir}/%{name}/plugins/%{version}
+%{_libdir}/%{name}/plugins/%{version}/*.la
+%attr(755,root,root) %{_libdir}/%{name}/plugins/%{version}/*.so
+%{_datadir}/%{name}
+%{_applnkdir}/Network/Misc/*
 %{_pixmapsdir}/*
-%dir %{_libdir}/ethereal
-%attr(755,root,root) %{_libdir}/ethereal/*
+%{_mandir}/man1/*
