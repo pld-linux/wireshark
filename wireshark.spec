@@ -1,7 +1,7 @@
 #
 # Conditional build:
-%bcond_with gtk1		# builds gtk+1 (not gtk+2) based ethereal binary
-%bcond_without snmp		# builds without snmp support
+%bcond_with	gtk1		# builds gtk+1 (not gtk+2) based ethereal binary
+%bcond_without	snmp		# builds without snmp support
 #
 Summary:	Network traffic and protocol analyzer
 Summary(es):	Analizador de tráfico de red
@@ -160,6 +160,24 @@ tcpdumpem i innymi podobnymi narzêdziami.
 Esta é uma versão para modo texto do analisador de tráfego de rede
 Ethereal.
 
+%package -n libwiretap-devel
+Summary:	Packet capture library
+Summary(pl):	Biblioteka do przechwytywania pakietów
+Group:		Development/Libraries
+%if %{with gtk1}
+Requires:	gtk+-devel >= 1.2
+%else
+Requires:	gtk+2-devel
+%endif
+
+%description -n libwiretap-devel
+Wiretap is a library that is being developed as a future replacement for
+libpcap, the current standard Unix library for packet capturing.
+
+%description -n libwiretap-devel -l pl
+Biblioteka rozwijana jako przysz³y nastepca biblioteki libpcap, obecnie
+standardu przechwytywania pakietów w systemach Unix.
+
 %prep
 %setup -q
 
@@ -192,7 +210,7 @@ cd ..
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_desktopdir},%{_pixmapsdir}}
+install -d $RPM_BUILD_ROOT{%{_desktopdir},%{_pixmapsdir},%{_includedir}/wiretap}
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
@@ -204,6 +222,8 @@ install image/ethereal48x48-trans.png \
 
 # plugins *.la are useless - *.so are loaded through gmodule
 rm -f $RPM_BUILD_ROOT%{_libdir}/%{name}/plugins/%{version}/*.la
+
+install wiretap/*.h $RPM_BUILD_ROOT%{_includedir}/wiretap
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -243,3 +263,9 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/tethereal
 %{_mandir}/man1/tethereal*
+
+%files -n libwiretap-devel
+%defattr(644,root,root,755)
+%doc wiretap/{README*,AUTHORS,NEWS,ChangeLog}
+%{_includedir}/wiretap
+%{_libdir}/lib*.so*
