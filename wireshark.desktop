@@ -4,6 +4,6 @@ Comment=Ethereal Network Analyzer
 Comment[ja]=The Ethereal ネットワーク・アナライザー
 Comment[pl]=Ethereal - analizator ruchu w sieci
 Icon=ethereal.png
-Exec=ethereal
+Exec=xterm -e ethereal_su
 Terminal=0
 Type=Application
