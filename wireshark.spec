@@ -24,6 +24,7 @@ BuildRequires:	gtk+-devel >= 1.2
 %else
 BuildRequires:	gtk+2-devel
 %endif
+BuildRequires:	libelf-devel
 BuildRequires:	libpcap-devel >= 0.4
 BuildRequires:	libtool
 %{!?_without_snmp:BuildRequires:	net-snmp-devel}
