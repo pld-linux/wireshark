@@ -6,7 +6,7 @@
 #
 # ethereal an ethereal-common are built from this spec
 Summary:	Network traffic and protocol analyzer
-Summary(es):	Analizador de tráfico de red.
+Summary(es):	Analizador de tráfico de red
 Summary(pl):	Analizator ruchu i protoko³ów sieciowych
 Summary(pt_BR): Analisador de tráfego de rede
 Name:		ethereal
