@@ -37,6 +37,7 @@ BuildRequires:	zlib-devel
 Requires:	libpcap >= 0.4
 Requires:	%{name}-common = %{version}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
+Obsoletes:	ethereal-gnome
 
 %description
 Ethereal is the name for powerful graphical network sniffer, traffic
@@ -99,11 +100,11 @@ wtyczek (plug-ins).
 %description common -l pt_BR
 O Ethereal И um analisador de protocolo de rede baseado no GTK+.
 
-%description -l ru
+%description common -l ru
 Ethereal - это анализатор сетевого траффика для Unix-подобных ОС. Он
 базируется на GTK+ и libpcap.
 
-%description -l uk
+%description common -l uk
 Ethereal - це анал╕затор мережевого траф╕ку для Unix-под╕бних ОС. В╕н
 базу╓ться на GTK+ та libpcap.
 
