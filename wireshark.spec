@@ -19,6 +19,7 @@ URL:		http://www.ethereal.com/
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	flex
+BuildRequires:	glib-devel
 %if %{?_with_gtk1:1}0
 BuildRequires:	gtk+-devel >= 1.2
 %else
@@ -150,16 +151,18 @@ Ethereal.
 %build
 rm -f missing
 %{__libtoolize}
-%{__aclocal}
+%{__aclocal} -I aclocal-fallback
 %{__autoconf}
 %{__automake}
 cd epan
 rm -f missing
-%{__aclocal}
+cp ../ltmain.sh .
+%{__aclocal} -I ../aclocal-fallback
 %{__autoconf}
 %{__automake}
 cd ../wiretap
-%{__aclocal}
+cp ../ltmain.sh .
+%{__aclocal} -I ../aclocal-fallback
 %{__autoconf}
 %{__automake}
 cd ..
