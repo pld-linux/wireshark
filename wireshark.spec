@@ -11,12 +11,12 @@ Summary(pt_BR):	Analisador de trАfego de rede
 Summary(ru):	Анализатор сетевого траффика
 Summary(uk):	Анал╕затор мережевого траф╕ку
 Name:		ethereal
-Version:	0.10.3
-Release:	9
+Version:	0.10.4
+Release:	1
 License:	GPL
 Group:		Networking
 Source0:	http://www.ethereal.com/distribution/all-versions/%{name}-%{version}.tar.bz2
-# Source0-md5:	6902272eb5304f57db76bf91abe453d1
+# Source0-md5:	d889d4e6e26047afc5a2b74770c8ac88
 Source1:	%{name}.desktop
 Source2:	%{name}.su-start-script
 URL:		http://www.ethereal.com/
@@ -199,12 +199,12 @@ pakietСw.
 %{__aclocal} -I aclocal-fallback
 %{__autoconf}
 %{__automake}
-cd epan
-%{__aclocal} -I ../aclocal-fallback
-%{__autoconf}
+#cd epan
+#%{__aclocal} -I ../aclocal-fallback
+#%{__autoconf}
 # don't use --force here
-automake -a -c --foreign
-cd ../wiretap
+#automake -a -c --foreign
+cd wiretap
 %{__aclocal} -I ../aclocal-fallback
 %{__autoconf}
 # don't use --force here
