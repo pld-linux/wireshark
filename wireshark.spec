@@ -15,7 +15,7 @@ Release:	1
 License:	GPL
 Group:		Networking
 Source0:	http://www.ethereal.com/distribution/%{name}-%{version}.tar.bz2
-# Source0-md5:	4702c6ff619ff6e59d224688a118644c
+# Source0-md5:	ab33d191f3cca324e5c819e9e4c034e1
 Source1:	%{name}.desktop
 Source2:	%{name}.su-start-script
 URL:		http://www.ethereal.com/
