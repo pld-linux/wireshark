@@ -12,6 +12,7 @@ Release:	3
 License:	GPL
 Group:		Networking
 Source0:	http://www.ethereal.com/distribution/%{name}-%{version}.tar.bz2
+# Source0-md5: b25d815f98293f78f72ac0db75637496
 Source1:	%{name}.desktop
 Source2:	%{name}.su-start-script
 Patch0:		%{name}-distcc.patch
