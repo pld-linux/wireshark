@@ -10,14 +10,16 @@ Summary(pt_BR):	Analisador de trАfego de rede
 Summary(ru):	Анализатор сетевого траффика
 Summary(uk):	Анал╕затор мережевого траф╕ку
 Name:		ethereal
-Version:	0.9.16
-Release:	2
+Version:	0.10.0
+Release:	1
 License:	GPL
 Group:		Networking
 Source0:	http://www.ethereal.com/distribution/%{name}-%{version}.tar.bz2
-# Source0-md5:	ab33d191f3cca324e5c819e9e4c034e1
+# Source0-md5:	dea23de328137aef684a7fdaaa7de093
 Source1:	%{name}.desktop
 Source2:	%{name}.su-start-script
+Source3:	%{name}-help.tar.gz
+# Source3-md5:	a582acf9e473e457ee85a223587545e0
 URL:		http://www.ethereal.com/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -156,7 +158,7 @@ Esta И uma versЦo para modo texto do analisador de trАfego de rede
 Ethereal.
 
 %prep
-%setup -q
+%setup -q -a3
 
 %build
 rm -f missing
@@ -178,6 +180,7 @@ automake -a -c --foreign
 cd ..
 %configure \
 	--enable-randpkt \
+	--enable-dftest \
 	%{!?_with_gtk1:--enable-gtk2} \
 	--with-plugindir=%{_libdir}/%{name} \
 	%{?_without_snmp:--without-net-snmp --without-ucdsnmp}
@@ -221,16 +224,17 @@ rm -rf $RPM_BUILD_ROOT
 
 %files tools
 %defattr(644,root,root,755)
+%attr(755,root,root) %{_bindir}/dftest
 %attr(755,root,root) %{_bindir}/editcap
-%attr(755,root,root) %{_bindir}/mergecap
-%attr(755,root,root) %{_bindir}/randpkt
-%attr(755,root,root) %{_bindir}/text2pcap
 %attr(755,root,root) %{_bindir}/ethereal_su
 %attr(755,root,root) %{_bindir}/idl2eth
+%attr(755,root,root) %{_bindir}/mergecap
+%attr(755,root,root) %{_bindir}/text2pcap
+%attr(755,root,root) %{_bindir}/randpkt
 %{_mandir}/man1/editcap*
+%{_mandir}/man1/idl2eth*
 %{_mandir}/man1/mergecap*
 %{_mandir}/man1/text2pcap*
-%{_mandir}/man1/idl2eth*
 
 %files -n tethereal
 %defattr(644,root,root,755)
