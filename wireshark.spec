@@ -23,7 +23,7 @@ Source3:	%{name}-help.tar.gz
 URL:		http://www.ethereal.com/
 BuildRequires:	autoconf
 BuildRequires:	automake
-BuildRequires:	elfutils-devel
+BuildRequires:	libelf-devel
 BuildRequires:	flex
 %if %{with gtk1}
 BuildRequires:	gtk+-devel >= 1.2
@@ -32,14 +32,19 @@ BuildRequires:	gtk+2-devel
 %endif
 BuildRequires:	libpcap-devel >= 0.4
 BuildRequires:	libtool
-%{?with_snmp:BuildRequires:	net-snmp-devel}
-BuildRequires:	openssl-devel >= 0.9.7c
+BuildRequires:	openssl-devel >= 0.9.6k
 BuildRequires:	perl-devel
+%{!?_without_snmp:BuildRequires:	ucd-snmp-devel}
 BuildRequires:	zlib-devel
 Requires:	libpcap >= 0.4
 Requires:	%{name}-common = %{version}
+Requires:	pango-modules
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Obsoletes:	ethereal-gnome
+
+%define		_prefix		/usr/X11R6
+%define		_mandir		/usr/X11R6/man
+%define		_desktopdir	%{_applnkdir}/Network/Misc
 
 %description
 Ethereal is the name for powerful graphical network sniffer, traffic
