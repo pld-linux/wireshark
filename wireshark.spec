@@ -55,17 +55,17 @@ make
 
 %install
 rm -rf $RPM_BUILD_ROOT
+install -d $RPM_BUILD_ROOT%{_applnkdir}/Networking
 
 make DESTDIR=$RPM_BUILD_ROOT install
 
-install -d $RPM_BUILD_ROOT%{_datadir}/applnk/Networking
-install %{SOURCE1} $RPM_BUILD_ROOT%{_datadir}/applnk/Networking/
+install %{SOURCE1} $RPM_BUILD_ROOT%{_applnkdir}/Networking/
 
 gzip -9nf AUTHORS NEWS README* doc/randpkt.txt doc/proto_tree \
 	doc/README.developer $RPM_BUILD_ROOT%{_mandir}/man1/*
 
 find $RPM_BUILD_ROOT%{_libdir}/ethereal/plugins -type f -name "*.so" \
-| xargs -n1 strip -s
+| xargs -n1 strip --strip-unneeded
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -74,9 +74,10 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc *.gz doc/*.gz
 %attr(755,root,root) %{_bindir}/*
-%{_datadir}/applnk/Networking/ethereal.desktop
+%{_applnkdir}/Networking/ethereal.desktop
 %config %{_sysconfdir}/manuf
 %{_mandir}/man1/*
 %dir %{_libdir}/ethereal
+%dir %{_libdir}/ethereal/plugins
 %dir %{_libdir}/ethereal/plugins/%{version}/
 %{_libdir}/ethereal/plugins/%{version}/*
