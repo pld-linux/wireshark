@@ -1,7 +1,8 @@
 #
-# --with gtk1	builds gtk+1 based ethereal binary
+# Conditional build:
+# _with_gtk1	- builds gtk+1 based ethereal binary
+# _without_snmp	- builds without snmp support
 #
-
 Summary:	Network traffic and protocol analyzer
 Summary(es):	Analizador de tráfico de red
 Summary(pl):	Analizator ruchu i protoko³ów sieciowych
@@ -9,17 +10,18 @@ Summary(pt_BR):	Analisador de tráfego de rede
 Summary(ru):	áÎÁÌÉÚÁÔÏÒ ÓÅÔÅ×ÏÇÏ ÔÒÁÆÆÉËÁ
 Summary(uk):	áÎÁÌ¦ÚÁÔÏÒ ÍÅÒÅÖÅ×ÏÇÏ ÔÒÁÆ¦ËÕ
 Name:		ethereal
-Version:	0.9.13
+Version:	0.9.15
 Release:	1
 License:	GPL
 Group:		Networking
 Source0:	http://www.ethereal.com/distribution/%{name}-%{version}.tar.bz2
-# Source0-md5:	a533a13d175be1f8c2be188ac8f4c7ea
+# Source0-md5:	4702c6ff619ff6e59d224688a118644c
 Source1:	%{name}.desktop
 Source2:	%{name}.su-start-script
 URL:		http://www.ethereal.com/
 BuildRequires:	autoconf
 BuildRequires:	automake
+BuildRequires:	elfutils-devel
 BuildRequires:	flex
 %if %{?_with_gtk1:1}0
 BuildRequires:	gtk+-devel >= 1.2
@@ -33,7 +35,7 @@ BuildRequires:	perl-devel
 %{!?_without_snmp:BuildRequires:	ucd-snmp-devel}
 BuildRequires:	zlib-devel
 Requires:	libpcap >= 0.4
-Requires:	%{name}-common
+Requires:	%{name}-common = %{version}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Obsoletes:	ethereal-gnome
 
@@ -100,19 +102,27 @@ wtyczek (plug-ins).
 %description common -l pt_BR
 O Ethereal é um analisador de protocolo de rede baseado no GTK+.
 
-%package -n ethereal-tools
+%description common -l ru
+Ethereal - ÜÔÏ ÁÎÁÌÉÚÁÔÏÒ ÓÅÔÅ×ÏÇÏ ÔÒÁÆÆÉËÁ ÄÌÑ Unix-ÐÏÄÏÂÎÙÈ ïó. ïÎ
+ÂÁÚÉÒÕÅÔÓÑ ÎÁ GTK+ É libpcap.
+
+%description common -l uk
+Ethereal - ÃÅ ÁÎÁÌ¦ÚÁÔÏÒ ÍÅÒÅÖÅ×ÏÇÏ ÔÒÁÆ¦ËÕ ÄÌÑ Unix-ÐÏÄ¦ÂÎÉÈ ïó. ÷¦Î
+ÂÁÚÕ¤ÔØÓÑ ÎÁ GTK+ ÔÁ libpcap.
+
+%package tools
 Summary:	Tools for manipulating capture files
 Summary(pl):	Narzêdzia do obróbki plików z przechwyconymi pakietami sieciowymi
 Group:		Networking
-Requires:	ethereal-common = %{version}
+Requires:	%{name}-common = %{version}
 
-%description -n ethereal-tools
+%description tools
 Set of tools for manipulating capture files. Contains:
 - editcap - Edit and/or translate the format of capture files
 - mergecap - Merges two capture files into one
 - text2cap - Generate a capture file from an ASCII hexdump of packets
 
-%description -n ethereal-tools -l pl
+%description tools -l pl
 Zestaw narzêdzi do obróbki plików z przechwyconymi pakietami. Zawiera:
 - editcap - do edycji plików i t³umaczenia ich na inne formaty,
 - mergecap - do ³±czenia dwóch plików w jeden,
@@ -124,7 +134,7 @@ Summary:	Text-mode network traffic and protocol analyzer
 Summary(pl):	Tekstowy analizator ruchu i protoko³ów sieciowych
 Summary(pt_BR):	Analisador modo texto de tráfego de rede (sniffer)
 Group:		Networking
-Requires:	ethereal-common = %{version}
+Requires:	%{name}-common = %{version}
 Requires:	libpcap >= 0.4
 
 %description -n tethereal
@@ -153,16 +163,17 @@ Ethereal.
 %build
 rm -f missing
 %{__libtoolize}
-%{__aclocal}
+%{__aclocal} -I aclocal-fallback
 %{__autoconf}
 %{__automake}
 cd epan
 rm -f missing
-%{__aclocal}
+%{__aclocal} -I ../aclocal-fallback
 %{__autoconf}
+# don't use --force here
 automake -a -c --foreign
 cd ../wiretap
-%{__aclocal}
+%{__aclocal} -I ../aclocal-fallback
 %{__autoconf}
 automake -a -c --foreign
 cd ..
@@ -197,8 +208,23 @@ install %{SOURCE2} $RPM_BUILD_ROOT%{_bindir}/%{name}_su
 install image/ethereal48x48-trans.png \
 	$RPM_BUILD_ROOT%{_pixmapsdir}/%{name}.png
 
+# plugins *.la are useless - *.so are loaded through gmodule
+rm -f $RPM_BUILD_ROOT%{_libdir}/%{name}/plugins/%{version}/*.la
+
 %clean
 rm -rf $RPM_BUILD_ROOT
+
+%files
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_bindir}/ethereal
+%dir %{_libdir}/%{name}
+%dir %{_libdir}/%{name}/plugins
+%dir %{_libdir}/%{name}/plugins/%{version}
+%attr(755,root,root) %{_libdir}/%{name}/plugins/%{version}/*.so
+%{_datadir}/%{name}
+%{_applnkdir}/Network/Misc/*
+%{_pixmapsdir}/*
+%{_mandir}/man1/ethereal.1*
 
 %files common
 %defattr(644,root,root,755)
@@ -221,17 +247,3 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/tethereal
 %{_mandir}/man1/tethereal*
-
-
-%files
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_bindir}/ethereal
-%dir %{_libdir}/%{name}
-%dir %{_libdir}/%{name}/plugins
-%dir %{_libdir}/%{name}/plugins/%{version}
-%{_libdir}/%{name}/plugins/%{version}/*.la
-%attr(755,root,root) %{_libdir}/%{name}/plugins/%{version}/*.so
-%{_datadir}/%{name}
-%{_applnkdir}/Network/Misc/*
-%{_pixmapsdir}/*
-%{_mandir}/man1/ethereal.1*
