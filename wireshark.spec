@@ -10,7 +10,7 @@ Summary(es):	Analizador de tráfico de red
 Summary(pl):	Analizator ruchu i protoko³ów sieciowych
 Summary(pt_BR): Analisador de tráfego de rede
 Name:		ethereal
-Version:	0.9.8
+Version:	0.9.10
 Release:	1
 License:	GPL
 Group:		Networking
@@ -24,6 +24,7 @@ BuildRequires:	flex
 BuildRequires:	gtk+-devel >= 1.2
 BuildRequires:	libpcap-devel >= 0.4
 BuildRequires:	libtool
+#BuildRequires:	openssl-devel >= 0.9.6i
 BuildRequires:	openssl-devel
 BuildRequires:	perl-devel
 BuildRequires:	ucd-snmp-devel >= 4.2.6
@@ -141,7 +142,8 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/*
 %{_applnkdir}/Network/Misc/ethereal.desktop
-%{_sysconfdir}/manuf
+%{_datadir}/ethereal/manuf
+%{_datadir}/ethereal/diameter
 %{_mandir}/man1/*
 %{_pixmapsdir}/*
 %dir %{_libdir}/ethereal
