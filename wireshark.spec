@@ -39,7 +39,6 @@ BuildRequires:	perl-devel
 BuildRequires:	zlib-devel
 Requires:	%{name}-common = %{version}-%{release}
 Requires:	libpcap >= 0.4
-Requires:	pango-modules
 Obsoletes:	ethereal-gnome
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
