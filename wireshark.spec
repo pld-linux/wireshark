@@ -154,18 +154,7 @@ cd ../wiretap
 automake -a -c --foreign
 cd ..
 %configure \
-		--enable-editcap \
-		--enable-idl2eth \
-		--enable-mergecap \
-		--enable-tethereal \
-		--enable-editcap \
-		--enable-mergecap \
-		--enable-ipv6 \
 		--enable-randpkt \
-		--enable-text2pcap \
-		--enable-zlib \
-		--with-pcap \
-		--with-ssl \
 %{!?_with_gtk1:	--enable-gtk2} \
 		--with-plugindir=%{_libdir}/%{name} \
 %{!?_without_snmp: --without-snmp}
