@@ -198,11 +198,6 @@ pakietów.
 %{__aclocal} -I aclocal-fallback
 %{__autoconf}
 %{__automake}
-#cd epan
-#%{__aclocal} -I ../aclocal-fallback
-#%{__autoconf}
-# don't use --force here
-#automake -a -c --foreign
 cd wiretap
 %{__aclocal} -I ../aclocal-fallback
 %{__autoconf}
