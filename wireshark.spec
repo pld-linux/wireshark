@@ -3,7 +3,7 @@ Summary(es): Analizador de tráfico de red.
 Summary(pl):	Analizator ruchu i protoko³ów sieciowych
 Summary(pt_BR): Analisador de tráfego de rede
 Name:		ethereal
-Version:	0.9.5
+Version:	0.9.6
 Release:	1
 License:	GPL
 Group:		Networking
