@@ -9,6 +9,7 @@ Group(de):	Netzwerkwesen
 Group(pl):	Sieciowe
 Source0:	ftp://ethereal.zing.org/pub/ethereal/%{name}-%{version}.tar.gz
 Source1:	%{name}.desktop
+Source2:	%{name}.su-start-script
 URL:		http://ethereal.zing.org/
 BuildRequires:	flex
 BuildRequires:	gtk+-devel >= 1.2
@@ -64,6 +65,7 @@ install -d $RPM_BUILD_ROOT{%{_applnkdir}/Network/Misc,%{_datadir}/pixmaps}
 
 install %{SOURCE1} $RPM_BUILD_ROOT%{_applnkdir}/Network/Misc
 install image/ethereal48x48-trans.png $RPM_BUILD_ROOT%{_datadir}/pixmaps/ethereal.png
+install %{SOURCE2} $RPM_BUILD_ROOT%{_bindir}/ethereal_su
 
 gzip -9nf AUTHORS NEWS README* doc/randpkt.txt doc/README.developer
 
