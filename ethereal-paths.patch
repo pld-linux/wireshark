@@ -1,11 +1,11 @@
---- plugins.c.orig	Fri Mar 17 14:59:07 2000
-+++ plugins.c	Fri Mar 17 15:00:42 2000
+--- plugins.c.orig	Thu Apr  6 11:51:03 2000
++++ plugins.c	Thu Apr  6 11:51:57 2000
 @@ -70,7 +70,7 @@
- static gchar std_plug_dir[] = "c:/program files/ethereal/plugins/0.8";
- static gchar local_plug_dir[] = "c:/ethereal/plugins/0.8";
+ static gchar std_plug_dir[] = "c:/program files/ethereal/plugins/0.8.5";
+ static gchar local_plug_dir[] = "c:/ethereal/plugins/0.8.5";
  #else
--static gchar std_plug_dir[] = "/usr/lib/ethereal/plugins/0.8";
-+static gchar std_plug_dir[] = "/usr/X11R6/lib/ethereal/plugins/0.8";
- static gchar local_plug_dir[] = "/usr/local/lib/ethereal/plugins/0.8";
+-static gchar std_plug_dir[] = "/usr/lib/ethereal/plugins/0.8.5";
++static gchar std_plug_dir[] = "/usr/X11R6/lib/ethereal/plugins/0.8.5";
+ static gchar local_plug_dir[] = "/usr/local/lib/ethereal/plugins/0.8.5";
  #endif
  static gchar *user_plug_dir = NULL;
