@@ -1,7 +1,7 @@
 Summary:	Network traffic and protocol analyzer
 Summary(pl):	Analizator ruchu i protoko³ów sieciowych
 Name:		ethereal
-Version:	0.8.3
+Version:	0.8.4
 Release:	1
 License:	GPL
 Group:		Networking
