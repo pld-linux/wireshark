@@ -57,7 +57,7 @@ Analizador de tráfico de red.
 %description -l pl
 Ethereal jest potê¿nym, graficznym snifferem, analizatorem ruchu oraz
 protoko³ów sieciowych opartym na bibliotekach GTK+ oraz libpcap.
-Umo¿liwia on przechwytywanie oraz intereaktywn± analizê zawarto¶ci
+Umo¿liwia on przechwytywanie oraz interaktywn± analizê zawarto¶ci
 ramek oraz ponad stu protoko³ów sieciowych. Ethereal posiada wiele
 u¿ytecznych cech, takich jak rozbudowany jêzyk filtrów wy¶wietlania,
 mo¿liwo¶æ ogl±dania przebiegu sesji TCP oraz mo¿liwo¶æ do³±czania
@@ -95,7 +95,7 @@ Analizador de tráfico de red.
 %description common -l pl
 Ethereal jest potê¿nym, graficznym snifferem, analizatorem ruchu oraz
 protoko³ów sieciowych opartym na bibliotekach GTK+ oraz libpcap.
-Umo¿liwia on przechwytywanie oraz intereaktywn± analizê zawarto¶ci
+Umo¿liwia on przechwytywanie oraz interaktywn± analizê zawarto¶ci
 ramek oraz ponad stu protoko³ów sieciowych. Ethereal posiada wiele
 u¿ytecznych cech, takich jak rozbudowany jêzyk filtrów wy¶wietlania,
 mo¿liwo¶æ ogl±dania przebiegu sesji TCP oraz mo¿liwo¶æ do³±czania
@@ -175,7 +175,7 @@ Wiretap is a library that is being developed as a future replacement
 for libpcap, the current standard Unix library for packet capturing.
 
 %description -n libwiretap -l pl
-Biblioteka Wiretap rozwijana jest jako przysz³y nastepca biblioteki
+Biblioteka Wiretap rozwijana jest jako przysz³y nastêpca biblioteki
 libpcap, obecnie standardu przechwytywania pakietów w systemach Unix.
 
 %package -n libwiretap-devel
