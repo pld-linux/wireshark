@@ -11,7 +11,7 @@ Summary(ru):	Анализатор сетевого траффика
 Summary(uk):	Анал╕затор мережевого траф╕ку
 Name:		ethereal
 Version:	0.10.0
-Release:	1
+Release:	2
 License:	GPL
 Group:		Networking
 Source0:	http://www.ethereal.com/distribution/all-versions/%{name}-%{version}.tar.bz2
@@ -38,6 +38,7 @@ BuildRequires:	perl-devel
 BuildRequires:	zlib-devel
 Requires:	libpcap >= 0.4
 Requires:	%{name}-common = %{version}
+Requires:	pango-modules
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Obsoletes:	ethereal-gnome
 
@@ -226,7 +227,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/dftest
 %attr(755,root,root) %{_bindir}/editcap
-%attr(755,root,root) %{_bindir}/ethereal_su
+%attr(755,root,root) %{_bindir}/%{name}_su
 %attr(755,root,root) %{_bindir}/idl2eth
 %attr(755,root,root) %{_bindir}/mergecap
 %attr(755,root,root) %{_bindir}/text2pcap
