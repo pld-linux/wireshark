@@ -8,7 +8,7 @@ Summary(pl):	Analizator ruchu i protoko³ów sieciowych
 Summary(pt_BR): Analisador de tráfego de rede
 Name:		ethereal
 Version:	0.9.11
-Release:	6
+Release:	5
 License:	GPL
 Group:		Networking
 Source0:	http://www.ethereal.com/distribution/%{name}-%{version}.tar.bz2
@@ -26,8 +26,8 @@ BuildRequires:	gtk+2-devel
 %endif
 BuildRequires:	libpcap-devel >= 0.4
 BuildRequires:	libtool
-%{!?_without_snmp:BuildRequires:	net-snmp-devel}
-BuildRequires:	openssl-devel >= 0.9.7
+%{!?_without_snmp:BuildRequires:	ucd-snmp-devel}
+BuildRequires:	openssl-devel >= 0.9.6j
 BuildRequires:	perl-devel
 BuildRequires:	zlib-devel
 Requires:	libpcap >= 0.4
