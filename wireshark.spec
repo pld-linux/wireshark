@@ -9,14 +9,13 @@ Summary(pt_BR):	Analisador de tráfego de rede
 Summary(ru):	áÎÁÌÉÚÁÔÏÒ ÓÅÔÅ×ÏÇÏ ÔÒÁÆÆÉËÁ
 Summary(uk):	áÎÁÌ¦ÚÁÔÏÒ ÍÅÒÅÖÅ×ÏÇÏ ÔÒÁÆ¦ËÕ
 Name:		ethereal
-Version:	0.9.12
-Release:	2
+Version:	0.9.13
+Release:	1
 License:	GPL
 Group:		Networking
 Source0:	http://www.ethereal.com/distribution/%{name}-%{version}.tar.bz2
 Source1:	%{name}.desktop
 Source2:	%{name}.su-start-script
-Patch0:		%{name}-distcc.patch
 URL:		http://www.ethereal.com/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -143,13 +142,12 @@ sieciowych!) jest wy¶wietlony na ekranie. Natywnym formatem plików
 tetherala jest format libpcap, tak wiêc jest on kompatybilny z
 tcpdumpem i innymi podobnymi narzêdziami.
 
-%description tethereal -l pt_BR
+%description -n tethereal -l pt_BR
 Esta é uma versão para modo texto do analisador de tráfego de rede
 Ethereal.
 
 %prep
 %setup -q
-%patch0 -p1
 
 %build
 rm -f missing
