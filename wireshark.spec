@@ -10,16 +10,14 @@ Summary(pt_BR):	Analisador de trАfego de rede
 Summary(ru):	Анализатор сетевого траффика
 Summary(uk):	Анал╕затор мережевого траф╕ку
 Name:		ethereal
-Version:	0.10.0
-Release:	2
+Version:	0.10.0a
+Release:	1
 License:	GPL
 Group:		Networking
 Source0:	http://www.ethereal.com/distribution/all-versions/%{name}-%{version}.tar.bz2
-# Source0-md5:	dea23de328137aef684a7fdaaa7de093
+# Source0-md5:	1e31508c5509272595fa237d074461b1
 Source1:	%{name}.desktop
 Source2:	%{name}.su-start-script
-Source3:	%{name}-help.tar.gz
-# Source3-md5:	a582acf9e473e457ee85a223587545e0
 URL:		http://www.ethereal.com/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -159,7 +157,7 @@ Esta И uma versЦo para modo texto do analisador de trАfego de rede
 Ethereal.
 
 %prep
-%setup -q -a3
+%setup -q
 
 %build
 rm -f missing
