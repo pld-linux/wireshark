@@ -8,7 +8,7 @@ Summary(pl):	Analizator ruchu i protoko³ów sieciowych
 Summary(pt_BR):	Analisador de tráfego de rede
 Name:		ethereal
 Version:	0.9.12
-Release:	2
+Release:	1
 License:	GPL
 Group:		Networking
 Source0:	http://www.ethereal.com/distribution/%{name}-%{version}.tar.bz2
@@ -34,7 +34,6 @@ Requires:	libpcap >= 0.4
 Requires:	%{name}-common
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
-%define		_prefix		/usr/X11R6
 
 %description
 Ethereal is the name for powerful graphical network sniffer, traffic
