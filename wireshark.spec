@@ -10,7 +10,7 @@ Source0:	http://ethereal.zing.org/distribution/%{name}-%{version}.tar.gz
 Source1:	ethereal.desktop
 Patch0:		ethereal-paths.patch
 URL:		http://ethereal.zing.org/
-BuildRoot:	/tmp/%{name}-%{version}-root
+BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Requires:	gtk+ >= 1.2
 Requires:	libpcap >= 0.4
 BuildRequires:	libpcap-devel >= 0.4
@@ -36,7 +36,6 @@ ponad stu protoko³ów sieciowych. Ethereal posiada wiele u¿ytecznych cech,
 takich jak rozbudowany jêzyk filtrów wy¶wietlania, mo¿liwo¶æ ogl±dania
 przebiegu sesji TCP oraz mo¿liwo¶æ do³±czania wtyczek (plug-ins).
 
- 
 %prep
 %setup -q
 %patch -p0
