@@ -1,0 +1,2 @@
+- updated to 0.10.3 (see http://www.ethereal.com/appnotes/enpa-sa-00013.html)
+- wiretap now as dynamically linked library, not static
