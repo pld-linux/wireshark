@@ -11,7 +11,7 @@ Summary(ru):	Анализатор сетевого траффика
 Summary(uk):	Анал╕затор мережевого траф╕ку
 Name:		ethereal
 Version:	0.9.16
-Release:	1
+Release:	2
 License:	GPL
 Group:		Networking
 Source0:	http://www.ethereal.com/distribution/%{name}-%{version}.tar.bz2
@@ -40,6 +40,7 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Obsoletes:	ethereal-gnome
 
 %define                _prefix         /usr/X11R6
+%define                _mandir         /usr/X11R6/man
 
 %description
 Ethereal is the name for powerful graphical network sniffer, traffic
