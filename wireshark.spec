@@ -28,7 +28,7 @@ BuildRequires:	flex
 %if %{with gtk1}
 BuildRequires:	gtk+-devel >= 1.2
 %else
-BuildRequires:	gtk+2-devel >= 2.0.0
+BuildRequires:	gtk+2-devel >= 1:2.0.0
 %endif
 %{?with_krb5:BuildRequires:	heimdal-devel}
 BuildRequires:	libpcap-devel >= 0.4
