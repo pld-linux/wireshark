@@ -2,7 +2,7 @@ Summary:	Network traffic and protocol analyzer
 Summary(pl):	Analizator ruchu i protoko³ów sieciowych
 Name:		ethereal
 Version:	0.8.18
-Release:	2
+Release:	3
 License:	GPL
 Group:		Networking
 Group(de):	Netzwerkwesen
@@ -48,7 +48,10 @@ wtyczek (plug-ins).
 %build
 # don't remove -DINET6=1 because --enable-ipv6 doesn't work properly
 CFLAGS="%{rpmcflags} -I/usr/include/pcap -DINET6=1"
-%configure \
+#libtoolize --copy --force
+#aclocal
+#autoconf
+%configure2_13 \
 	--enable-zlib \
 	--with-ucdsnmp \
 	--enable-pcap \
