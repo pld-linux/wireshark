@@ -1,0 +1,558 @@
+diff -Naur -X ethereal-dontdiff clean/ethereal-0.9.9/Makefile.am ethereal-0.9.9-distcc/Makefile.am
+--- clean/ethereal-0.9.9/Makefile.am	2003-01-24 10:50:12.000000000 +1100
++++ ethereal-0.9.9-distcc/Makefile.am	2003-03-06 21:06:50.000000000 +1100
+@@ -170,6 +170,7 @@
+ 	packet-dec-bpdu.c \
+ 	packet-dhcpv6.c \
+ 	packet-diameter.c \
++	packet-distcc.c \
+ 	packet-dlsw.c  \
+ 	packet-dns.c   \
+ 	packet-dsi.c   \
+diff -Naur -X ethereal-dontdiff clean/ethereal-0.9.9/Makefile.nmake ethereal-0.9.9-distcc/Makefile.nmake
+--- clean/ethereal-0.9.9/Makefile.nmake	2003-01-23 13:45:42.000000000 +1100
++++ ethereal-0.9.9-distcc/Makefile.nmake	2003-03-06 21:06:50.000000000 +1100
+@@ -113,6 +113,7 @@
+ 	packet-dec-bpdu.c \
+ 	packet-dhcpv6.c \
+ 	packet-diameter.c \
++	packet-distcc.c \
+ 	packet-dlsw.c  \
+ 	packet-dns.c   \
+ 	packet-dsi.c   \
+diff -Naur -X ethereal-dontdiff clean/ethereal-0.9.9/packet-distcc.c ethereal-0.9.9-distcc/packet-distcc.c
+--- clean/ethereal-0.9.9/packet-distcc.c	1970-01-01 10:00:00.000000000 +1000
++++ ethereal-0.9.9-distcc/packet-distcc.c	2003-03-09 20:22:26.000000000 +1100
+@@ -0,0 +1,532 @@
++/* packet-distcc.c
++ * Routines for distcc dissection
++ * Copyright 2003, Brad Hards <bradh@xxxxxxxxxxxxx>
++ *
++ * $Id$
++ *
++ * Ethereal - Network traffic analyzer
++ * By Gerald Combs <gerald@xxxxxxxxxxxx>
++ * Copyright 1998 Gerald Combs
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License
++ * as published by the Free Software Foundation; either version 2
++ * of the License, or (at your option) any later version.
++ * 
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ * 
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
++ */
++
++#ifdef HAVE_CONFIG_H
++# include "config.h"
++#endif
++
++#include <stdio.h>
++#include <stdlib.h>
++
++#include <string.h>
++#include <time.h>
++#include <glib.h>
++
++#include <epan/packet.h>
++#include <epan/strutil.h>
++#include <epan/conversation.h>
++
++#include "prefs.h"
++
++typedef enum _distcc_state {
++    DISTCC_DIST = 0,
++    DISTCC_ARGS = 1,
++    DISTCC_DOTI = 2,
++    DISTCC_DOTI_CONT = 3,
++    DISTCC_DONE = 4,
++    DISTCC_STAT = 5,
++    DISTCC_SERR = 6,
++    DISTCC_SOUT = 7,
++    DISTCC_DOTO = 8,
++    DISTCC_DOTO_CONT = 9
++} distcc_state_t;
++
++/* this is used to represent the _initial_ state of the frame */
++/* each frame can contain multiple protocol elements */
++struct distcc_frame_state_t {
++    distcc_state_t 	state;
++    int			done_sub_len;
++    guint		len_remaining;
++};
++
++/* this is a guide to the current conversation state */
++/* we need the length remaining because source and object elements can
++   easily span multiple frames, and we need to track the
++   internal"sub-state" in DOTI and DOTO */ 
++struct distcc_conversation_state_t {
++    distcc_state_t 	state;
++    guint		len_remaining;
++};
++
++static int proto_distcc = -1;
++
++static int hf_distcc_hdr_magic = -1;
++static int hf_distcc_hdr_version = -1;
++static int hf_distcc_hdr_argc = -1;
++static int hf_distcc_hdr_argv = -1;
++static int hf_distcc_doti_magic = -1;
++static int hf_distcc_done_magic = -1;
++static int hf_distcc_done_version = -1;
++static int hf_distcc_stat_magic = -1;
++static int hf_distcc_stat_result = -1;
++static int hf_distcc_serr_magic = -1;
++static int hf_distcc_sout_magic = -1;
++static int hf_distcc_doto_magic = -1;
++
++static gint ett_distcc = -1;
++
++dissector_handle_t distcc_handle;
++
++
++#define TCP_PORT_DISTCC	3632
++
++static int glb_distcc_tcp_port = TCP_PORT_DISTCC;
++
++/* Packet dissection routine called by tcp (& udp) when port 3632 detected */
++static void
++dissect_distcc(tvbuff_t *tvb, packet_info *pinfo, proto_tree *tree)
++{
++    int 				offset = 0;
++    proto_item 				*ti;
++    proto_tree 				*distcc_tree;
++    conversation_t 			*conversation;
++    struct distcc_conversation_state_t	*conversation_data;
++    struct distcc_frame_state_t		*frame_data;
++    gchar				cmd_line_argc_string[9];
++    int         			cmd_line_argc;
++    int					yalv = 0;
++    gchar				cmd_line_argv_len_string[9];
++    int         			cmd_line_argv_len;
++    gchar				doti_length_string[9];
++    gchar				doti_magic[9];
++    guint         			doti_length;
++    guint				actual_bytes_remaining;
++    gchar				sout_length_string[9];
++    guint				sout_length;
++    gchar				serr_length_string[9];
++    guint				serr_length;
++    gchar				doto_length_string[9];
++    guint         			doto_length;
++
++    if (check_col(pinfo->cinfo, COL_PROTOCOL))
++        col_set_str(pinfo->cinfo, COL_PROTOCOL, "DISTCC");
++
++    if (check_col(pinfo->cinfo, COL_INFO))
++        col_clear(pinfo->cinfo, COL_INFO);
++
++    conversation = find_conversation(&pinfo->src, &pinfo->dst, pinfo->ptype,
++				     pinfo->srcport, pinfo->destport, 0);
++    if (conversation == NULL) {
++	conversation = conversation_new(&pinfo->src, &pinfo->dst,
++					pinfo->ptype, pinfo->srcport,
++					pinfo->destport, 0);
++	conversation_data = malloc(sizeof(struct distcc_conversation_state_t));
++	conversation_data->state = DISTCC_DIST;
++	conversation_add_proto_data(conversation, proto_distcc, conversation_data);
++    }
++
++    conversation_set_dissector(conversation, distcc_handle);
++   
++    ti = proto_tree_add_item(tree, proto_distcc, tvb, 0, -1, FALSE);
++
++    distcc_tree = proto_item_add_subtree(ti, ett_distcc);
++
++    conversation_data = conversation_get_proto_data(conversation, proto_distcc);
++
++    frame_data = p_get_proto_data(pinfo->fd, proto_distcc);
++    if (!frame_data) {
++	/* then we haven't seen this frame before */
++	frame_data = malloc(sizeof(struct distcc_frame_state_t));
++	frame_data->state = conversation_data->state;
++	frame_data->len_remaining = conversation_data->len_remaining;
++	p_add_proto_data(pinfo->fd, proto_distcc, frame_data);
++    }
++
++    switch (frame_data->state) {
++    case DISTCC_DIST:
++	proto_tree_add_item(distcc_tree, hf_distcc_hdr_magic, tvb, offset, 4, TRUE);
++	offset += 4;
++
++	proto_tree_add_item(distcc_tree, hf_distcc_hdr_version, tvb, offset, 8, TRUE);
++	offset += 8;
++	
++	conversation_data->state = DISTCC_ARGS;
++	conversation_add_proto_data(conversation, proto_distcc, conversation_data);
++	if (tvb_length_remaining(tvb, offset) == 0)
++	    break;
++
++    case DISTCC_ARGS:
++	proto_tree_add_item(distcc_tree, hf_distcc_hdr_argc, tvb, offset, 12, TRUE);
++	offset += 4;
++
++	tvb_get_nstringz0(tvb, offset, 8, cmd_line_argc_string);
++	cmd_line_argc = strtoul(cmd_line_argc_string, NULL, 16);
++	proto_tree_add_text(distcc_tree, tvb, offset, 8,
++			    "Number of arguments: %i (0x%x)",
++			    cmd_line_argc, cmd_line_argc);
++	offset +=8;
++	for (yalv = 0; yalv<cmd_line_argc; yalv++) {
++	    proto_tree_add_item(distcc_tree, hf_distcc_hdr_argv, tvb, offset, 12, TRUE);
++	    offset += 4;
++	    tvb_get_nstringz0(tvb, offset, 8, cmd_line_argv_len_string);
++	    cmd_line_argv_len = strtoul(cmd_line_argv_len_string, NULL, 16);
++	    proto_tree_add_text(distcc_tree, tvb, offset, 8,
++				"Length of argument %i: %i (0x%x)",
++				yalv,
++				cmd_line_argv_len, cmd_line_argv_len);
++	    offset += 8;
++	    proto_tree_add_text(distcc_tree, tvb, offset, cmd_line_argv_len,
++				"Argument %i: %s",
++				yalv,
++				tvb_format_text(tvb, offset, cmd_line_argv_len));
++	    if (check_col(pinfo->cinfo, COL_INFO)) {
++		col_append_fstr(pinfo->cinfo,
++				COL_INFO,
++				"%s ", 
++				tvb_format_text(tvb, offset, cmd_line_argv_len));
++	    }
++	    offset += cmd_line_argv_len;
++	}
++	conversation_data->state = DISTCC_DOTI;
++	conversation_add_proto_data(conversation, proto_distcc, conversation_data);
++	if (tvb_length_remaining(tvb, offset) == 0)
++	    break;
++	
++    case DISTCC_DOTI:
++	if (check_col(pinfo->cinfo, COL_INFO)) {
++	    col_append_str(pinfo->cinfo, COL_INFO, "DOTI");
++	}
++	proto_tree_add_item(distcc_tree, hf_distcc_doti_magic, tvb, offset, 4, TRUE);
++	offset += 4;
++
++	tvb_get_nstringz0(tvb, offset, 8, doti_length_string);
++	doti_length = strtoul(doti_length_string, NULL, 16);
++	proto_tree_add_text(distcc_tree, tvb, offset, 8,
++			    "DOTI Length: %i (0x%x)",
++			    doti_length, doti_length);
++	offset +=8;
++	actual_bytes_remaining = tvb_length_remaining(tvb, offset);
++	if (check_col(pinfo->cinfo, COL_INFO)) {	
++	    col_append_fstr(pinfo->cinfo, COL_INFO,
++			    " (%i of %i bytes)", actual_bytes_remaining,
++			    doti_length);
++	}
++	if (actual_bytes_remaining >= doti_length) {
++	    /* this is the case where we have all the data */
++	    proto_tree_add_text(distcc_tree, tvb, offset, doti_length,
++				".i data: %s",
++				tvb_format_text(tvb, offset, doti_length));
++	    offset += doti_length;
++	    conversation_data->state = DISTCC_DONE;
++	} else {
++	    /* this is where we have only the start of the data, and
++	       it continues in a later frame */
++	    proto_tree_add_text(distcc_tree, tvb, offset, actual_bytes_remaining,
++				"DOTI data: %s",
++				tvb_format_text(tvb, offset, actual_bytes_remaining));
++	    offset += actual_bytes_remaining;
++	    conversation_data->state = DISTCC_DOTI_CONT;
++	    conversation_data->len_remaining = doti_length - actual_bytes_remaining;
++	}
++	conversation_add_proto_data(conversation, proto_distcc, conversation_data);
++	/* we always need to break out at this point */
++	break;
++
++    case DISTCC_DOTI_CONT:
++	/* do a sanity check, against dropped frames */
++	tvb_get_nstringz0(tvb, offset, 8, doti_magic);
++	if (0 == strncmp(doti_magic, "DONE0000", 8)) {
++	  /*
++	    printf("failed sanity checking - bailing out to DISTCC_DONE\n");
++	  */
++	    conversation_data->state = DISTCC_DONE;
++	    conversation_add_proto_data(conversation, proto_distcc, conversation_data);
++	} else {
++	    actual_bytes_remaining = tvb_length(tvb);
++	    if (actual_bytes_remaining >= frame_data->len_remaining) {
++		/* this is the case where we have all the data */
++		if (check_col(pinfo->cinfo, COL_INFO)) {
++		    col_append_fstr(pinfo->cinfo, COL_INFO,
++				    "DOTI Finalisation (%i bytes)", actual_bytes_remaining);
++		}
++		proto_tree_add_text(distcc_tree, tvb, offset,
++				    conversation_data->len_remaining,
++				    "DOTI data: ...%s",
++				    tvb_format_text(tvb, offset,
++						    frame_data->len_remaining));
++		offset += conversation_data->len_remaining;
++		conversation_data->state = DISTCC_DONE;
++	    } else {
++		/* this is where we have only the start of the data, and
++		   it continues in a later frame */
++		if (check_col(pinfo->cinfo, COL_INFO)) {
++		    col_append_fstr(pinfo->cinfo, COL_INFO,
++				    "DOTI Continuation (%i bytes)", actual_bytes_remaining);
++		}
++		proto_tree_add_text(distcc_tree, tvb, offset, actual_bytes_remaining,
++				    "DOTI data: ...%s...",
++				    tvb_format_text(tvb, offset, actual_bytes_remaining));
++		offset += actual_bytes_remaining;
++		conversation_data->state = DISTCC_DOTI_CONT;
++		/* this routine runs on display, not just on initial pass */
++		/* so we use a flag to ensure we only subtract length once */
++		if (frame_data->done_sub_len == 0) {
++		    conversation_data->len_remaining -= actual_bytes_remaining;
++		    frame_data->done_sub_len = 1;
++		    p_add_proto_data(pinfo->fd, proto_distcc, frame_data);
++		}
++	    }
++	    conversation_add_proto_data(conversation, proto_distcc, conversation_data);
++	    
++	    break;
++	} /* note that we fall through if we failed the sanity check */
++    case DISTCC_DONE:
++	if (check_col(pinfo->cinfo, COL_INFO)) {
++	    col_append_str(pinfo->cinfo, COL_INFO, "DONE ");
++	}
++	proto_tree_add_item(distcc_tree, hf_distcc_done_magic, tvb, offset, 4, TRUE);
++	offset += 4;
++	proto_tree_add_item(distcc_tree, hf_distcc_done_version, tvb, offset, 8, TRUE);
++	offset += 8;
++	
++	conversation_data->state = DISTCC_STAT;
++	conversation_add_proto_data(conversation, proto_distcc, conversation_data);
++	if (tvb_length_remaining(tvb, offset) == 0)
++	    break; /* else fall through, since we have more data */
++
++    case DISTCC_STAT:
++	if (check_col(pinfo->cinfo, COL_INFO)) {
++	    col_append_str(pinfo->cinfo, COL_INFO, "STAT ");
++	}
++	proto_tree_add_item(distcc_tree, hf_distcc_stat_magic, tvb, offset, 4, TRUE);
++	offset += 4;
++	proto_tree_add_item(distcc_tree, hf_distcc_stat_result, tvb, offset, 8, TRUE);
++	offset += 8;
++
++	conversation_data->state = DISTCC_SERR;
++	conversation_add_proto_data(conversation, proto_distcc, conversation_data);
++	if (tvb_length_remaining(tvb, offset) == 0)
++	    break;
++
++    case DISTCC_SERR:
++	if (check_col(pinfo->cinfo, COL_INFO)) {
++	    col_append_str(pinfo->cinfo, COL_INFO, "SERR ");
++	}
++	proto_tree_add_item(distcc_tree, hf_distcc_serr_magic, tvb, offset, 4, TRUE);
++	offset += 4;
++	tvb_get_nstringz0(tvb, offset, 8, serr_length_string);
++	serr_length = strtoul(serr_length_string, NULL, 16);
++	proto_tree_add_text(distcc_tree, tvb, offset, 8,
++			    "SERR Length: %i (0x%x)",
++			    serr_length, serr_length);
++	offset +=8;
++	if (serr_length > 0) {
++		proto_tree_add_text(distcc_tree, tvb, offset,
++				    serr_length,
++				    "SERR: %s",
++				    tvb_format_text(tvb, offset, serr_length));
++		offset += serr_length;
++	}
++	conversation_data->state = DISTCC_SOUT;
++	conversation_add_proto_data(conversation, proto_distcc, conversation_data);
++	if (tvb_length_remaining(tvb, offset) == 0)
++	    break;
++
++    case DISTCC_SOUT:
++	if (check_col(pinfo->cinfo, COL_INFO)) {
++	    col_append_str(pinfo->cinfo, COL_INFO, "SOUT ");
++	}
++	proto_tree_add_item(distcc_tree, hf_distcc_sout_magic, tvb, offset, 4, TRUE);
++	offset += 4;
++	tvb_get_nstringz0(tvb, offset, 8, sout_length_string);
++	sout_length = strtoul(sout_length_string, NULL, 16);
++	proto_tree_add_text(distcc_tree, tvb, offset, 8,
++			    "SOUT Length: %i (0x%x)",
++			    sout_length, sout_length);
++	offset +=8;
++	if (sout_length > 0) {
++		proto_tree_add_text(distcc_tree, tvb, offset,
++				    sout_length,
++				    "SOUT: %s",
++				    tvb_format_text(tvb, offset, sout_length));
++		offset += sout_length;
++	}
++	conversation_data->state = DISTCC_DOTO;
++	conversation_add_proto_data(conversation, proto_distcc, conversation_data);
++	if (tvb_length_remaining(tvb, offset) == 0)
++	    break;
++
++    case DISTCC_DOTO:
++	if (check_col(pinfo->cinfo, COL_INFO)) {
++	    col_append_str(pinfo->cinfo, COL_INFO, "DOTO ");
++	}
++	proto_tree_add_item(distcc_tree, hf_distcc_doto_magic, tvb, offset, 4, TRUE);
++	offset += 4;
++	tvb_get_nstringz0(tvb, offset, 8, doto_length_string);
++	doto_length = strtoul(doto_length_string, NULL, 16);
++	proto_tree_add_text(distcc_tree, tvb, offset, 8,
++			    "DOTO Length: %i (0x%x)",
++			    doto_length, doto_length);
++	offset +=8;
++	actual_bytes_remaining = tvb_length_remaining(tvb, offset);
++	proto_tree_add_text(distcc_tree, tvb, offset, 0,
++			    "Bytes in this packet: %i (0x%x)",
++			    actual_bytes_remaining, actual_bytes_remaining);
++	if (check_col(pinfo->cinfo, COL_INFO)) {
++	    col_append_fstr(pinfo->cinfo, COL_INFO, "(%i of %i bytes)",
++			    actual_bytes_remaining, doto_length);
++	}
++
++	if (actual_bytes_remaining >= doto_length) {
++	    /* this is the case where we have all the data */
++	    proto_tree_add_text(distcc_tree, tvb, offset, doto_length,
++				"DOTO data: %s",
++				tvb_format_text(tvb, offset, doto_length));
++	    offset += doto_length;
++	} else {
++	    /* this is where we have only the start of the data, and
++	       it continues in a later frame */
++	    proto_tree_add_text(distcc_tree, tvb, offset, actual_bytes_remaining,
++				"DOTO data: %s",
++				tvb_format_text(tvb, offset, actual_bytes_remaining));
++	    offset += actual_bytes_remaining;
++	    conversation_data->state = DISTCC_DOTO_CONT;
++	    conversation_data->len_remaining = doto_length - actual_bytes_remaining;
++	    conversation_add_proto_data(conversation, proto_distcc, conversation_data);
++	}
++	/* we always need to break out at this point */
++	break;
++
++    case DISTCC_DOTO_CONT:
++	actual_bytes_remaining = tvb_length(tvb);
++	if (actual_bytes_remaining >= frame_data->len_remaining) {
++	    /* this is the case where we have all the data */
++	    if (check_col(pinfo->cinfo, COL_INFO)) {
++		col_append_fstr(pinfo->cinfo, COL_INFO,
++				"DOTO Finalisation (%i bytes)", actual_bytes_remaining);
++	    }
++	    proto_tree_add_text(distcc_tree, tvb, offset,
++				frame_data->len_remaining,
++				"DOTO data: ...%s",
++				tvb_format_text(tvb, offset,
++						frame_data->len_remaining));
++	    offset += frame_data->len_remaining;
++	} else {
++	    /* this is where we have only some of the data, and
++	       it continues in a later frame */
++	    if (check_col(pinfo->cinfo, COL_INFO)) {
++		col_append_fstr(pinfo->cinfo, COL_INFO,
++				"DOTO Continuation (%i bytes)", actual_bytes_remaining);
++	    }
++	    proto_tree_add_text(distcc_tree, tvb, offset, actual_bytes_remaining,
++				"DOTO data: ...%s...",
++				tvb_format_text(tvb, offset, actual_bytes_remaining));
++	    offset += actual_bytes_remaining;
++	    conversation_data->state = DISTCC_DOTO_CONT;
++	    /* this routine runs on display, not just on initial pass */
++	    /* so we use a flag to ensure we only subtract length once */
++	    /* we will never get DOTI and DOTO in the same frame, since 
++	       they go in opposing directions, so we can reuse the flag */
++	    if (frame_data->done_sub_len == 0) {
++		conversation_data->len_remaining -= actual_bytes_remaining;
++		frame_data->done_sub_len = 1;
++		p_add_proto_data(pinfo->fd, proto_distcc, frame_data);
++	    }
++	    conversation_add_proto_data(conversation, proto_distcc, conversation_data);
++	}
++	    
++	break;
++    }
++}
++
++/* Register protocol with Ethereal. */
++void
++proto_register_distcc(void)
++{
++    static hf_register_info hf[] = {
++	{&hf_distcc_hdr_magic,
++	 {"Magic Header", "distcc.hdr_magic",
++	  FT_STRING, BASE_NONE, NULL, 0x0, "", HFILL }
++	},
++	{&hf_distcc_hdr_version,
++	 {"Header Version", "distcc.hdr_version",
++	  FT_STRING, BASE_NONE, NULL, 0x0, "DISTCC Version", HFILL }
++	},
++	{&hf_distcc_hdr_argc,
++	 {"ARGC", "distcc.hdr_argc",
++	  FT_STRING, BASE_NONE, NULL, 0x0, "Argument Count Entry", HFILL }
++	},
++	{&hf_distcc_hdr_argv,
++	 {"ARGV label", "distcc.hdr_argv",
++	  FT_STRING, BASE_NONE, NULL, 0x0, "Argument Vector Entry", HFILL }
++	},
++	{&hf_distcc_doti_magic,
++	 {"DOTI Magic Header", "distcc.doti_magic",
++	  FT_STRING, BASE_NONE, NULL, 0x0, "", HFILL }
++	},
++	{&hf_distcc_done_magic,
++	 {"DONE Magic Header", "distcc.done_magic",
++	  FT_STRING, BASE_NONE, NULL, 0x0, "", HFILL }
++	},
++	{&hf_distcc_done_version,
++	 {"Done Version", "distcc.done_version",
++	  FT_STRING, BASE_NONE, NULL, 0x0, "DISTCC Daemon Version", HFILL }
++	},
++	{&hf_distcc_stat_result,
++	 {"STAT result", "distcc.stat_result",
++	  FT_STRING, BASE_NONE, NULL, 0x0, "", HFILL }
++	},
++	{&hf_distcc_doto_magic,
++	 {"DOTO Magic Header", "distcc.doto_magic",
++	  FT_STRING, BASE_NONE, NULL, 0x0, "", HFILL }
++	},
++	{&hf_distcc_stat_magic,
++	 {"STAT Magic Header", "distcc.stat_magic",
++	  FT_STRING, BASE_NONE, NULL, 0x0, "", HFILL }
++	},
++	{&hf_distcc_serr_magic,
++	 {"SERR Magic Header", "distcc.serr_magic",
++	  FT_STRING, BASE_NONE, NULL, 0x0, "", HFILL }
++	},
++	{&hf_distcc_sout_magic,
++	 {"SOUT Magic Header", "distcc.sout_magic",
++	  FT_STRING, BASE_NONE, NULL, 0x0, "", HFILL }
++	},
++    };
++
++    static gint *ett[] = {
++	&ett_distcc,
++    };
++
++    module_t *distcc_module;
++
++    proto_distcc = proto_register_protocol("Distributed Compiler System",
++					   "DISTCC", "distcc");
++    proto_register_field_array(proto_distcc, hf, array_length(hf));
++    proto_register_subtree_array(ett, array_length(ett));
++
++    distcc_module = prefs_register_protocol(proto_distcc, NULL);
++    prefs_register_uint_preference(distcc_module, "tcp.port",
++				   "DISTCC TCP Port",
++				   "Set the TCP port for DISTCC messages",
++				   10,
++				   &glb_distcc_tcp_port);
++}
++void
++proto_reg_handoff_distcc(void)
++{
++    distcc_handle = create_dissector_handle(dissect_distcc, proto_distcc);
++    dissector_add("tcp.port", glb_distcc_tcp_port, distcc_handle);
++}
