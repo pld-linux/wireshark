@@ -1,3 +1,5 @@
+# TODO
+# - SECURITY: http://www.gentoo.org/security/en/glsa/glsa-200505-03.xml
 #
 # Conditional build:
 %bcond_with	gtk1		# builds gtk+1 (not gtk+2) based ethereal binary
