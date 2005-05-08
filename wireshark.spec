@@ -1,5 +1,3 @@
-# TODO
-# - SECURITY: http://www.gentoo.org/security/en/glsa/glsa-200505-03.xml
 #
 # Conditional build:
 %bcond_with	gtk1		# builds gtk+1 (not gtk+2) based ethereal binary
@@ -13,12 +11,12 @@ Summary(pt_BR):	Analisador de trАfego de rede
 Summary(ru):	Анализатор сетевого траффика
 Summary(uk):	Анал╕затор мережевого траф╕ку
 Name:		ethereal
-Version:	0.10.10
+Version:	0.10.11
 Release:	1
 License:	GPL
 Group:		Networking
 Source0:	ftp://ftp.ethereal.com/pub/ethereal/all-versions/%{name}-%{version}.tar.bz2
-# Source0-md5:	5addaf1db088a8b51941e4db191b0ab0
+# Source0-md5:	03aa7fe2cbef9aa0654637cdc60e0458
 Source1:	%{name}.desktop
 Source2:	%{name}.su-start-script
 URL:		http://www.ethereal.com/
