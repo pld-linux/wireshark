@@ -12,7 +12,7 @@ Summary(ru):	Анализатор сетевого траффика
 Summary(uk):	Анал╕затор мережевого траф╕ку
 Name:		ethereal
 Version:	0.10.11
-Release:	1
+Release:	2
 License:	GPL
 Group:		Networking
 Source0:	ftp://ftp.ethereal.com/pub/ethereal/all-versions/%{name}-%{version}.tar.bz2
@@ -30,7 +30,7 @@ BuildRequires:	gtk+-devel >= 1.2
 %else
 BuildRequires:	gtk+2-devel >= 1:2.0.0
 %endif
-%{?with_krb5:BuildRequires:	heimdal-devel}
+%{?with_krb5:BuildRequires:	heimdal-devel >= 0.7}
 BuildRequires:	libpcap-devel >= 0.4
 BuildRequires:	libtool
 %{?with_snmp:BuildRequires:	net-snmp-devel}
