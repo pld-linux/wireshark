@@ -15,7 +15,7 @@ Version:	0.10.13
 Release:	1
 License:	GPL
 Group:		Networking
-Source0:	ftp://ftp.ethereal.com/pub/ethereal/all-versions/%{name}-%{version}.tar.bz2
+Source0:	http://dl.sourceforge.net/ethereal/%{name}-%{version}.tar.bz2
 # Source0-md5:	9998cb4907a70925d33292bae89530d4
 Source1:	%{name}.desktop
 Source2:	%{name}.su-start-script
