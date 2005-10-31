@@ -1,8 +1,8 @@
 #
 # Conditional build:
-%bcond_with	gtk1		# builds gtk+1 (not gtk+2) based ethereal binary
-%bcond_without	krb5		# builds without kerberos5 support (via heimdal)
-%bcond_without	snmp		# builds without snmp support
+%bcond_with	gtk1		# build gtk+1 (not gtk+2) based ethereal binary
+%bcond_without	krb5		# build without kerberos5 support (via heimdal)
+%bcond_without	snmp		# build without snmp support
 #
 Summary:	Network traffic and protocol analyzer
 Summary(es):	Analizador de tráfico de red
