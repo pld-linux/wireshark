@@ -1,0 +1,8 @@
+- Build with gtk+2
+- Removed redundant %configure options
+- 644 for *.la
+- Simplified %doc
+- Using %{_pixmapsdir}
+- Removed common subpackage (separate single package containing < 180kB docs
+  files has no sense - You may use --excludedocs instead)
+- Release 2
