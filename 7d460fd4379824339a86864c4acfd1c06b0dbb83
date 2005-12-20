@@ -1,0 +1,5 @@
+- updated to 0.10.0
+- added dftest program
+- some cosmetics (sorted %files in -tools package)
+- original tarball is, to put it mildly, fucked up, because authors forgot
+  to include help/ directory, thus Source3 was added. Now it builds.
