@@ -1,0 +1,4 @@
+- ethereal is now splitted into 4 packages: ethereal, tethereal,
+  ethereal-tools, ethereal-common and tethereal
+- these 4 packages are built from two spec files: ethereal.spec and tethereal.spec
+- release 2
