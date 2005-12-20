@@ -1,0 +1,2 @@
+- added using %{_applnkdir} macro,
+- use --strip-unneeded on stripping shared objects.
