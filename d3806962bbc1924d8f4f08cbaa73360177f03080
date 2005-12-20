@@ -1,0 +1,2 @@
+- updated to 0.8.9,
+- plugin dir changed to %{_libdir}/ethereal.
