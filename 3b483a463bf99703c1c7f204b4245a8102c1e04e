@@ -1,0 +1,3 @@
+- added using %configure macro,
+- fixed path to pcap header files,
+- more rpm macros.
