@@ -11,16 +11,14 @@ Summary(pt_BR):	Analisador de trАfego de rede
 Summary(ru):	Анализатор сетевого траффика
 Summary(uk):	Анал╕затор мережевого траф╕ку
 Name:		ethereal
-Version:	0.10.13
-Release:	3
+Version:	0.10.14
+Release:	1
 License:	GPL
 Group:		Networking
 Source0:	http://dl.sourceforge.net/ethereal/%{name}-%{version}.tar.bz2
-# Source0-md5:	08d277951ff6f6a93c752abebd85d5bc
+# Source0-md5:	297f678c037f88429250830e924b8fa0
 Source1:	%{name}.desktop
 Source2:	%{name}.su-start-script
-Patch0:		ftp://ftp.linux.ee/pub/gentoo/portage/net-analyzer/ethereal/files/%{name}-0.10.13-fix-irc-loop-DoS-CVE-2005-3313.diff
-Patch1:		ftp://ftp.linux.ee/pub/gentoo/portage/net-analyzer/ethereal/files/ethereal-0.10.13-packet-ospf.diff
 URL:		http://www.ethereal.com/
 BuildRequires:	adns-devel
 BuildRequires:	autoconf
@@ -201,8 +199,6 @@ pakietСw.
 
 %prep
 %setup -q
-%patch0 -p1
-%patch1 -p1
 
 %build
 %{__libtoolize}
