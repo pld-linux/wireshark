@@ -11,12 +11,12 @@ Summary(pt_BR):	Analisador de trАfego de rede
 Summary(ru):	Анализатор сетевого траффика
 Summary(uk):	Анал╕затор мережевого траф╕ку
 Name:		ethereal
-Version:	0.10.14
+Version:	0.99.0
 Release:	1
 License:	GPL
 Group:		Networking
 Source0:	http://dl.sourceforge.net/ethereal/%{name}-%{version}.tar.bz2
-# Source0-md5:	297f678c037f88429250830e924b8fa0
+# Source0-md5:	f9905b9d347acdc05af664a7553f7f76
 Source1:	%{name}.desktop
 Source2:	%{name}.su-start-script
 URL:		http://www.ethereal.com/
@@ -277,12 +277,14 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/capinfos
 %attr(755,root,root) %{_bindir}/dftest
+%attr(755,root,root) %{_bindir}/dumpcap
 %attr(755,root,root) %{_bindir}/editcap
 %attr(755,root,root) %{_bindir}/idl2eth
 %attr(755,root,root) %{_bindir}/mergecap
 %attr(755,root,root) %{_bindir}/text2pcap
 %attr(755,root,root) %{_bindir}/randpkt
 %{_mandir}/man1/capinfo*
+%{_mandir}/man1/dumpcap*
 %{_mandir}/man1/editcap*
 %{_mandir}/man1/idl2eth*
 %{_mandir}/man1/mergecap*
