@@ -1,10 +1,10 @@
 [Desktop Entry]
-Name=Ethereal
-Comment=Ethereal Network Analyzer
-Comment[ja]=The Ethereal ネットワーク・アナライザー
-Comment[pl]=Ethereal - analizator ruchu w sieci
-Icon=ethereal.png
-Exec=xterm -e ethereal_su
+Name=Wireshark
+Comment=Wireshark Network Analyzer
+Comment[ja]=The Wireshark ネットワーク・アナライザー
+Comment[pl]=Wireshark - analizator ruchu w sieci
+Icon=wireshark.png
+Exec=xterm -e wireshark_su
 Terminal=false
 Type=Application
 Encoding=UTF-8
