@@ -4,6 +4,7 @@
 %bcond_without	krb5		# build without kerberos5 support (via heimdal)
 %bcond_without	snmp		# build without snmp support
 #
+%define	_pre	pre1
 Summary:	Network traffic and protocol analyzer
 Summary(es):	Analizador de tráfico de red
 Summary(pl):	Analizator ruchu i protoko³ów sieciowych
@@ -12,7 +13,6 @@ Summary(ru):	áÎÁÌÉÚÁÔÏÒ ÓÅÔÅ×ÏÇÏ ÔÒÁÆÆÉËÁ
 Summary(uk):	áÎÁÌ¦ÚÁÔÏÒ ÍÅÒÅÖÅ×ÏÇÏ ÔÒÁÆ¦ËÕ
 Name:		wireshark
 Version:	0.99.1
-%define	_pre	pre1
 Release:	0.%{_pre}.1
 License:	GPL
 Group:		Networking
@@ -41,7 +41,9 @@ BuildRequires:	pkgconfig
 BuildRequires:	zlib-devel
 Requires:	%{name}-common = %{version}-%{release}
 Requires:	libpcap >= 0.4
+Obsoletes:	ethereal-gnome
 Obsoletes:	wireshark-gnome
+Obsoletes	ethereal
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -81,6 +83,7 @@ Summary:	Network traffic and protocol analyzer - common files
 Summary(pl):	Analizator ruchu i protoko³ów sieciowych - wspólne pliki
 Group:		Networking
 Requires:	libwiretap = %{version}-%{release}
+Obsoletes:	ethereal-common
 
 %description common
 Wireshark is the name for powerful graphical network sniffer, traffic
@@ -119,6 +122,7 @@ Summary:	Tools for manipulating capture files
 Summary(pl):	Narzêdzia do obróbki plików z przechwyconymi pakietami sieciowymi
 Group:		Networking
 Requires:	%{name}-common = %{version}-%{release}
+Obsoletes:	ethereal-tools
 
 %description tools
 Set of tools for manipulating capture files. Contains:
@@ -146,6 +150,7 @@ Summary(pt_BR):	Analisador modo texto de tráfego de rede (sniffer)
 Group:		Networking
 Requires:	%{name}-common = %{version}-%{release}
 Requires:	libpcap >= 0.4
+Obsoletes:	tethereal
 
 %description -n twireshark
 Twireshark is a network protocol analyzer. It lets you capture packet
@@ -210,7 +215,7 @@ cd wiretap
 %{__aclocal} -I ../aclocal-fallback
 %{__autoconf}
 # don't use --force here
-automake -a -c --foreign
+%{__automake}
 cd ..
 %configure \
 	--enable-randpkt \
