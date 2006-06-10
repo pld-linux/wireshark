@@ -41,9 +41,11 @@ BuildRequires:	pkgconfig
 BuildRequires:	zlib-devel
 Requires:	%{name}-common = %{version}-%{release}
 Requires:	libpcap >= 0.4
+Provides:	ethereal-gnome
+Provides:	ethereal
 Obsoletes:	ethereal-gnome
+Obsoletes:	ethereal
 Obsoletes:	wireshark-gnome
-Obsoletes	ethereal
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -83,6 +85,7 @@ Summary:	Network traffic and protocol analyzer - common files
 Summary(pl):	Analizator ruchu i protoko³ów sieciowych - wspólne pliki
 Group:		Networking
 Requires:	libwiretap = %{version}-%{release}
+Provides:	ethereal-common
 Obsoletes:	ethereal-common
 
 %description common
@@ -122,6 +125,7 @@ Summary:	Tools for manipulating capture files
 Summary(pl):	Narzêdzia do obróbki plików z przechwyconymi pakietami sieciowymi
 Group:		Networking
 Requires:	%{name}-common = %{version}-%{release}
+Provides:	ethereal-tools
 Obsoletes:	ethereal-tools
 
 %description tools
@@ -150,6 +154,7 @@ Summary(pt_BR):	Analisador modo texto de tráfego de rede (sniffer)
 Group:		Networking
 Requires:	%{name}-common = %{version}-%{release}
 Requires:	libpcap >= 0.4
+Provides:	tethereal
 Obsoletes:	tethereal
 
 %description -n twireshark
