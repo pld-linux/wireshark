@@ -45,7 +45,6 @@ Provides:	ethereal-gnome
 Provides:	ethereal
 Obsoletes:	ethereal-gnome
 Obsoletes:	ethereal
-Obsoletes:	wireshark-gnome
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
