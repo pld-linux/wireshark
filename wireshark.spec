@@ -4,7 +4,6 @@
 %bcond_without	krb5		# build without kerberos5 support (via heimdal)
 %bcond_without	snmp		# build without snmp support
 #
-%define	_pre	pre1
 Summary:	Network traffic and protocol analyzer
 Summary(es):	Analizador de tráfico de red
 Summary(pl):	Analizator ruchu i protoko³ów sieciowych
@@ -12,12 +11,12 @@ Summary(pt_BR):	Analisador de tráfego de rede
 Summary(ru):	áÎÁÌÉÚÁÔÏÒ ÓÅÔÅ×ÏÇÏ ÔÒÁÆÆÉËÁ
 Summary(uk):	áÎÁÌ¦ÚÁÔÏÒ ÍÅÒÅÖÅ×ÏÇÏ ÔÒÁÆ¦ËÕ
 Name:		wireshark
-Version:	0.99.1
-Release:	0.%{_pre}.1
+Version:	0.99.2
+Release:	1
 License:	GPL
 Group:		Networking
-Source0:	http://www.wireshark.org/download/prerelease/%{name}-%{version}%{_pre}.tar.gz
-# Source0-md5:	3f3bfed8727cb24d41fd4f10f7b91d9f
+Source0:	http://www.wireshark.org/download/src/%{name}-%{version}.tar.gz
+# Source0-md5:	46d3b7c9766960fb34782c2078c50d13
 Source1:	%{name}.desktop
 Source2:	%{name}.su-start-script
 URL:		http://www.wireshark.org/
@@ -41,10 +40,10 @@ BuildRequires:	pkgconfig
 BuildRequires:	zlib-devel
 Requires:	%{name}-common = %{version}-%{release}
 Requires:	libpcap >= 0.4
-Provides:	ethereal-gnome
 Provides:	ethereal
-Obsoletes:	ethereal-gnome
+Provides:	ethereal-gnome
 Obsoletes:	ethereal
+Obsoletes:	ethereal-gnome
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -208,7 +207,7 @@ Pliki nag³ówkowe biblioteki libwiretap s³u¿±cej do przechwytywania
 pakietów.
 
 %prep
-%setup -q -n %{name}-%{version}%{_pre}
+%setup -q
 
 %build
 %{__libtoolize}
