@@ -5,11 +5,11 @@
 %bcond_without	snmp		# build without snmp support
 #
 Summary:	Network traffic and protocol analyzer
-Summary(es.UTF-8):   Analizador de tráfico de red
-Summary(pl.UTF-8):   Analizator ruchu i protokołów sieciowych
-Summary(pt_BR.UTF-8):   Analisador de tráfego de rede
-Summary(ru.UTF-8):   Анализатор сетевого траффика
-Summary(uk.UTF-8):   Аналізатор мережевого трафіку
+Summary(es.UTF-8):	Analizador de tráfico de red
+Summary(pl.UTF-8):	Analizator ruchu i protokołów sieciowych
+Summary(pt_BR.UTF-8):	Analisador de tráfego de rede
+Summary(ru.UTF-8):	Анализатор сетевого траффика
+Summary(uk.UTF-8):	Аналізатор мережевого трафіку
 Name:		wireshark
 Version:	0.99.5
 Release:	1
@@ -81,7 +81,7 @@ Wireshark - це аналізатор мережевого трафіку для
 
 %package common
 Summary:	Network traffic and protocol analyzer - common files
-Summary(pl.UTF-8):   Analizator ruchu i protokołów sieciowych - wspólne pliki
+Summary(pl.UTF-8):	Analizator ruchu i protokołów sieciowych - wspólne pliki
 Group:		Networking
 Requires:	libwiretap = %{version}-%{release}
 Provides:	ethereal-common
@@ -121,7 +121,7 @@ Wireshark - це аналізатор мережевого трафіку для
 
 %package tools
 Summary:	Tools for manipulating capture files
-Summary(pl.UTF-8):   Narzędzia do obróbki plików z przechwyconymi pakietami sieciowymi
+Summary(pl.UTF-8):	Narzędzia do obróbki plików z przechwyconymi pakietami sieciowymi
 Group:		Networking
 Requires:	%{name}-common = %{version}-%{release}
 Provides:	ethereal-tools
@@ -148,8 +148,8 @@ Zestaw narzędzi do obróbki plików z przechwyconymi pakietami. Zawiera:
 
 %package -n twireshark
 Summary:	Text-mode network traffic and protocol analyzer
-Summary(pl.UTF-8):   Tekstowy analizator ruchu i protokołów sieciowych
-Summary(pt_BR.UTF-8):   Analisador modo texto de tráfego de rede (sniffer)
+Summary(pl.UTF-8):	Tekstowy analizator ruchu i protokołów sieciowych
+Summary(pt_BR.UTF-8):	Analisador modo texto de tráfego de rede (sniffer)
 Group:		Networking
 Requires:	%{name}-common = %{version}-%{release}
 Requires:	libpcap >= 0.4
@@ -178,7 +178,7 @@ Wireshark.
 
 %package -n libwiretap
 Summary:	Packet capture and analysis library
-Summary(pl.UTF-8):   Biblioteka do przechwytywania i analizy pakietów
+Summary(pl.UTF-8):	Biblioteka do przechwytywania i analizy pakietów
 Group:		Libraries
 
 %description -n libwiretap
@@ -191,7 +191,7 @@ libpcap, obecnie standardu przechwytywania pakietów w systemach Unix.
 
 %package -n libwiretap-devel
 Summary:	Header files for libwiretap packet capture library
-Summary(pl.UTF-8):   Pliki nagłówkowe biblioteki libwiretap do przechwytywania pakietów
+Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki libwiretap do przechwytywania pakietów
 Group:		Development/Libraries
 Requires:	libwiretap = %{version}-%{release}
 %if %{with gtk1}
