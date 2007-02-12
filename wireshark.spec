@@ -5,11 +5,11 @@
 %bcond_without	snmp		# build without snmp support
 #
 Summary:	Network traffic and protocol analyzer
-Summary(es):	Analizador de tr·fico de red
-Summary(pl):	Analizator ruchu i protoko≥Ûw sieciowych
-Summary(pt_BR):	Analisador de tr·fego de rede
-Summary(ru):	·Œ¡Ã…⁄¡‘œ“ ”≈‘≈◊œ«œ ‘“¡∆∆…À¡
-Summary(uk):	·Œ¡Ã¶⁄¡‘œ“ Õ≈“≈÷≈◊œ«œ ‘“¡∆¶À’
+Summary(es.UTF-8):   Analizador de tr√°fico de red
+Summary(pl.UTF-8):   Analizator ruchu i protoko≈Ç√≥w sieciowych
+Summary(pt_BR.UTF-8):   Analisador de tr√°fego de rede
+Summary(ru.UTF-8):   –ê–Ω–∞–ª–∏–∑–∞—Ç–æ—Ä —Å–µ—Ç–µ–≤–æ–≥–æ —Ç—Ä–∞—Ñ—Ñ–∏–∫–∞
+Summary(uk.UTF-8):   –ê–Ω–∞–ª—ñ–∑–∞—Ç–æ—Ä –º–µ—Ä–µ–∂–µ–≤–æ–≥–æ —Ç—Ä–∞—Ñ—ñ–∫—É
 Name:		wireshark
 Version:	0.99.5
 Release:	1
@@ -56,32 +56,32 @@ severeal useful features, including a rich display filter language,
 the ability to view the ASCII contents of a TCP connection and plug-in
 capabilities.
 
-%description -l es
-Analizador de tr·fico de red.
+%description -l es.UTF-8
+Analizador de tr√°fico de red.
 
-%description -l pl
-Wireshark jest potÍønym, graficznym snifferem, analizatorem ruchu oraz
-protoko≥Ûw sieciowych opartym na bibliotekach GTK+ oraz libpcap.
-Umoøliwia on przechwytywanie oraz interaktywn± analizÍ zawarto∂ci
-ramek oraz ponad stu protoko≥Ûw sieciowych. Wireshark posiada wiele
-uøytecznych cech, takich jak rozbudowany jÍzyk filtrÛw wy∂wietlania,
-moøliwo∂Ê ogl±dania przebiegu sesji TCP oraz moøliwo∂Ê do≥±czania
+%description -l pl.UTF-8
+Wireshark jest potƒô≈ºnym, graficznym snifferem, analizatorem ruchu oraz
+protoko≈Ç√≥w sieciowych opartym na bibliotekach GTK+ oraz libpcap.
+Umo≈ºliwia on przechwytywanie oraz interaktywnƒÖ analizƒô zawarto≈õci
+ramek oraz ponad stu protoko≈Ç√≥w sieciowych. Wireshark posiada wiele
+u≈ºytecznych cech, takich jak rozbudowany jƒôzyk filtr√≥w wy≈õwietlania,
+mo≈ºliwo≈õƒá oglƒÖdania przebiegu sesji TCP oraz mo≈ºliwo≈õƒá do≈ÇƒÖczania
 wtyczek (plug-ins).
 
-%description -l pt_BR
-O Wireshark È um analisador de protocolo de rede baseado no GTK+.
+%description -l pt_BR.UTF-8
+O Wireshark √© um analisador de protocolo de rede baseado no GTK+.
 
-%description -l ru
-Wireshark - ‹‘œ ¡Œ¡Ã…⁄¡‘œ“ ”≈‘≈◊œ«œ ‘“¡∆∆…À¡ ƒÃ— Unix-–œƒœ¬ŒŸ» ÔÛ. ÔŒ
-¬¡⁄…“’≈‘”— Œ¡ GTK+ … libpcap.
+%description -l ru.UTF-8
+Wireshark - —ç—Ç–æ –∞–Ω–∞–ª–∏–∑–∞—Ç–æ—Ä —Å–µ—Ç–µ–≤–æ–≥–æ —Ç—Ä–∞—Ñ—Ñ–∏–∫–∞ –¥–ª—è Unix-–ø–æ–¥–æ–±–Ω—ã—Ö –û–°. –û–Ω
+–±–∞–∑–∏—Ä—É–µ—Ç—Å—è –Ω–∞ GTK+ –∏ libpcap.
 
-%description -l uk
-Wireshark - √≈ ¡Œ¡Ã¶⁄¡‘œ“ Õ≈“≈÷≈◊œ«œ ‘“¡∆¶À’ ƒÃ— Unix-–œƒ¶¬Œ…» ÔÛ. ˜¶Œ
-¬¡⁄’§‘ÿ”— Œ¡ GTK+ ‘¡ libpcap.
+%description -l uk.UTF-8
+Wireshark - —Ü–µ –∞–Ω–∞–ª—ñ–∑–∞—Ç–æ—Ä –º–µ—Ä–µ–∂–µ–≤–æ–≥–æ —Ç—Ä–∞—Ñ—ñ–∫—É –¥–ª—è Unix-–ø–æ–¥—ñ–±–Ω–∏—Ö –û–°. –í—ñ–Ω
+–±–∞–∑—É—î—Ç—å—Å—è –Ω–∞ GTK+ —Ç–∞ libpcap.
 
 %package common
 Summary:	Network traffic and protocol analyzer - common files
-Summary(pl):	Analizator ruchu i protoko≥Ûw sieciowych - wspÛlne pliki
+Summary(pl.UTF-8):   Analizator ruchu i protoko≈Ç√≥w sieciowych - wsp√≥lne pliki
 Group:		Networking
 Requires:	libwiretap = %{version}-%{release}
 Provides:	ethereal-common
@@ -96,32 +96,32 @@ severeal useful features, including a rich display filter language,
 the ability to view the ASCII contents of a TCP connection and plug-in
 capabilities.
 
-%description common -l es
-Analizador de tr·fico de red.
+%description common -l es.UTF-8
+Analizador de tr√°fico de red.
 
-%description common -l pl
-Wireshark jest potÍønym, graficznym snifferem, analizatorem ruchu oraz
-protoko≥Ûw sieciowych opartym na bibliotekach GTK+ oraz libpcap.
-Umoøliwia on przechwytywanie oraz interaktywn± analizÍ zawarto∂ci
-ramek oraz ponad stu protoko≥Ûw sieciowych. Wireshark posiada wiele
-uøytecznych cech, takich jak rozbudowany jÍzyk filtrÛw wy∂wietlania,
-moøliwo∂Ê ogl±dania przebiegu sesji TCP oraz moøliwo∂Ê do≥±czania
+%description common -l pl.UTF-8
+Wireshark jest potƒô≈ºnym, graficznym snifferem, analizatorem ruchu oraz
+protoko≈Ç√≥w sieciowych opartym na bibliotekach GTK+ oraz libpcap.
+Umo≈ºliwia on przechwytywanie oraz interaktywnƒÖ analizƒô zawarto≈õci
+ramek oraz ponad stu protoko≈Ç√≥w sieciowych. Wireshark posiada wiele
+u≈ºytecznych cech, takich jak rozbudowany jƒôzyk filtr√≥w wy≈õwietlania,
+mo≈ºliwo≈õƒá oglƒÖdania przebiegu sesji TCP oraz mo≈ºliwo≈õƒá do≈ÇƒÖczania
 wtyczek (plug-ins).
 
-%description common -l pt_BR
-O Wireshark È um analisador de protocolo de rede baseado no GTK+.
+%description common -l pt_BR.UTF-8
+O Wireshark √© um analisador de protocolo de rede baseado no GTK+.
 
-%description common -l ru
-Wireshark - ‹‘œ ¡Œ¡Ã…⁄¡‘œ“ ”≈‘≈◊œ«œ ‘“¡∆∆…À¡ ƒÃ— Unix-–œƒœ¬ŒŸ» ÔÛ. ÔŒ
-¬¡⁄…“’≈‘”— Œ¡ GTK+ … libpcap.
+%description common -l ru.UTF-8
+Wireshark - —ç—Ç–æ –∞–Ω–∞–ª–∏–∑–∞—Ç–æ—Ä —Å–µ—Ç–µ–≤–æ–≥–æ —Ç—Ä–∞—Ñ—Ñ–∏–∫–∞ –¥–ª—è Unix-–ø–æ–¥–æ–±–Ω—ã—Ö –û–°. –û–Ω
+–±–∞–∑–∏—Ä—É–µ—Ç—Å—è –Ω–∞ GTK+ –∏ libpcap.
 
-%description common -l uk
-Wireshark - √≈ ¡Œ¡Ã¶⁄¡‘œ“ Õ≈“≈÷≈◊œ«œ ‘“¡∆¶À’ ƒÃ— Unix-–œƒ¶¬Œ…» ÔÛ. ˜¶Œ
-¬¡⁄’§‘ÿ”— Œ¡ GTK+ ‘¡ libpcap.
+%description common -l uk.UTF-8
+Wireshark - —Ü–µ –∞–Ω–∞–ª—ñ–∑–∞—Ç–æ—Ä –º–µ—Ä–µ–∂–µ–≤–æ–≥–æ —Ç—Ä–∞—Ñ—ñ–∫—É –¥–ª—è Unix-–ø–æ–¥—ñ–±–Ω–∏—Ö –û–°. –í—ñ–Ω
+–±–∞–∑—É—î—Ç—å—Å—è –Ω–∞ GTK+ —Ç–∞ libpcap.
 
 %package tools
 Summary:	Tools for manipulating capture files
-Summary(pl):	NarzÍdzia do obrÛbki plikÛw z przechwyconymi pakietami sieciowymi
+Summary(pl.UTF-8):   Narzƒôdzia do obr√≥bki plik√≥w z przechwyconymi pakietami sieciowymi
 Group:		Networking
 Requires:	%{name}-common = %{version}-%{release}
 Provides:	ethereal-tools
@@ -136,20 +136,20 @@ Set of tools for manipulating capture files. Contains:
 - mergecap - merges two capture files into one,
 - text2cap - generate a capture file from an ASCII hexdump of packets.
 
-%description tools -l pl
-Zestaw narzÍdzi do obrÛbki plikÛw z przechwyconymi pakietami. Zawiera:
-- capinfo - wy∂wietla informacje o binarnych plikach zrzutu,
-- dftest - pokazuje byte-code filtrÛw wy∂wietlania,
-- editcap - do edycji plikÛw i t≥umaczenia ich na inne formaty,
-- idl2eth - konwerter Corba IDL do pluginÛw Wireshark,
-- mergecap - do ≥±czenia dwÛch plikÛw w jeden,
+%description tools -l pl.UTF-8
+Zestaw narzƒôdzi do obr√≥bki plik√≥w z przechwyconymi pakietami. Zawiera:
+- capinfo - wy≈õwietla informacje o binarnych plikach zrzutu,
+- dftest - pokazuje byte-code filtr√≥w wy≈õwietlania,
+- editcap - do edycji plik√≥w i t≈Çumaczenia ich na inne formaty,
+- idl2eth - konwerter Corba IDL do plugin√≥w Wireshark,
+- mergecap - do ≈ÇƒÖczenia dw√≥ch plik√≥w w jeden,
 - text2cap - do generowania pliku cap z szesnastkowego zrzutu ASCII
-  pakietÛw.
+  pakiet√≥w.
 
 %package -n twireshark
 Summary:	Text-mode network traffic and protocol analyzer
-Summary(pl):	Tekstowy analizator ruchu i protoko≥Ûw sieciowych
-Summary(pt_BR):	Analisador modo texto de tr·fego de rede (sniffer)
+Summary(pl.UTF-8):   Tekstowy analizator ruchu i protoko≈Ç√≥w sieciowych
+Summary(pt_BR.UTF-8):   Analisador modo texto de tr√°fego de rede (sniffer)
 Group:		Networking
 Requires:	%{name}-common = %{version}-%{release}
 Requires:	libpcap >= 0.4
@@ -164,34 +164,34 @@ standard output or writing the packets to a file. Twireshark's native
 capture file format is libpcap format, which is also the format used
 by tcpdump and various other tools.
 
-%description -n twireshark -l pl
-Twireshark jest analizatorem protoko≥Ûw sieciowych. Pozwala na
-przechwytywanie pakietÛw z sieci lub wczytywanie danych z pliku.
-Zdekodowany wynik (a twireshark zna ponad 100 rozmaitych protoko≥Ûw
-sieciowych!) jest wy∂wietlony na ekranie. Natywnym formatem plikÛw
-tetherala jest format libpcap, tak wiÍc jest on kompatybilny z
-tcpdumpem i innymi podobnymi narzÍdziami.
+%description -n twireshark -l pl.UTF-8
+Twireshark jest analizatorem protoko≈Ç√≥w sieciowych. Pozwala na
+przechwytywanie pakiet√≥w z sieci lub wczytywanie danych z pliku.
+Zdekodowany wynik (a twireshark zna ponad 100 rozmaitych protoko≈Ç√≥w
+sieciowych!) jest wy≈õwietlony na ekranie. Natywnym formatem plik√≥w
+tetherala jest format libpcap, tak wiƒôc jest on kompatybilny z
+tcpdumpem i innymi podobnymi narzƒôdziami.
 
-%description -n twireshark -l pt_BR
-Esta È uma vers„o para modo texto do analisador de tr·fego de rede
+%description -n twireshark -l pt_BR.UTF-8
+Esta √© uma vers√£o para modo texto do analisador de tr√°fego de rede
 Wireshark.
 
 %package -n libwiretap
 Summary:	Packet capture and analysis library
-Summary(pl):	Biblioteka do przechwytywania i analizy pakietÛw
+Summary(pl.UTF-8):   Biblioteka do przechwytywania i analizy pakiet√≥w
 Group:		Libraries
 
 %description -n libwiretap
 Wiretap is a library that is being developed as a future replacement
 for libpcap, the current standard Unix library for packet capturing.
 
-%description -n libwiretap -l pl
-Biblioteka Wiretap rozwijana jest jako przysz≥y nastÍpca biblioteki
-libpcap, obecnie standardu przechwytywania pakietÛw w systemach Unix.
+%description -n libwiretap -l pl.UTF-8
+Biblioteka Wiretap rozwijana jest jako przysz≈Çy nastƒôpca biblioteki
+libpcap, obecnie standardu przechwytywania pakiet√≥w w systemach Unix.
 
 %package -n libwiretap-devel
 Summary:	Header files for libwiretap packet capture library
-Summary(pl):	Pliki nag≥Ûwkowe biblioteki libwiretap do przechwytywania pakietÛw
+Summary(pl.UTF-8):   Pliki nag≈Ç√≥wkowe biblioteki libwiretap do przechwytywania pakiet√≥w
 Group:		Development/Libraries
 Requires:	libwiretap = %{version}-%{release}
 %if %{with gtk1}
@@ -203,9 +203,9 @@ Requires:	gtk+2-devel >= 2.0.0
 %description -n libwiretap-devel
 Header files for libwiretap packet capture library.
 
-%description -n libwiretap-devel -l pl
-Pliki nag≥Ûwkowe biblioteki libwiretap s≥uø±cej do przechwytywania
-pakietÛw.
+%description -n libwiretap-devel -l pl.UTF-8
+Pliki nag≈Ç√≥wkowe biblioteki libwiretap s≈Çu≈ºƒÖcej do przechwytywania
+pakiet√≥w.
 
 %prep
 %setup -q
