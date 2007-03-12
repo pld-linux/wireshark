@@ -20,6 +20,7 @@ Source0:	http://www.wireshark.org/download/src/%{name}-%{version}.tar.bz2
 Source1:	%{name}.desktop
 Source2:	%{name}.su-start-script
 URL:		http://www.wireshark.org/
+Patch0:		%{name}-0.99.5-hip-base05.patch
 BuildRequires:	adns-devel
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -214,6 +215,7 @@ pakietów.
 
 %prep
 %setup -q
+%patch0 -p1
 perl -pi -e 's/lua5\.1/lua51/g' acinclude.m4
 
 %build
