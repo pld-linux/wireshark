@@ -25,18 +25,23 @@ BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	elfutils-devel
 BuildRequires:	flex
+BuildRequires:	gnutls-devel
 %if %{with gtk1}
 BuildRequires:	gtk+-devel >= 1.2
 %else
 BuildRequires:	gtk+2-devel >= 1:2.0.0
 %endif
 %{?with_krb5:BuildRequires:	heimdal-devel >= 0.7}
+BuildRequires:	libgcrypt-devel
 BuildRequires:	libpcap-devel >= 0.4
 BuildRequires:	libtool
+BuildRequires:	lua51-devel
 %{?with_snmp:BuildRequires:	net-snmp-devel}
 BuildRequires:	openssl-devel >= 0.9.7d
+BuildRequires:	pcre-devel
 BuildRequires:	perl-devel
 BuildRequires:	pkgconfig
+BuildRequires:	portaudio-devel
 BuildRequires:	zlib-devel
 Requires:	%{name}-common = %{version}-%{release}
 Requires:	%{name}-tools = %{version}-%{release}
@@ -209,6 +214,7 @@ pakietów.
 
 %prep
 %setup -q
+perl -pi -e 's/lua5\.1/lua51/g' acinclude.m4
 
 %build
 %{__libtoolize}
@@ -231,6 +237,7 @@ cd ..
 	--with-ssl \
 %endif
 	%{!?with_snmp:--without-net-snmp --without-ucdsnmp} \
+	--with-lua="/usr" \
 	--with-plugindir=%{_libdir}/%{name}
 
 %{__make}
