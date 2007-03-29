@@ -19,15 +19,15 @@ Source0:	http://www.wireshark.org/download/src/%{name}-%{version}.tar.bz2
 # Source0-md5:	ff067e0f2a0e0e53362bc6a943ff8622
 Source1:	%{name}.desktop
 Source2:	%{name}.su-start-script
-URL:		http://www.wireshark.org/
 Patch0:		%{name}-0.99.5-hip-base05.patch
 Patch1:		%{name}-as_needed.patch
+URL:		http://www.wireshark.org/
 BuildRequires:	adns-devel
-BuildRequires:	autoconf
+BuildRequires:	autoconf >= 2.52
 BuildRequires:	automake
 BuildRequires:	elfutils-devel
 BuildRequires:	flex
-BuildRequires:	gnutls-devel >= 2.0.0
+BuildRequires:	gnutls-devel >= 1.0.0
 %if %{with gtk1}
 BuildRequires:	gtk+-devel >= 1.2
 %else
