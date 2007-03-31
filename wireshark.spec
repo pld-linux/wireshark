@@ -1,7 +1,7 @@
 #
 # Conditional build:
 %bcond_with	gtk1		# build gtk+1 (not gtk+2) based wireshark binary
-%bcond_without	krb5		# build without kerberos5 support (via heimdal)
+%bcond_without	kerberos5	# build without Kerberos V support
 %bcond_without	snmp		# build without snmp support
 #
 Summary:	Network traffic and protocol analyzer
@@ -12,7 +12,7 @@ Summary(ru.UTF-8):	Анализатор сетевого траффика
 Summary(uk.UTF-8):	Аналізатор мережевого трафіку
 Name:		wireshark
 Version:	0.99.5
-Release:	1
+Release:	2
 License:	GPL
 Group:		Networking
 Source0:	http://www.wireshark.org/download/src/%{name}-%{version}.tar.bz2
@@ -33,7 +33,7 @@ BuildRequires:	gtk+-devel >= 1.2
 %else
 BuildRequires:	gtk+2-devel >= 1:2.0.0
 %endif
-%{?with_krb5:BuildRequires:	heimdal-devel >= 0.7}
+%{?with_kerberos5:BuildRequires:	krb5-devel}
 BuildRequires:	libgcrypt-devel >= 1.1.42
 BuildRequires:	libpcap-devel >= 0.4
 BuildRequires:	libtool
@@ -236,7 +236,7 @@ cd ..
 	--enable-dftest \
 	--enable-threads \
 	%{!?with_gtk1:--enable-gtk2} \
-%if %{with krb5}
+%if %{with kerberos5}
 	--with-krb5 \
 	--with-ssl \
 %endif
