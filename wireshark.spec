@@ -12,7 +12,7 @@ Summary(ru.UTF-8):	Анализатор сетевого траффика
 Summary(uk.UTF-8):	Аналізатор мережевого трафіку
 Name:		wireshark
 Version:	0.99.6
-Release:	0.1
+Release:	2
 License:	GPL
 Group:		Networking
 Source0:	http://www.wireshark.org/download/src/%{name}-%{version}.tar.bz2
@@ -21,6 +21,7 @@ Source1:	%{name}.desktop
 Source2:	%{name}.su-start-script
 Patch0:		%{name}-0.99.5-hip-base05.patch
 Patch1:		%{name}-as_needed.patch
+Patch2:		%{name}-Werror.patch
 URL:		http://www.wireshark.org/
 BuildRequires:	adns-devel
 BuildRequires:	autoconf >= 2.52
@@ -218,7 +219,9 @@ pakietów.
 %setup -q
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
 perl -pi -e 's/lua5\.1/lua51/g' acinclude.m4
+find -name Makefile.am | xargs perl -pi -e 's/-Werror//g'
 
 %build
 %{__libtoolize}
