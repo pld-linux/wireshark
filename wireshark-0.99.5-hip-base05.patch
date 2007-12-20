@@ -1,44 +1,58 @@
-diff -burN wireshark-0.99.6.orig/epan/dissectors/Makefile.common wireshark-0.99.6/epan/dissectors/Makefile.common
---- wireshark-0.99.6.orig/epan/dissectors/Makefile.common	2007-08-21 09:41:51.249801823 +0200
-+++ wireshark-0.99.6/epan/dissectors/Makefile.common	2007-08-21 09:42:11.955168892 +0200
-@@ -327,6 +327,7 @@
+diff -urN wireshark-0.99.7.orig/epan/dissectors/Makefile.common wireshark-0.99.7/epan/dissectors/Makefile.common
+--- wireshark-0.99.7.orig/epan/dissectors/Makefile.common	2007-12-20 21:19:06.000000000 +0100
++++ wireshark-0.99.7/epan/dissectors/Makefile.common	2007-12-20 21:20:59.000000000 +0100
+@@ -341,6 +341,7 @@
  	packet-dis-fields.c	\
  	packet-dis-pdus.c	\
  	packet-diffserv-mpls-common.c	\
-+	packet-hip.c	\
++	packet-hip.c		\
  	packet-distcc.c		\
  	packet-dlsw.c		\
  	packet-dmp.c		\
-diff -burN wireshark-0.99.6.orig/epan/dissectors/Makefile.in wireshark-0.99.6/epan/dissectors/Makefile.in
---- wireshark-0.99.6.orig/epan/dissectors/Makefile.in	2007-08-21 09:41:51.249801823 +0200
-+++ wireshark-0.99.6/epan/dissectors/Makefile.in	2007-08-21 09:42:56.306096587 +0200
-@@ -392,6 +392,7 @@
+diff -urN wireshark-0.99.7.orig/epan/dissectors/Makefile.in wireshark-0.99.7/epan/dissectors/Makefile.in
+--- wireshark-0.99.7.orig/epan/dissectors/Makefile.in	2007-12-20 21:19:06.000000000 +0100
++++ wireshark-0.99.7/epan/dissectors/Makefile.in	2007-12-20 21:34:21.000000000 +0100
+@@ -396,6 +396,7 @@
+ 	libcleandissectors_la-packet-h264.lo \
  	libcleandissectors_la-packet-hci_h4.lo \
  	libcleandissectors_la-packet-hclnfsd.lo \
- 	libcleandissectors_la-packet-homeplug.lo \
 +	libcleandissectors_la-packet-hip.lo \
+ 	libcleandissectors_la-packet-homeplug.lo \
  	libcleandissectors_la-packet-hpext.lo \
  	libcleandissectors_la-packet-hpsw.lo \
- 	libcleandissectors_la-packet-hsrp.lo \
-@@ -858,6 +859,7 @@
- INSTALL_DATA = @INSTALL_DATA@
- INSTALL_PROGRAM = @INSTALL_PROGRAM@
- INSTALL_SCRIPT = @INSTALL_SCRIPT@
-+	packet-hip.c	\
- INSTALL_STRIP_PROGRAM = @INSTALL_STRIP_PROGRAM@
- KRB5_CONFIG = @KRB5_CONFIG@
- KRB5_LIBS = @KRB5_LIBS@
-@@ -1848,6 +1850,7 @@
- 	packet-frame.h	\
- 	packet-ftam.h	\
- 	packet-ftbp.h	\
-+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/packet-hip.Plo@am__quote@
- 	packet-giop.h	\
- 	packet-gnm.h	\
- 	packet-gnutella.h	\
-diff -burN wireshark-0.99.6.orig/epan/dissectors/packet-hip.c wireshark-0.99.6/epan/dissectors/packet-hip.c
---- wireshark-0.99.6.orig/epan/dissectors/packet-hip.c	1970-01-01 01:00:00.000000000 +0100
-+++ wireshark-0.99.6/epan/dissectors/packet-hip.c	2007-08-21 09:42:11.959169156 +0200
+@@ -1417,6 +1418,7 @@
+ 	packet-h264.c		\
+ 	packet-hci_h4.c		\
+ 	packet-hclnfsd.c	\
++	packet-hip.c		\
+ 	packet-homeplug.c 	\
+ 	packet-hpext.c		\
+ 	packet-hpsw.c		\
+@@ -2476,6 +2478,7 @@
+ @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcleandissectors_la-packet-h264.Plo@am__quote@
+ @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcleandissectors_la-packet-hci_h4.Plo@am__quote@
+ @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcleandissectors_la-packet-hclnfsd.Plo@am__quote@
++@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcleandissectors_la-packet-hip.Plo@am__quote@
+ @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcleandissectors_la-packet-homeplug.Plo@am__quote@
+ @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcleandissectors_la-packet-hpext.Plo@am__quote@
+ @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcleandissectors_la-packet-hpsw.Plo@am__quote@
+@@ -4828,6 +4831,13 @@
+ @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+ @am__fastdepCC_FALSE@	$(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcleandissectors_la_CFLAGS) $(CFLAGS) -c -o libcleandissectors_la-packet-hclnfsd.lo `test -f 'packet-hclnfsd.c' || echo '$(srcdir)/'`packet-hclnfsd.c
+ 
++libcleandissectors_la-packet-hip.lo: packet-hip.c
++@am__fastdepCC_TRUE@	$(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcleandissectors_la_CFLAGS) $(CFLAGS) -MT libcleandissectors_la-packet-hip.lo -MD -MP -MF $(DEPDIR)/libcleandissectors_la-packet-hip.Tpo -c -o libcleandissectors_la-packet-hip.lo `test -f 'packet-hip.c' || echo '$(srcdir)/'`packet-hip.c
++@am__fastdepCC_TRUE@	mv -f $(DEPDIR)/libcleandissectors_la-packet-hip.Tpo $(DEPDIR)/libcleandissectors_la-packet-hip.Plo
++@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='packet-hip.c' object='libcleandissectors_la-packet-hip.lo' libtool=yes @AMDEPBACKSLASH@
++@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
++@am__fastdepCC_FALSE@	$(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcleandissectors_la_CFLAGS) $(CFLAGS) -c -o libcleandissectors_la-packet-hip.lo `test -f 'packet-hip.c' || echo '$(srcdir)/'`packet-hip.c
++
+ libcleandissectors_la-packet-homeplug.lo: packet-homeplug.c
+ @am__fastdepCC_TRUE@	$(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcleandissectors_la_CFLAGS) $(CFLAGS) -MT libcleandissectors_la-packet-homeplug.lo -MD -MP -MF $(DEPDIR)/libcleandissectors_la-packet-homeplug.Tpo -c -o libcleandissectors_la-packet-homeplug.lo `test -f 'packet-homeplug.c' || echo '$(srcdir)/'`packet-homeplug.c
+ @am__fastdepCC_TRUE@	mv -f $(DEPDIR)/libcleandissectors_la-packet-homeplug.Tpo $(DEPDIR)/libcleandissectors_la-packet-homeplug.Plo
+diff -urN wireshark-0.99.7.orig/epan/dissectors/packet-hip.c wireshark-0.99.7/epan/dissectors/packet-hip.c
+--- wireshark-0.99.7.orig/epan/dissectors/packet-hip.c	1970-01-01 01:00:00.000000000 +0100
++++ wireshark-0.99.7/epan/dissectors/packet-hip.c	2007-12-20 21:37:45.000000000 +0100
 @@ -0,0 +1,1235 @@
 +/* packet-hip.c
 + * Routines for HIP packet disassembly
@@ -1275,18 +1289,18 @@ diff -burN wireshark-0.99.6.orig/epan/dissectors/packet-hip.c wireshark-0.99.6/e
 +    return (0);
 +}
 +
-diff -burN wireshark-0.99.6.orig/epan/dissectors/register.c wireshark-0.99.6/epan/dissectors/register.c
---- wireshark-0.99.6.orig/epan/dissectors/register.c	2007-08-21 09:41:51.153795484 +0200
-+++ wireshark-0.99.6/epan/dissectors/register.c	2007-08-21 09:42:11.955168892 +0200
-@@ -246,6 +246,7 @@
+diff -urN wireshark-0.99.7.orig/epan/dissectors/register.c wireshark-0.99.7/epan/dissectors/register.c
+--- wireshark-0.99.7.orig/epan/dissectors/register.c	2007-12-20 21:19:06.000000000 +0100
++++ wireshark-0.99.7/epan/dissectors/register.c	2007-12-20 21:15:05.000000000 +0100
+@@ -251,6 +251,7 @@
    {extern void proto_register_fp (void); if(cb) (*cb)(RA_REGISTER, "proto_register_fp", client_data); proto_register_fp ();}
    {extern void proto_register_fr (void); if(cb) (*cb)(RA_REGISTER, "proto_register_fr", client_data); proto_register_fr ();}
    {extern void proto_register_fractalgeneratorprotocol (void); if(cb) (*cb)(RA_REGISTER, "proto_register_fractalgeneratorprotocol", client_data); proto_register_fractalgeneratorprotocol ();}
 +  {extern void proto_register_hip (void); proto_register_hip ();}
    {extern void proto_register_frame (void); if(cb) (*cb)(RA_REGISTER, "proto_register_frame", client_data); proto_register_frame ();}
    {extern void proto_register_ftam (void); if(cb) (*cb)(RA_REGISTER, "proto_register_ftam", client_data); proto_register_ftam ();}
-   {extern void proto_register_ftbp (void); if(cb) (*cb)(RA_REGISTER, "proto_register_ftbp", client_data); proto_register_ftbp ();}
-@@ -868,6 +869,7 @@
+   {extern void proto_register_ftp (void); if(cb) (*cb)(RA_REGISTER, "proto_register_ftp", client_data); proto_register_ftp ();}
+@@ -893,6 +894,7 @@
    {extern void proto_reg_handoff_dcerpc_frsapi (void); if(cb) (*cb)(RA_HANDOFF, "proto_reg_handoff_dcerpc_frsapi", client_data); proto_reg_handoff_dcerpc_frsapi ();}
    {extern void proto_reg_handoff_dcerpc_frsrpc (void); if(cb) (*cb)(RA_HANDOFF, "proto_reg_handoff_dcerpc_frsrpc", client_data); proto_reg_handoff_dcerpc_frsrpc ();}
    {extern void proto_reg_handoff_dcerpc_initshutdown (void); if(cb) (*cb)(RA_HANDOFF, "proto_reg_handoff_dcerpc_initshutdown", client_data); proto_reg_handoff_dcerpc_initshutdown ();}
@@ -1294,9 +1308,9 @@ diff -burN wireshark-0.99.6.orig/epan/dissectors/register.c wireshark-0.99.6/epa
    {extern void proto_reg_handoff_dcerpc_lsa (void); if(cb) (*cb)(RA_HANDOFF, "proto_reg_handoff_dcerpc_lsa", client_data); proto_reg_handoff_dcerpc_lsa ();}
    {extern void proto_reg_handoff_dcerpc_mapi (void); if(cb) (*cb)(RA_HANDOFF, "proto_reg_handoff_dcerpc_mapi", client_data); proto_reg_handoff_dcerpc_mapi ();}
    {extern void proto_reg_handoff_dcerpc_messenger (void); if(cb) (*cb)(RA_HANDOFF, "proto_reg_handoff_dcerpc_messenger", client_data); proto_reg_handoff_dcerpc_messenger ();}
-diff -burN wireshark-0.99.6.orig/epan/ipproto.h wireshark-0.99.6/epan/ipproto.h
---- wireshark-0.99.6.orig/epan/ipproto.h	2007-08-21 09:41:51.149795220 +0200
-+++ wireshark-0.99.6/epan/ipproto.h	2007-08-21 09:42:11.959169156 +0200
+diff -urN wireshark-0.99.7.orig/epan/ipproto.h wireshark-0.99.7/epan/ipproto.h
+--- wireshark-0.99.7.orig/epan/ipproto.h	2007-12-20 21:19:06.000000000 +0100
++++ wireshark-0.99.7/epan/ipproto.h	2007-12-20 21:41:08.000000000 +0100
 @@ -187,6 +187,7 @@
  #define IP_PROTO_MPLS_IN_IP     137             /* MPLS in IP - RFC4023 */
  #define IP_PROTO_AX4000		173		/* AX/4000 Testblock - non IANA */
@@ -1305,10 +1319,10 @@ diff -burN wireshark-0.99.6.orig/epan/ipproto.h wireshark-0.99.6/epan/ipproto.h
  
  extern const char *ipprotostr(int proto);
  
-diff -burN wireshark-0.99.6.orig/epan/prefs.c wireshark-0.99.6/epan/prefs.c
---- wireshark-0.99.6.orig/epan/prefs.c	2007-08-21 09:41:51.145794955 +0200
-+++ wireshark-0.99.6/epan/prefs.c	2007-08-21 09:42:11.959169156 +0200
-@@ -2168,6 +2168,10 @@
+diff -urN wireshark-0.99.7.orig/epan/prefs.c wireshark-0.99.7/epan/prefs.c
+--- wireshark-0.99.7.orig/epan/prefs.c	2007-12-20 21:19:06.000000000 +0100
++++ wireshark-0.99.7/epan/prefs.c	2007-12-20 21:42:40.000000000 +0100
+@@ -2172,6 +2172,10 @@
          /* Handle old names for UDP preferences. */
          if (strcmp(dotp, "udp_summary_in_tree") == 0)
            pref = find_preference(module, "summary_in_tree");
