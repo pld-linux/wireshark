@@ -36,9 +36,9 @@ BuildRequires:	gtk+2-devel >= 1:2.0.0
 %endif
 %{?with_kerberos5:BuildRequires:	krb5-devel}
 BuildRequires:	libgcrypt-devel >= 1.1.42
-BuildRequires:	libxslt-progs
 BuildRequires:	libpcap-devel >= 0.4
 BuildRequires:	libtool
+BuildRequires:	libxslt-progs
 BuildRequires:	lua51-devel
 %{?with_snmp:BuildRequires:	net-snmp-devel}
 BuildRequires:	pcre-devel
