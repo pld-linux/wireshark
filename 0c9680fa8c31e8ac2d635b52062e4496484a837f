@@ -1,0 +1,3 @@
+- updated to 0.99.6 (resolves CVE-2007-3389, CVE-2007-3390, CVE-2007-3391,
+  CVE-2007-3392, CVE-2007-3393, CVE-2007-4721)
+- fails to build (probably some as_needed issue)
