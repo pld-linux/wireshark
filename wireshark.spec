@@ -11,12 +11,12 @@ Summary(pt_BR.UTF-8):	Analisador de tráfego de rede
 Summary(ru.UTF-8):	Анализатор сетевого траффика
 Summary(uk.UTF-8):	Аналізатор мережевого трафіку
 Name:		wireshark
-Version:	0.99.6
-Release:	2
+Version:	0.99.7
+Release:	1
 License:	GPL
 Group:		Networking
 Source0:	http://www.wireshark.org/download/src/%{name}-%{version}.tar.bz2
-# Source0-md5:	e57a8c8b364c38df3da97e2ee9f0d0bc
+# Source0-md5:	ef04dfac3e7acc4a9cb2b107dd2a2f8a
 Source1:	%{name}.desktop
 Source2:	%{name}.su-start-script
 Patch0:		%{name}-0.99.5-hip-base05.patch
@@ -36,6 +36,7 @@ BuildRequires:	gtk+2-devel >= 1:2.0.0
 %endif
 %{?with_kerberos5:BuildRequires:	krb5-devel}
 BuildRequires:	libgcrypt-devel >= 1.1.42
+BuildRequires:	libxslt-progs
 BuildRequires:	libpcap-devel >= 0.4
 BuildRequires:	libtool
 BuildRequires:	lua51-devel
