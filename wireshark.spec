@@ -296,6 +296,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc AUTHORS ChangeLog FAQ NEWS README{,.[lv]*} doc/{randpkt.txt,README.*}
 %attr(755,root,root) %{_libdir}/libwireshark.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libwireshark.so.0
 %{_mandir}/man4/wireshark-filter.4*
 
 %files tools
@@ -324,6 +325,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc wiretap/{README*,AUTHORS,NEWS,ChangeLog}
 %attr(755,root,root) %{_libdir}/libwiretap.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libwiretap.so.0
 
 %files -n libwiretap-devel
 %defattr(644,root,root,755)
