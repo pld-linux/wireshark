@@ -229,12 +229,6 @@ find -name Makefile.am | xargs perl -pi -e 's/-Werror//g'
 %{__aclocal} -I aclocal-fallback
 %{__autoconf}
 %{__automake}
-cd wiretap
-%{__aclocal} -I ../aclocal-fallback
-%{__autoconf}
-# don't use --force here
-%{__automake}
-cd ..
 %configure \
 	--enable-randpkt \
 	--enable-dftest \
