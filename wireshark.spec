@@ -1,3 +1,6 @@
+# TODO: unpackaged files:
+#   /usr/bin/rawshark
+#   /usr/share/man/man1/rawshark.1.gz
 #
 # Conditional build:
 %bcond_with	gtk1		# build gtk+1 (not gtk+2) based wireshark binary
@@ -317,7 +320,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -n libwiretap
 %defattr(644,root,root,755)
-%doc wiretap/{README*,AUTHORS,NEWS,ChangeLog}
+%doc wiretap/{README*,AUTHORS}
 %attr(755,root,root) %{_libdir}/libwiretap.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libwiretap.so.0
 
