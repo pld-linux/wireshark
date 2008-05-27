@@ -1,6 +1,3 @@
-# TODO: unpackaged files:
-#   /usr/bin/rawshark
-#   /usr/share/man/man1/rawshark.1.gz
 #
 # Conditional build:
 %bcond_with	gtk1		# build gtk+1 (not gtk+2) based wireshark binary
@@ -41,6 +38,7 @@ BuildRequires:	gtk+2-devel >= 1:2.0.0
 BuildRequires:	libcap-devel
 BuildRequires:	libgcrypt-devel >= 1.1.42
 BuildRequires:	libpcap-devel >= 0.4
+BuildRequires:	libsmi-devel
 BuildRequires:	libtool
 BuildRequires:	libxslt-progs
 BuildRequires:	lua51-devel
@@ -305,14 +303,16 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/editcap
 %attr(755,root,root) %{_bindir}/idl2wrs
 %attr(755,root,root) %{_bindir}/mergecap
-%attr(755,root,root) %{_bindir}/text2pcap
 %attr(755,root,root) %{_bindir}/randpkt
-%{_mandir}/man1/capinfo*
-%{_mandir}/man1/dumpcap*
-%{_mandir}/man1/editcap*
-%{_mandir}/man1/idl2wrs*
-%{_mandir}/man1/mergecap*
-%{_mandir}/man1/text2pcap*
+%attr(755,root,root) %{_bindir}/rawshark
+%attr(755,root,root) %{_bindir}/text2pcap
+%{_mandir}/man1/capinfos.1*
+%{_mandir}/man1/dumpcap.1*
+%{_mandir}/man1/editcap.1*
+%{_mandir}/man1/idl2wrs.1*
+%{_mandir}/man1/mergecap.1*
+%{_mandir}/man1/rawshark.1*
+%{_mandir}/man1/text2pcap.1*
 
 %files -n twireshark
 %defattr(644,root,root,755)
