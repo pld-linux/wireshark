@@ -108,9 +108,8 @@ severeal useful features, including a rich display filter language,
 the ability to view the ASCII contents of a TCP connection and plug-in
 capabilities.
 
-This package provides set of tools for manipulating capture files. 
-
-Contains:
+This package provides set of tools for manipulating capture files. It
+contains:
 - capinfo - prints informatio about binary capture files,
 - dftest - shows display filter byte-code,
 - editcap - edit and/or translate the format of capture files,
@@ -130,14 +129,12 @@ użytecznych cech, takich jak rozbudowany język filtrów wyświetlania,
 możliwość oglądania przebiegu sesji TCP oraz możliwość dołączania
 wtyczek (plug-ins).
 
-Pakiet ten dostarcza także zestawu narzędzi do obróbki plików z
-przechwyconymi pakietami. 
-
-Zawiera:
-- capinfo - wyświetla informacje o binarnych plikach zrzutu,
-- dftest - pokazuje byte-code filtrów wyświetlania,
+Pakiet ten dostarcza także zestaw narzędzi do obróbki plików z
+przechwyconymi pakietami, obejmujący:
+- capinfo - do wyświetlania informacji o binarnych plikach zrzutu,
+- dftest - do pokazywania bajtkodu filtrów wyświetlania,
 - editcap - do edycji plików i tłumaczenia ich na inne formaty,
-- idl2eth - konwerter Corba IDL do pluginów Wireshark,
+- idl2eth - do konwersji Corba IDL do wtyczek Wireshark,
 - mergecap - do łączenia dwóch plików w jeden,
 - text2cap - do generowania pliku cap z szesnastkowego zrzutu ASCII
   pakietów.
