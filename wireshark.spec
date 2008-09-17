@@ -12,7 +12,7 @@ Summary(ru.UTF-8):	Анализатор сетевого траффика
 Summary(uk.UTF-8):	Аналізатор мережевого трафіку
 Name:		wireshark
 Version:	1.0.3
-Release:	1
+Release:	3
 License:	GPL
 Group:		Networking
 Source0:	http://www.wireshark.org/download/src/%{name}-%{version}.tar.bz2
@@ -49,7 +49,6 @@ BuildRequires:	pkgconfig
 BuildRequires:	portaudio-devel
 BuildRequires:	zlib-devel
 Requires:	%{name}-common = %{version}-%{release}
-Requires:	%{name}-tools = %{version}-%{release}
 Requires:	libpcap >= 0.4
 Suggests:	xterm
 Provides:	ethereal
@@ -97,6 +96,8 @@ Group:		Networking
 Requires:	libwiretap = %{version}-%{release}
 Provides:	ethereal-common
 Obsoletes:	ethereal-common
+Provides:	%{name}-tools
+Obsoletes:	%{name}-tools
 
 %description common
 Wireshark is the name for powerful graphical network sniffer, traffic
@@ -106,6 +107,16 @@ vast knowledge of more than 100 network protocols. Wireshark has
 severeal useful features, including a rich display filter language,
 the ability to view the ASCII contents of a TCP connection and plug-in
 capabilities.
+
+This package provides set of tools for manipulating capture files. 
+
+Contains:
+- capinfo - prints informatio about binary capture files,
+- dftest - shows display filter byte-code,
+- editcap - edit and/or translate the format of capture files,
+- idl2eth - corba IDL to Wireshark Plugin Generator,
+- mergecap - merges two capture files into one,
+- text2cap - generate a capture file from an ASCII hexdump of packets.
 
 %description common -l es.UTF-8
 Analizador de tráfico de red.
@@ -119,6 +130,18 @@ użytecznych cech, takich jak rozbudowany język filtrów wyświetlania,
 możliwość oglądania przebiegu sesji TCP oraz możliwość dołączania
 wtyczek (plug-ins).
 
+Pakiet ten dostarcza także zestawu narzędzi do obróbki plików z
+przechwyconymi pakietami. 
+
+Zawiera:
+- capinfo - wyświetla informacje o binarnych plikach zrzutu,
+- dftest - pokazuje byte-code filtrów wyświetlania,
+- editcap - do edycji plików i tłumaczenia ich na inne formaty,
+- idl2eth - konwerter Corba IDL do pluginów Wireshark,
+- mergecap - do łączenia dwóch plików w jeden,
+- text2cap - do generowania pliku cap z szesnastkowego zrzutu ASCII
+  pakietów.
+
 %description common -l pt_BR.UTF-8
 O Wireshark é um analisador de protocolo de rede baseado no GTK+.
 
@@ -129,33 +152,6 @@ Wireshark - это анализатор сетевого траффика для
 %description common -l uk.UTF-8
 Wireshark - це аналізатор мережевого трафіку для Unix-подібних ОС. Він
 базується на GTK+ та libpcap.
-
-%package tools
-Summary:	Tools for manipulating capture files
-Summary(pl.UTF-8):	Narzędzia do obróbki plików z przechwyconymi pakietami sieciowymi
-Group:		Networking
-Requires:	%{name}-common = %{version}-%{release}
-Provides:	ethereal-tools
-Obsoletes:	ethereal-tools
-
-%description tools
-Set of tools for manipulating capture files. Contains:
-- capinfo - prints informatio about binary capture files,
-- dftest - shows display filter byte-code,
-- editcap - edit and/or translate the format of capture files,
-- idl2eth - corba IDL to Wireshark Plugin Generator,
-- mergecap - merges two capture files into one,
-- text2cap - generate a capture file from an ASCII hexdump of packets.
-
-%description tools -l pl.UTF-8
-Zestaw narzędzi do obróbki plików z przechwyconymi pakietami. Zawiera:
-- capinfo - wyświetla informacje o binarnych plikach zrzutu,
-- dftest - pokazuje byte-code filtrów wyświetlania,
-- editcap - do edycji plików i tłumaczenia ich na inne formaty,
-- idl2eth - konwerter Corba IDL do pluginów Wireshark,
-- mergecap - do łączenia dwóch plików w jeden,
-- text2cap - do generowania pliku cap z szesnastkowego zrzutu ASCII
-  pakietów.
 
 %package -n twireshark
 Summary:	Text-mode network traffic and protocol analyzer
@@ -291,12 +287,6 @@ rm -rf $RPM_BUILD_ROOT
 %files common
 %defattr(644,root,root,755)
 %doc AUTHORS ChangeLog FAQ NEWS README{,.[lv]*} doc/{randpkt.txt,README.*}
-%attr(755,root,root) %{_libdir}/libwireshark.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libwireshark.so.0
-%{_mandir}/man4/wireshark-filter.4*
-
-%files tools
-%defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/capinfos
 %attr(755,root,root) %{_bindir}/dftest
 %attr(755,root,root) %{_bindir}/dumpcap
@@ -306,6 +296,8 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/randpkt
 %attr(755,root,root) %{_bindir}/rawshark
 %attr(755,root,root) %{_bindir}/text2pcap
+%attr(755,root,root) %{_libdir}/libwireshark.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libwireshark.so.0
 %{_mandir}/man1/capinfos.1*
 %{_mandir}/man1/dumpcap.1*
 %{_mandir}/man1/editcap.1*
@@ -313,6 +305,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/mergecap.1*
 %{_mandir}/man1/rawshark.1*
 %{_mandir}/man1/text2pcap.1*
+%{_mandir}/man4/wireshark-filter.4*
 
 %files -n twireshark
 %defattr(644,root,root,755)
