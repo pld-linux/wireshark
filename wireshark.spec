@@ -11,12 +11,12 @@ Summary(pt_BR.UTF-8):	Analisador de tráfego de rede
 Summary(ru.UTF-8):	Анализатор сетевого траффика
 Summary(uk.UTF-8):	Аналізатор мережевого трафіку
 Name:		wireshark
-Version:	1.0.3
-Release:	3
+Version:	1.0.4
+Release:	1
 License:	GPL
 Group:		Networking
 Source0:	http://www.wireshark.org/download/src/%{name}-%{version}.tar.bz2
-# Source0-md5:	1f9bacf6df9150a8dd8fe862a4be27a8
+# Source0-md5:	cc67730ccddcc5bc6f111c836ba78435
 Source1:	%{name}.desktop
 Source2:	%{name}.su-start-script
 Patch0:		%{name}-0.99.5-hip-base05.patch
