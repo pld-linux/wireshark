@@ -23,6 +23,9 @@ Patch0:		%{name}-0.99.5-hip-base05.patch
 Patch1:		%{name}-as_needed.patch
 Patch2:		%{name}-Werror.patch
 URL:		http://www.wireshark.org/
+# http://securitytracker.com/alerts/2008/Nov/1021275.html
+# Solution: patch from svn or upgrade to 1.0.5 prerelease
+BuildRequires:	security(SVRT-04-08)
 BuildRequires:	adns-devel
 BuildRequires:	autoconf >= 2.52
 BuildRequires:	automake
