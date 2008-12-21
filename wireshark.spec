@@ -11,21 +11,18 @@ Summary(pt_BR.UTF-8):	Analisador de tráfego de rede
 Summary(ru.UTF-8):	Анализатор сетевого траффика
 Summary(uk.UTF-8):	Аналізатор мережевого трафіку
 Name:		wireshark
-Version:	1.0.4
+Version:	1.0.5
 Release:	1
 License:	GPL
 Group:		Networking
 Source0:	http://www.wireshark.org/download/src/%{name}-%{version}.tar.bz2
-# Source0-md5:	cc67730ccddcc5bc6f111c836ba78435
+# Source0-md5:	4c6a93e00123d8bb7af48a009519aca4
 Source1:	%{name}.desktop
 Source2:	%{name}.su-start-script
 Patch0:		%{name}-0.99.5-hip-base05.patch
 Patch1:		%{name}-as_needed.patch
 Patch2:		%{name}-Werror.patch
 URL:		http://www.wireshark.org/
-# http://securitytracker.com/alerts/2008/Nov/1021275.html
-# Solution: patch from svn or upgrade to 1.0.5 prerelease
-BuildRequires:	security(SVRT-04-08)
 BuildRequires:	adns-devel
 BuildRequires:	autoconf >= 2.52
 BuildRequires:	automake
