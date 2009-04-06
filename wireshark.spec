@@ -23,6 +23,8 @@ Patch0:		%{name}-0.99.5-hip-base05.patch
 Patch1:		%{name}-as_needed.patch
 Patch2:		%{name}-Werror.patch
 URL:		http://www.wireshark.org/
+# http://milw0rm.com/exploits/8308:
+BuildRequires:	security(milw0rm.com/exploits/8308)
 BuildRequires:	adns-devel
 BuildRequires:	autoconf >= 2.52
 BuildRequires:	automake
