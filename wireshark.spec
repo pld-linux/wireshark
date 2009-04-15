@@ -25,6 +25,13 @@ Patch2:		%{name}-Werror.patch
 URL:		http://www.wireshark.org/
 # http://milw0rm.com/exploits/8308:
 BuildRequires:	security(milw0rm.com/exploits/8308)
+###
+# http://www.wireshark.org/security/wnpa-sec-2009-02.html
+# Update to 1.0.7 needed
+BuildRequires:	security(CVE-2009-1267)
+BuildRequires:	security(CVE-2009-1268)
+BuildRequires:	security(CVE-2009-1269)
+###
 BuildRequires:	adns-devel
 BuildRequires:	autoconf >= 2.52
 BuildRequires:	automake
