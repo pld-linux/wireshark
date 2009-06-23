@@ -41,7 +41,7 @@ BuildRequires:	gtk+2-devel >= 1:2.0.0
 %{?with_kerberos5:BuildRequires:	krb5-devel}
 BuildRequires:	libcap-devel
 BuildRequires:	libgcrypt-devel >= 1.1.42
-BuildRequires:	libpcap-devel >= 0.4
+BuildRequires:	libpcap-devel >= 2:1.0.0-4
 BuildRequires:	libsmi-devel
 BuildRequires:	libtool
 BuildRequires:	libxslt-progs
