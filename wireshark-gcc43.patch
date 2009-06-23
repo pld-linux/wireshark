@@ -1,0 +1,25 @@
+apture-pcap-util.c:399: error: static declaration of 'pcap_datalink_name_to_val' follows non-static declaration
+/usr/include/pcap/pcap.h:313: note: previous declaration of 'pcap_datalink_name_to_val' was here
+capture-pcap-util.c:414: error: static declaration of 'pcap_datalink_val_to_name' follows non-static declaration
+/usr/include/pcap/pcap.h:314: note: previous declaration of 'pcap_datalink_val_to_name' was here
+
+--- wireshark-1.2.0/capture-pcap-util.c~	2009-06-16 06:04:01.000000000 +0200
++++ wireshark-1.2.0/capture-pcap-util.c	2009-06-23 01:28:10.162762368 +0200
+@@ -395,7 +395,7 @@
+ };
+ 
+ #if !defined(HAVE_PCAP_DATALINK_NAME_TO_VAL)
+-static int
++int
+ pcap_datalink_name_to_val(const char *name)
+ {
+ 	int i;
+@@ -410,7 +410,7 @@
+ #endif /* defined(HAVE_PCAP_DATALINK_NAME_TO_VAL) */
+ 
+ #if !defined(HAVE_PCAP_DATALINK_VAL_TO_NAME)
+-static const char *
++const char *
+ pcap_datalink_val_to_name(int dlt)
+ {
+ 	int i;
