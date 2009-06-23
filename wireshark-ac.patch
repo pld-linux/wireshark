@@ -1,0 +1,23 @@
+--- wireshark-1.2.0/acinclude.m4~	2009-06-23 22:22:38.015762748 +0200
++++ wireshark-1.2.0/acinclude.m4	2009-06-23 22:25:13.444887681 +0200
+@@ -302,7 +302,7 @@
+ 	  #
+ 	  AC_MSG_CHECKING(for broken pcap-config)
+ 	  if test -n "$PCAP_CONFIG" ; then
+-	    case "`\"$PCAP_CONFIG\" --libs`" in
++	    case "`$PCAP_CONFIG --libs`" in
+ 
+ 	    "-L "*)
+ 	      #
+@@ -397,9 +397,9 @@
+ 	  # libraries libpcap needs.
+ 	  #
+ 	  if test x$enable_static = xyes; then
+-	    PCAP_LIBS="`\"$PCAP_CONFIG\" --libs --static`"
++	    PCAP_LIBS="`$PCAP_CONFIG --libs --static`"
+ 	  else
+-	    PCAP_LIBS="`\"$PCAP_CONFIG\" --libs`"
++	    PCAP_LIBS="`$PCAP_CONFIG --libs`"
+ 	  fi
+ 	  AC_DEFINE(HAVE_LIBPCAP, 1, [Define to use libpcap library])
+ 	else
