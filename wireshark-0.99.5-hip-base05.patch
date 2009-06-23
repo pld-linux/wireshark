@@ -1264,7 +1264,7 @@ diff -urN wireshark-0.99.7.orig/epan/dissectors/register.c wireshark-0.99.7/epan
    {extern void proto_reg_handoff_dcerpc_frsrpc (void); if(cb) (*cb)(RA_HANDOFF, "proto_reg_handoff_dcerpc_frsrpc", client_data); proto_reg_handoff_dcerpc_frsrpc ();}
    {extern void proto_reg_handoff_dcerpc_initshutdown (void); if(cb) (*cb)(RA_HANDOFF, "proto_reg_handoff_dcerpc_initshutdown", client_data); proto_reg_handoff_dcerpc_initshutdown ();}
 +  {extern void proto_reg_handoff_hip (void); proto_reg_handoff_hip ();}
-   {extern void proto_reg_handoff_dcerpc_lsa (void); if(cb) (*cb)(RA_HANDOFF, "proto_reg_handoff_dcerpc_lsa", client_data); proto_reg_handoff_dcerpc_lsa ();}
+   {extern void proto_reg_handoff_dcerpc_lsarpc (void); if(cb) (*cb)(RA_HANDOFF, "proto_reg_handoff_dcerpc_lsarpc", client_data); proto_reg_handoff_dcerpc_lsarpc ();}
    {extern void proto_reg_handoff_dcerpc_mapi (void); if(cb) (*cb)(RA_HANDOFF, "proto_reg_handoff_dcerpc_mapi", client_data); proto_reg_handoff_dcerpc_mapi ();}
    {extern void proto_reg_handoff_dcerpc_messenger (void); if(cb) (*cb)(RA_HANDOFF, "proto_reg_handoff_dcerpc_messenger", client_data); proto_reg_handoff_dcerpc_messenger ();}
 diff -urN wireshark-0.99.7.orig/epan/ipproto.h wireshark-0.99.7/epan/ipproto.h
@@ -1284,11 +1284,11 @@ diff -urN wireshark-0.99.7.orig/epan/prefs.c wireshark-0.99.7/epan/prefs.c
 @@ -2172,6 +2172,10 @@
          /* Handle old names for UDP preferences. */
          if (strcmp(dotp, "udp_summary_in_tree") == 0)
-           pref = find_preference(module, "summary_in_tree");
+           pref = prefs_find_preference(module, "summary_in_tree");
 +      } else if (strcmp(module->name, "hip") == 0) {
 +        /* Handle old names for HIP preferences. */
 +        if (strcmp(dotp, "hip_summary_in_tree") == 0)
-+          pref = find_preference(module, "summary_in_tree");
++          pref = prefs_find_preference(module, "summary_in_tree");
        } else if (strcmp(module->name, "ndps") == 0) {
          /* Handle old names for NDPS preferences. */
          if (strcmp(dotp, "desegment_ndps") == 0)

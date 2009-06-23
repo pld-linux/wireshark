@@ -1,34 +1,23 @@
---- wireshark-1.0.0/epan/Makefile.am.orig	2008-04-01 05:57:15.796355855 +0200
-+++ wireshark-1.0.0/epan/Makefile.am	2008-04-01 05:59:06.288761964 +0200
-@@ -129,15 +129,17 @@
- 	libwireshark_asmopt.la crypt/libairpdcap.la ftypes/libftypes.la \
- 	dfilter/libdfilter.la dissectors/libcleandissectors.la \
- 	dissectors/libdissectors.la dissectors/libasndissectors.la \
--	dissectors/libpidldissectors.la $(wslua_lib) @SOCKET_LIBS@ @NSL_LIBS@ \
-+	dissectors/libpidldissectors.la ${top_builddir}/wiretap/libwiretap.la \
+--- wireshark-1.2.0/epan/Makefile.am~	2009-06-16 06:03:39.000000000 +0200
++++ wireshark-1.2.0/epan/Makefile.am	2009-06-23 01:19:15.746887934 +0200
+@@ -127,16 +127,17 @@
+ 	@INET_ATON_LO@ @INET_PTON_LO@ @INET_NTOP_LO@ libwireshark_generated.la \
+ 	libwireshark_asmopt.la crc/libcrc.la crypt/libairpdcap.la \
+ 	ftypes/libftypes.la dfilter/libdfilter.la dissectors/libdissectors.la \
+-	dissectors/libdirtydissectors.la $(wslua_lib) @SOCKET_LIBS@ @NSL_LIBS@ \
++	dissectors/libdirtydissectors.la ${top_builddir}/wiretap/libwiretap.la \
 +	$(wslua_lib) @SOCKET_LIBS@ @NSL_LIBS@ \
- 	@ADNS_LIBS@ @LIBGCRYPT_LIBS@ @LIBGNUTLS_LIBS@ @LIBICONV@ @KRB5_LIBS@ \
--	@SSL_LIBS@ @LIBSMI_LDFLAGS@ -lm
-+	@SSL_LIBS@ @LIBSMI_LDFLAGS@ -lm -lgmodule-2.0
- libwireshark_la_DEPENDENCIES = @G_ASCII_STRCASECMP_LO@ @G_ASCII_STRTOULL_LO@ \
-	@INET_ATON_LO@ @INET_PTON_LO@ @INET_NTOP_LO@ libwireshark_generated.la \
- 	libwireshark_asmopt.la crypt/libairpdcap.la ftypes/libftypes.la \
- 	dfilter/libdfilter.la dissectors/libcleandissectors.la \
- 	dissectors/libdissectors.la dissectors/libasndissectors.la \
--	dissectors/libpidldissectors.la $(wslua_lib)
-+	dissectors/libpidldissectors.la ${top_builddir}/wiretap/libwiretap.la \
-+	$(wslua_lib)
+ 	@C_ARES_LIBS@ @ADNS_LIBS@ @LIBGCRYPT_LIBS@ @LIBGNUTLS_LIBS@ \
+ 	@KRB5_LIBS@ @SSL_LIBS@ @LIBSMI_LDFLAGS@ @GEOIP_LIBS@ \
+-	${top_builddir}/wsutil/libwsutil.la -lm
++	${top_builddir}/wsutil/libwsutil.la -lm -lgmodule-2.0
+ 
+ libwireshark_la_DEPENDENCIES = \
+ 	@INET_ATON_LO@ @INET_PTON_LO@ @INET_NTOP_LO@ libwireshark_generated.la \
+ 	libwireshark_asmopt.la crc/libcrc.la crypt/libairpdcap.la \
+ 	ftypes/libftypes.la dfilter/libdfilter.la dissectors/libdissectors.la \
+-	dissectors/libdirtydissectors.la $(wslua_lib) \
++	dissectors/libdirtydissectors.la $(wslua_lib) ${top_builddir}/wiretap/libwiretap.la \
+ 	${top_builddir}/wsutil/libwsutil.la
  
  #EXTRA_PROGRAMS = reassemble_test
- #reassemble_test_LDADD = $(GLIB_LIBS)
---- wireshark-1.0.0/wiretap/Makefile.am.orig	2008-04-01 05:56:08.300994660 +0200
-+++ wireshark-1.0.0/wiretap/Makefile.am	2008-04-01 05:56:47.298314463 +0200
-@@ -67,7 +67,7 @@
- 	$(GENERATOR_FILES) 	\
- 	$(GENERATED_FILES)
- 
--libwiretap_la_LIBADD = libwiretap_generated.la
-+libwiretap_la_LIBADD = libwiretap_generated.la -lglib-2.0
- libwiretap_la_DEPENDENCIES = libwiretap_generated.la
- 
- RUNLEX = $(top_srcdir)/tools/runlex.sh

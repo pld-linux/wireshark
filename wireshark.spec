@@ -11,17 +11,19 @@ Summary(pt_BR.UTF-8):	Analisador de tráfego de rede
 Summary(ru.UTF-8):	Анализатор сетевого траффика
 Summary(uk.UTF-8):	Аналізатор мережевого трафіку
 Name:		wireshark
-Version:	1.0.8
+Version:	1.2.0
 Release:	1
 License:	GPL
 Group:		Networking
 Source0:	http://www.wireshark.org/download/src/%{name}-%{version}.tar.bz2
-# Source0-md5:	09d895f111ee768cc0d7c7e2c427c496
+# Source0-md5:	d3f799e0ae7953cd3426d9e0b6e2708d
 Source1:	%{name}.desktop
 Source2:	%{name}.su-start-script
 Patch0:		%{name}-0.99.5-hip-base05.patch
 Patch1:		%{name}-as_needed.patch
 Patch2:		%{name}-Werror.patch
+Patch3:		%{name}-gcc43.patch
+Patch4:		%{name}-ac.patch
 URL:		http://www.wireshark.org/
 # http://milw0rm.com/exploits/8308:
 #BuildRequires:	security(milw0rm.com/exploits/8308)
@@ -218,6 +220,8 @@ pakietów.
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
+%patch3 -p1
+%patch4 -p1
 perl -pi -e 's/lua5\.1/lua51/g' acinclude.m4
 find -name Makefile.am | xargs perl -pi -e 's/-Werror//g'
 
@@ -285,7 +289,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files common
 %defattr(644,root,root,755)
-%doc AUTHORS ChangeLog FAQ NEWS README{,.[lv]*} doc/{randpkt.txt,README.*}
+%doc AUTHORS* ChangeLog NEWS README{,.[lv]*} doc/{randpkt.txt,README.*}
 %attr(755,root,root) %{_bindir}/capinfos
 %attr(755,root,root) %{_bindir}/dftest
 %attr(755,root,root) %{_bindir}/dumpcap
@@ -297,6 +301,8 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/text2pcap
 %attr(755,root,root) %{_libdir}/libwireshark.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libwireshark.so.0
+%attr(755,root,root) %{_libdir}/libwsutil.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libwsutil.so.0
 %{_mandir}/man1/capinfos.1*
 %{_mandir}/man1/dumpcap.1*
 %{_mandir}/man1/editcap.1*
