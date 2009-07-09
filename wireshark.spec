@@ -12,7 +12,7 @@ Summary(ru.UTF-8):	Анализатор сетевого траффика
 Summary(uk.UTF-8):	Аналізатор мережевого трафіку
 Name:		wireshark
 Version:	1.2.0
-Release:	2
+Release:	3
 License:	GPL
 Group:		Networking
 Source0:	http://www.wireshark.org/download/src/%{name}-%{version}.tar.bz2
@@ -327,4 +327,5 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libwiretap.so
 %{_libdir}/libwiretap.la
+%{_libdir}/libwsutil.la
 %{_includedir}/wiretap
