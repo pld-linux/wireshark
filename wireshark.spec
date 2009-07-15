@@ -12,7 +12,7 @@ Summary(ru.UTF-8):	Анализатор сетевого траффика
 Summary(uk.UTF-8):	Аналізатор мережевого трафіку
 Name:		wireshark
 Version:	1.2.0
-Release:	3
+Release:	4
 License:	GPL
 Group:		Networking
 Source0:	http://www.wireshark.org/download/src/%{name}-%{version}.tar.bz2
