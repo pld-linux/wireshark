@@ -11,12 +11,12 @@ Summary(pt_BR.UTF-8):	Analisador de tráfego de rede
 Summary(ru.UTF-8):	Анализатор сетевого траффика
 Summary(uk.UTF-8):	Аналізатор мережевого трафіку
 Name:		wireshark
-Version:	1.2.0
-Release:	4
+Version:	1.2.1
+Release:	1
 License:	GPL
 Group:		Networking
 Source0:	http://www.wireshark.org/download/src/%{name}-%{version}.tar.bz2
-# Source0-md5:	d3f799e0ae7953cd3426d9e0b6e2708d
+# Source0-md5:	957d1b11a6c9b305bcd106d4084ff71e
 Source1:	%{name}.desktop
 Source2:	%{name}.su-start-script
 Patch0:		%{name}-0.99.5-hip-base05.patch
@@ -25,8 +25,6 @@ Patch2:		%{name}-Werror.patch
 Patch3:		%{name}-gcc43.patch
 Patch4:		%{name}-ac.patch
 URL:		http://www.wireshark.org/
-# http://milw0rm.com/exploits/8308:
-#BuildRequires:	security(milw0rm.com/exploits/8308)
 BuildRequires:	adns-devel
 BuildRequires:	autoconf >= 2.52
 BuildRequires:	automake
@@ -98,10 +96,10 @@ Summary:	Network traffic and protocol analyzer - common files
 Summary(pl.UTF-8):	Analizator ruchu i protokołów sieciowych - wspólne pliki
 Group:		Networking
 Requires:	libwiretap = %{version}-%{release}
+Provides:	%{name}-tools
 Provides:	ethereal-common
 Obsoletes:	ethereal-common
-Provides:	%{name}-tools
-Obsoletes:	%{name}-tools
+Obsoletes:	wireshark-tools
 
 %description common
 Wireshark is the name for powerful graphical network sniffer, traffic
