@@ -1,6 +1,5 @@
 #
 # Conditional build:
-%bcond_with	gtk1		# build gtk+1 (not gtk+2) based wireshark binary
 %bcond_without	kerberos5	# build without Kerberos V support
 %bcond_without	snmp		# build without snmp support
 #
@@ -31,11 +30,7 @@ BuildRequires:	automake
 BuildRequires:	elfutils-devel
 BuildRequires:	flex
 BuildRequires:	gnutls-devel >= 1.0.0
-%if %{with gtk1}
-BuildRequires:	gtk+-devel >= 1.2
-%else
 BuildRequires:	gtk+2-devel >= 1:2.0.0
-%endif
 %{?with_kerberos5:BuildRequires:	heimdal-devel}
 BuildRequires:	libcap-devel
 BuildRequires:	libgcrypt-devel >= 1.1.42
@@ -200,11 +195,7 @@ Summary:	Header files for libwiretap packet capture library
 Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki libwiretap do przechwytywania pakietów
 Group:		Development/Libraries
 Requires:	libwiretap = %{version}-%{release}
-%if %{with gtk1}
-Requires:	gtk+-devel >= 1.2
-%else
 Requires:	gtk+2-devel >= 2.0.0
-%endif
 
 %description -n libwiretap-devel
 Header files for libwiretap packet capture library.
@@ -232,7 +223,6 @@ find -name Makefile.am | xargs perl -pi -e 's/-Werror//g'
 	--enable-randpkt \
 	--enable-dftest \
 	--enable-threads \
-	%{!?with_gtk1:--enable-gtk2} \
 %if %{with kerberos5}
 	--with-krb5 \
 	--with-ssl \
