@@ -1,0 +1,23 @@
+--- wireshark-1.2.4/wireshark-kde.desktop~	2009-11-16 22:33:26.000000000 +0200
++++ wireshark-1.2.4/wireshark-kde.desktop	2009-12-09 10:03:14.646277624 +0200
+@@ -72,6 +72,8 @@
+ TryExec=wireshark
+ Exec=wireshark
+ Terminal=false
++X-KDE-SubstituteUID=true
++OnlyShowIn=KDE;
+ # Categorie entry according to version 1.0 of
+ # http://www.freedesktop.org/wiki/Specifications/menu-spec
+ Categories=System;Monitor;GTK;
+--- wireshark-1.2.4/wireshark.desktop~	2009-11-16 22:33:26.000000000 +0200
++++ wireshark-1.2.4/wireshark.desktop	2009-12-09 10:04:03.796063898 +0200
+@@ -70,7 +70,8 @@
+ Comment[sv]=Nätverkstrafikanalysator
+ Icon=wireshark.png
+ TryExec=wireshark
+-Exec=wireshark
++Exec=gksu -u root wireshark
++NotShowIn=KDE;
+ Terminal=false
+ # Categorie entry according to version 1.0 of
+ # http://www.freedesktop.org/wiki/Specifications/menu-spec
