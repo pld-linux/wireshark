@@ -39,6 +39,7 @@ URL:		http://www.wireshark.org/
 BuildRequires:	adns-devel
 BuildRequires:	autoconf >= 2.52
 BuildRequires:	automake
+BuildRequires:	bison
 BuildRequires:	elfutils-devel
 BuildRequires:	flex
 BuildRequires:	gnutls-devel >= 1.0.0
@@ -53,6 +54,7 @@ BuildRequires:	libxslt-progs
 BuildRequires:	lua51-devel
 %{?with_snmp:BuildRequires:	net-snmp-devel}
 BuildRequires:	pcre-devel
+BuildRequires:	perl-tools-pod
 BuildRequires:	pkgconfig
 BuildRequires:	portaudio-devel
 BuildRequires:	sed >= 4.0
