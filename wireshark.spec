@@ -11,18 +11,17 @@ Summary(ru.UTF-8):	Анализатор сетевого траффика
 Summary(uk.UTF-8):	Аналізатор мережевого трафіку
 Name:		wireshark
 Version:	1.2.4
-Release:	1
+Release:	2
 License:	GPL
 Group:		Networking
 Source0:	http://www.wireshark.org/download/src/%{name}-%{version}.tar.bz2
 # Source0-md5:	ae4533da7d0e54c236e1eed966c42163
-Source1:	%{name}.desktop
-Source2:	%{name}.su-start-script
 Patch0:		%{name}-0.99.5-hip-base05.patch
 Patch1:		%{name}-as_needed.patch
 Patch2:		%{name}-Werror.patch
 Patch3:		%{name}-gcc43.patch
 Patch4:		%{name}-ac.patch
+Patch5:		%{name}-desktop.patch
 URL:		http://www.wireshark.org/
 BuildRequires:	adns-devel
 BuildRequires:	autoconf >= 2.52
@@ -41,13 +40,12 @@ BuildRequires:	libxslt-progs
 BuildRequires:	lua51-devel
 %{?with_snmp:BuildRequires:	net-snmp-devel}
 BuildRequires:	pcre-devel
-BuildRequires:	perl-devel
 BuildRequires:	pkgconfig
 BuildRequires:	portaudio-devel
+BuildRequires:	sed >= 4.0
 BuildRequires:	zlib-devel
 Requires:	%{name}-common = %{version}-%{release}
 Requires:	libpcap >= 0.4
-Suggests:	xterm
 Provides:	ethereal
 Provides:	ethereal-gnome
 Obsoletes:	ethereal
@@ -194,8 +192,8 @@ libpcap, obecnie standardu przechwytywania pakietów w systemach Unix.
 Summary:	Header files for libwiretap packet capture library
 Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki libwiretap do przechwytywania pakietów
 Group:		Development/Libraries
-Requires:	libwiretap = %{version}-%{release}
 Requires:	gtk+2-devel >= 2.0.0
+Requires:	libwiretap = %{version}-%{release}
 
 %description -n libwiretap-devel
 Header files for libwiretap packet capture library.
@@ -206,13 +204,15 @@ pakietów.
 
 %prep
 %setup -q
+cp wireshark.desktop wireshark-kde.desktop
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
 %patch4 -p1
-perl -pi -e 's/lua5\.1/lua51/g' acinclude.m4
-find -name Makefile.am | xargs perl -pi -e 's/-Werror//g'
+%patch5 -p1
+sed -i -e 's/lua5\.1/lua51/g' acinclude.m4
+find -name Makefile.am | xargs sed -i -e 's/-Werror//g'
 
 %build
 %{__libtoolize}
@@ -228,7 +228,7 @@ find -name Makefile.am | xargs perl -pi -e 's/-Werror//g'
 	--with-ssl \
 %endif
 	%{!?with_snmp:--without-net-snmp --without-ucdsnmp} \
-	--with-lua="/usr" \
+	--with-lua=/usr \
 	--with-plugindir=%{_libdir}/%{name}
 
 %{__make}
@@ -240,12 +240,10 @@ install -d $RPM_BUILD_ROOT{%{_desktopdir},%{_pixmapsdir},%{_includedir}/wiretap}
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
-install %{SOURCE1} $RPM_BUILD_ROOT%{_desktopdir}
-install %{SOURCE2} $RPM_BUILD_ROOT%{_bindir}/%{name}_su
-install image/hi48-app-wireshark.png \
-	$RPM_BUILD_ROOT%{_pixmapsdir}/%{name}.png
+cp -a image/hi48-app-wireshark.png $RPM_BUILD_ROOT%{_pixmapsdir}/%{name}.png
+cp -a wireshark-kde.desktop $RPM_BUILD_ROOT%{_desktopdir}
 
-install wiretap/*.h $RPM_BUILD_ROOT%{_includedir}/wiretap
+cp -a wiretap/*.h $RPM_BUILD_ROOT%{_includedir}/wiretap
 
 # plugins *.la are useless - *.so are loaded through gmodule
 rm -f $RPM_BUILD_ROOT%{_libdir}/%{name}/plugins/%{version}*/*.la
@@ -265,14 +263,13 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/wireshark
-%attr(755,root,root) %{_bindir}/%{name}_su
 %dir %{_libdir}/%{name}
 %dir %{_libdir}/%{name}/plugins
 %dir %{_libdir}/%{name}/plugins/%{version}*
 %attr(755,root,root) %{_libdir}/%{name}/plugins/%{version}*/*.so
 %{_datadir}/%{name}
 %{_desktopdir}/*.desktop
-%{_pixmapsdir}/*
+%{_pixmapsdir}/*.png
 %{_mandir}/man1/wireshark.1*
 
 %files common
@@ -314,6 +311,7 @@ rm -rf $RPM_BUILD_ROOT
 %files -n libwiretap-devel
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libwiretap.so
+%attr(755,root,root) %{_libdir}/libwsutil.so
 %{_libdir}/libwiretap.la
 %{_libdir}/libwsutil.la
 %{_includedir}/wiretap
