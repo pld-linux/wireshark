@@ -1,3 +1,16 @@
+# TODO
+# - think of loosing dependency loop:
+#   Executing rpm --upgrade -vh --root /...
+#   error: LOOP:
+#   error: removing libwiretap-1.2.4-1.i686 "Requires(auto): libwsutil.so.0" from tsort relations.
+#   error:     libwiretap-1.2.4-1.i686                  Requires(auto): libwsutil.so.0
+#   error: removing wireshark-common-1.2.4-1.i686 "Requires: libwiretap = 1.2.4-1" from tsort relations.
+#   error:     wireshark-common-1.2.4-1.i686            Requires: libwiretap = 1.2.4-1
+#   error: LOOP:
+#   error: removing libwiretap-1.2.3-1.i686 "Requires: libwiretap = 1.2.3-1" from tsort relations.
+#   error:     libwiretap-1.2.3-1.i686                  Requires: libwiretap = 1.2.3-1
+#   error: removing wireshark-common-1.2.3-1.i686 "Requires(auto): libwsutil.so.0" from tsort relations.
+#   error:     wireshark-common-1.2.3-1.i686            Requires(auto): libwsutil.so.0
 #
 # Conditional build:
 %bcond_without	kerberos5	# build without Kerberos V support
