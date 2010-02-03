@@ -5,11 +5,11 @@
 %bcond_without	snmp		# build without snmp support
 #
 Summary:	Network traffic and protocol analyzer
-Summary(es):	Analizador de tr·fico de red
-Summary(pl):	Analizator ruchu i protoko≥Ûw sieciowych
-Summary(pt_BR):	Analisador de tr·fego de rede
-Summary(ru):	·Œ¡Ã…⁄¡‘œ“ ”≈‘≈◊œ«œ ‘“¡∆∆…À¡
-Summary(uk):	·Œ¡Ã¶⁄¡‘œ“ Õ≈“≈÷≈◊œ«œ ‘“¡∆¶À’
+Summary(es.UTF-8):	Analizador de tr√°fico de red
+Summary(pl.UTF-8):	Analizator ruchu i protoko≈Ç√≥w sieciowych
+Summary(pt_BR.UTF-8):	Analisador de tr√°fego de rede
+Summary(ru.UTF-8):	–ê–Ω–∞–ª–∏–∑–∞—Ç–æ—Ä —Å–µ—Ç–µ–≤–æ–≥–æ —Ç—Ä–∞—Ñ—Ñ–∏–∫–∞
+Summary(uk.UTF-8):	–ê–Ω–∞–ª—ñ–∑–∞—Ç–æ—Ä –º–µ—Ä–µ–∂–µ–≤–æ–≥–æ —Ç—Ä–∞—Ñ—ñ–∫—É
 Name:		wireshark
 Version:	1.0.3
 Release:	1
@@ -203,9 +203,9 @@ Requires:	gtk+2-devel >= 2.0.0
 %description -n libwiretap-devel
 Header files for libwiretap packet capture library.
 
-%description -n libwiretap-devel -l pl
-Pliki nag≥Ûwkowe biblioteki libwiretap s≥uø±cej do przechwytywania
-pakietÛw.
+%description -n libwiretap-devel -l pl.UTF-8
+Pliki nag≈Ç√≥wkowe biblioteki libwiretap s≈Çu≈ºƒÖcej do przechwytywania
+pakiet√≥w.
 
 %prep
 %setup -q
