@@ -15,7 +15,7 @@
 # Conditional build:
 %bcond_without	kerberos5	# build without Kerberos V support
 %bcond_without	snmp		# build without snmp support
-#
+
 Summary:	Network traffic and protocol analyzer
 Summary(es.UTF-8):	Analizador de tráfico de red
 Summary(pl.UTF-8):	Analizator ruchu i protokołów sieciowych
@@ -23,12 +23,12 @@ Summary(pt_BR.UTF-8):	Analisador de tráfego de rede
 Summary(ru.UTF-8):	Анализатор сетевого траффика
 Summary(uk.UTF-8):	Аналізатор мережевого трафіку
 Name:		wireshark
-Version:	1.2.6
+Version:	1.2.7
 Release:	1
 License:	GPL
 Group:		Networking
 Source0:	http://www.wireshark.org/download/src/%{name}-%{version}.tar.bz2
-# Source0-md5:	f3e0917ed393366bbf96c53b58cb0931
+# Source0-md5:	cff6b18aa47a7e3eb973efe62c676b50
 Patch0:		%{name}-0.99.5-hip-base05.patch
 Patch1:		%{name}-as_needed.patch
 Patch2:		%{name}-Werror.patch

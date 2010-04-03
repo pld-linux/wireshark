@@ -1,9 +1,9 @@
---- wireshark-1.2.0/acinclude.m4~	2009-06-23 22:22:38.015762748 +0200
-+++ wireshark-1.2.0/acinclude.m4	2009-06-23 22:25:13.444887681 +0200
-@@ -302,7 +302,7 @@
+--- wireshark-1.2.7/acinclude.m4~	2010-04-01 14:02:02.000000000 +0300
++++ wireshark-1.2.7/acinclude.m4	2010-04-01 14:03:16.846003020 +0300
+@@ -304,7 +304,7 @@
+ 	  # work.
  	  #
  	  AC_MSG_CHECKING(for broken pcap-config)
- 	  if test -n "$PCAP_CONFIG" ; then
 -	    case "`\"$PCAP_CONFIG\" --libs`" in
 +	    case "`$PCAP_CONFIG --libs`" in
  
