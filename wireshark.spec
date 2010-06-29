@@ -23,20 +23,17 @@ Summary(pt_BR.UTF-8):	Analisador de tráfego de rede
 Summary(ru.UTF-8):	Анализатор сетевого траффика
 Summary(uk.UTF-8):	Аналізатор мережевого трафіку
 Name:		wireshark
-Version:	1.2.9
-Release:	1
+Version:	1.4.0
+Release:	0.1
 License:	GPL
 Group:		Networking
-Source0:	http://www.wireshark.org/download/src/%{name}-%{version}.tar.bz2
-# Source0-md5:	a4240c36f1e668d85b703eacb7c0a95e
-Patch0:		%{name}-0.99.5-hip-base05.patch
-Patch1:		%{name}-as_needed.patch
-Patch2:		%{name}-Werror.patch
-Patch3:		%{name}-gcc43.patch
-Patch4:		%{name}-ac.patch
-Patch5:		%{name}-desktop.patch
+Source0:	http://www.wireshark.org/download/src/%{name}-%{version}rc1.tar.bz2
+# Source0-md5:	ca5ee30ed798900142d9cd4d81637b58
+Patch0:		%{name}-Werror.patch
+Patch1:		%{name}-gcc43.patch
+Patch2:		%{name}-ac.patch
+Patch3:		%{name}-desktop.patch
 URL:		http://www.wireshark.org/
-BuildRequires:	adns-devel
 BuildRequires:	autoconf >= 2.52
 BuildRequires:	automake
 BuildRequires:	bison
@@ -218,14 +215,12 @@ Pliki nagłówkowe biblioteki libwiretap służącej do przechwytywania
 pakietów.
 
 %prep
-%setup -q
+%setup -q -n %{name}-%{version}rc1
 cp wireshark.desktop wireshark-kde.desktop
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
-%patch4 -p1
-%patch5 -p1
 sed -i -e 's/lua5\.1/lua51/g' acinclude.m4
 find -name Makefile.am | xargs sed -i -e 's/-Werror//g'
 
@@ -238,13 +233,13 @@ find -name Makefile.am | xargs sed -i -e 's/-Werror//g'
 	--enable-randpkt \
 	--enable-dftest \
 	--enable-threads \
+	--with-pcre \
 %if %{with kerberos5}
 	--with-krb5 \
 	--with-ssl \
 %endif
 	%{!?with_snmp:--without-net-snmp --without-ucdsnmp} \
-	--with-lua=/usr \
-	--with-plugindir=%{_libdir}/%{name}
+	--with-lua=/usr
 
 %{__make}
 

@@ -1,15 +1,26 @@
---- wireshark-1.2.7/acinclude.m4~	2010-04-01 14:02:02.000000000 +0300
-+++ wireshark-1.2.7/acinclude.m4	2010-04-01 14:03:16.846003020 +0300
-@@ -304,7 +304,7 @@
- 	  # work.
- 	  #
- 	  AC_MSG_CHECKING(for broken pcap-config)
+--- wireshark-1.4.0rc1/acinclude.m4~	2010-06-29 13:18:13.710088062 +0200
++++ wireshark-1.4.0rc1/acinclude.m4	2010-06-29 13:19:37.996897805 +0200
+@@ -338,7 +338,7 @@
+ 	    # work.
+ 	    #
+ 	    AC_MSG_CHECKING(for broken pcap-config)
 -	    case "`\"$PCAP_CONFIG\" --libs`" in
 +	    case "`$PCAP_CONFIG --libs`" in
  
  	    "-L "*)
  	      #
-@@ -397,9 +397,9 @@
+@@ -361,8 +361,8 @@
+ 	    # Found it, and it's usable; use it to get the include flags
+ 	    # for libpcap.
+ 	    #
+-	    CFLAGS="$CFLAGS `\"$PCAP_CONFIG\" --cflags`"
+-	    CPPFLAGS="$CPPFLAGS `\"$PCAP_CONFIG\" --cflags`"
++	    CFLAGS="$CFLAGS `$PCAP_CONFIG --cflags`"
++	    CPPFLAGS="$CPPFLAGS `$PCAP_CONFIG --cflags`"
+ 	  else  
+ 	    #
+ 	    # Didn't find it; we have to look for libpcap ourselves.
+@@ -433,9 +433,9 @@
  	  # libraries libpcap needs.
  	  #
  	  if test x$enable_static = xyes; then
