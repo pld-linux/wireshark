@@ -24,11 +24,11 @@ Summary(ru.UTF-8):	Анализатор сетевого траффика
 Summary(uk.UTF-8):	Аналізатор мережевого трафіку
 Name:		wireshark
 Version:	1.4.0
-Release:	0.1
+Release:	1
 License:	GPL
-Group:		Networking
-Source0:	http://www.wireshark.org/download/src/%{name}-%{version}rc1.tar.bz2
-# Source0-md5:	ca5ee30ed798900142d9cd4d81637b58
+Group:		Networking/Utilities
+Source0:	http://www.wireshark.org/download/src/%{name}-%{version}.tar.bz2
+# Source0-md5:	13b188baea23cdad40b7a55921384a77
 Patch0:		%{name}-Werror.patch
 Patch1:		%{name}-gcc43.patch
 Patch2:		%{name}-ac.patch
@@ -215,7 +215,7 @@ Pliki nagłówkowe biblioteki libwiretap służącej do przechwytywania
 pakietów.
 
 %prep
-%setup -q -n %{name}-%{version}rc1
+%setup -q -n %{name}-%{version}
 cp wireshark.desktop wireshark-kde.desktop
 %patch0 -p1
 %patch1 -p1
