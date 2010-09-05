@@ -299,18 +299,20 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/libwsutil.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libwsutil.so.0
 %{_mandir}/man1/capinfos.1*
+%{_mandir}/man1/dftest.1*
 %{_mandir}/man1/dumpcap.1*
 %{_mandir}/man1/editcap.1*
 %{_mandir}/man1/idl2wrs.1*
 %{_mandir}/man1/mergecap.1*
 %{_mandir}/man1/rawshark.1*
+%{_mandir}/man1/randpkt.1*
 %{_mandir}/man1/text2pcap.1*
 %{_mandir}/man4/wireshark-filter.4*
 
 %files -n twireshark
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/tshark
-%{_mandir}/man1/tshark*
+%{_mandir}/man1/tshark*.1*
 
 %files -n libwiretap
 %defattr(644,root,root,755)
