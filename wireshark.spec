@@ -1,4 +1,5 @@
 # TODO
+# - use policykit to gain root instead of .desktop file hacks
 # - think of loosing dependency loop:
 #   Executing rpm --upgrade -vh --root /...
 #   error: LOOP:
@@ -24,7 +25,7 @@ Summary(ru.UTF-8):	Анализатор сетевого траффика
 Summary(uk.UTF-8):	Аналізатор мережевого трафіку
 Name:		wireshark
 Version:	1.4.2
-Release:	1
+Release:	2
 License:	GPL
 Group:		Networking/Utilities
 Source0:	http://www.wireshark.org/download/src/%{name}-%{version}.tar.bz2
@@ -251,6 +252,7 @@ install -d $RPM_BUILD_ROOT{%{_desktopdir},%{_pixmapsdir},%{_includedir}/wiretap}
 	DESTDIR=$RPM_BUILD_ROOT
 
 cp -a image/hi48-app-wireshark.png $RPM_BUILD_ROOT%{_pixmapsdir}/%{name}.png
+cp -a wireshark.desktop $RPM_BUILD_ROOT%{_desktopdir}
 cp -a wireshark-kde.desktop $RPM_BUILD_ROOT%{_desktopdir}
 
 cp -a wiretap/*.h $RPM_BUILD_ROOT%{_includedir}/wiretap
@@ -278,7 +280,8 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_libdir}/%{name}/plugins/%{version}*
 %attr(755,root,root) %{_libdir}/%{name}/plugins/%{version}*/*.so
 %{_datadir}/%{name}
-%{_desktopdir}/*.desktop
+%{_desktopdir}/%{name}.desktop
+%{_desktopdir}/%{name}-kde.desktop
 %{_pixmapsdir}/*.png
 %{_mandir}/man1/wireshark.1*
 
