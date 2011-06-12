@@ -17,7 +17,7 @@
 -	    CPPFLAGS="$CPPFLAGS `\"$PCAP_CONFIG\" --cflags`"
 +	    CFLAGS="$CFLAGS `$PCAP_CONFIG --cflags`"
 +	    CPPFLAGS="$CPPFLAGS `$PCAP_CONFIG --cflags`"
- 	  else  
+ 	  else
  	    #
  	    # Didn't find it; we have to look for libpcap ourselves.
 @@ -433,9 +433,9 @@

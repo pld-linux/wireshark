@@ -9,6 +9,7 @@
  Terminal=false
 +X-KDE-SubstituteUID=true
 +OnlyShowIn=KDE;
+ MimeType=application/vnd.tcpdump.pcap;
  # Categorie entry according to version 1.0 of
  # http://www.freedesktop.org/wiki/Specifications/menu-spec
 -Categories=System;Monitor;GTK;
@@ -27,6 +28,7 @@
 +Exec=gksu -u root wireshark
 +NotShowIn=KDE;
  Terminal=false
+ MimeType=application/vnd.tcpdump.pcap;
  # Categorie entry according to version 1.0 of
  # http://www.freedesktop.org/wiki/Specifications/menu-spec
 -Categories=System;Monitor;GTK;
