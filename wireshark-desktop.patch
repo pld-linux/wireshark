@@ -5,7 +5,7 @@
 +Comment[pl]=Wireshark - analizator ruchu w sieci
  Icon=wireshark.png
  TryExec=wireshark
- Exec=wireshark
+ Exec=wireshark %f
  Terminal=false
 +X-KDE-SubstituteUID=true
 +OnlyShowIn=KDE;
@@ -24,7 +24,7 @@
 +Comment[pl]=Wireshark - analizator ruchu w sieci
  Icon=wireshark.png
  TryExec=wireshark
--Exec=wireshark
+-Exec=wireshark %f
 +Exec=gksu -u root wireshark
 +NotShowIn=KDE;
  Terminal=false
