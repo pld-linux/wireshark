@@ -1,5 +1,6 @@
 # TODO
-# - use policykit to gain root instead of .desktop file hacks
+# - use policykit to gain root
+# - use %caps when rpm supports it: %attr(750,root,wireshark) %caps(cap_net_raw,cap_net_admin=eip) %{_sbindir}/dumpcap
 # - think of loosing dependency loop:
 #   Executing rpm --upgrade -vh --root /...
 #   error: LOOP:
@@ -25,7 +26,7 @@ Summary(ru.UTF-8):	Анализатор сетевого траффика
 Summary(uk.UTF-8):	Аналізатор мережевого трафіку
 Name:		wireshark
 Version:	1.6.7
-Release:	1
+Release:	2
 License:	GPL
 Group:		Networking/Utilities
 Source0:	http://www.wireshark.org/download/src/%{name}-%{version}.tar.bz2
@@ -104,8 +105,11 @@ Group:		Networking
 Requires:	libwiretap = %{version}-%{release}
 Provides:	%{name}-tools
 Provides:	ethereal-common
+Provides:	group(wireshark)
 Obsoletes:	ethereal-common
 Obsoletes:	wireshark-tools
+Requires(post,postun):	/sbin/ldconfig
+Requires(post,postun):	/sbin/setcap
 
 %description common
 Wireshark is the name for powerful graphical network sniffer, traffic
@@ -216,8 +220,7 @@ Pliki nagłówkowe biblioteki libwiretap służącej do przechwytywania
 pakietów.
 
 %prep
-%setup -q -n %{name}-%{version}
-cp wireshark.desktop wireshark-kde.desktop
+%setup -q
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
@@ -251,9 +254,8 @@ install -d $RPM_BUILD_ROOT{%{_desktopdir},%{_pixmapsdir},%{_includedir}/wiretap}
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
-cp -a image/hi48-app-wireshark.png $RPM_BUILD_ROOT%{_pixmapsdir}/%{name}.png
-cp -a wireshark.desktop $RPM_BUILD_ROOT%{_desktopdir}
-cp -a wireshark-kde.desktop $RPM_BUILD_ROOT%{_desktopdir}
+cp -p image/hi48-app-wireshark.png $RPM_BUILD_ROOT%{_pixmapsdir}/%{name}.png
+cp -p wireshark.desktop $RPM_BUILD_ROOT%{_desktopdir}
 
 cp -a wiretap/*.h $RPM_BUILD_ROOT%{_includedir}/wiretap
 
@@ -266,8 +268,19 @@ rm -f $RPM_BUILD_ROOT%{_libdir}/libwireshark.{so,la}
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%post	common -p /sbin/ldconfig
-%postun	common -p /sbin/ldconfig
+%pre common
+%groupadd -P %{name}-common -g 104 wireshark
+
+%post	common
+/sbin/ldconfig
+/sbin/setcap 'CAP_NET_RAW+eip CAP_NET_ADMIN+eip' %{_bindir}/dumpcap
+exit 0
+
+%postun	common
+/sbin/ldconfig
+if [ "$1" = "0" ]; then
+	%groupremove wireshark
+fi
 
 %post	-n libwiretap -p /sbin/ldconfig
 %postun	-n libwiretap -p /sbin/ldconfig
@@ -281,7 +294,6 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/%{name}/plugins/%{version}*/*.so
 %{_datadir}/%{name}
 %{_desktopdir}/%{name}.desktop
-%{_desktopdir}/%{name}-kde.desktop
 %{_pixmapsdir}/*.png
 %{_mandir}/man1/wireshark.1*
 
@@ -290,7 +302,7 @@ rm -rf $RPM_BUILD_ROOT
 %doc AUTHORS* ChangeLog NEWS README{,.[lv]*} doc/{randpkt.txt,README.*}
 %attr(755,root,root) %{_bindir}/capinfos
 %attr(755,root,root) %{_bindir}/dftest
-%attr(755,root,root) %{_bindir}/dumpcap
+%attr(750,root,wireshark) %{_bindir}/dumpcap
 %attr(755,root,root) %{_bindir}/editcap
 %attr(755,root,root) %{_bindir}/idl2wrs
 %attr(755,root,root) %{_bindir}/mergecap

@@ -1,35 +1,14 @@
---- wireshark-1.2.4/wireshark-kde.desktop	2009-12-09 10:09:05.765409184 +0200
-+++ wireshark-1.2.4/wireshark-kde.desktop	2009-12-09 10:18:48.798894254 +0200
-@@ -71,7 +71,11 @@
-+Comment[ja]=The Wireshark ネットワーク・アナライザー
-+Comment[pl]=Wireshark - analizator ruchu w sieci
- Icon=wireshark.png
- TryExec=wireshark
- Exec=wireshark %f
- Terminal=false
-+X-KDE-SubstituteUID=true
-+OnlyShowIn=KDE;
- MimeType=application/vnd.tcpdump.pcap;
- # Categorie entry according to version 1.0 of
- # http://www.freedesktop.org/wiki/Specifications/menu-spec
--Categories=System;Monitor;GTK;
-+Categories=GTK;Network;
---- wireshark-1.2.4/wireshark.desktop~	2009-11-16 22:33:26.000000000 +0200
-+++ wireshark-1.2.4/wireshark.desktop	2009-12-09 10:16:55.333281083 +0200
-@@ -68,10 +68,13 @@
+--- wireshark-1.6.7/wireshark.desktop	2012-06-02 18:29:44.784985048 +0300
++++ wireshark-1.6.7/wireshark.desktop	2012-06-02 18:30:27.236953001 +0300
+@@ -67,6 +67,8 @@
+ Comment=Network traffic analyzer
  Comment[fi]=Verkkoliikenne analysaattori
  Comment[fr]=Analyseur de trafic réseau
- Comment[sv]=Nätverkstrafikanalysator
 +Comment[ja]=The Wireshark ネットワーク・アナライザー
 +Comment[pl]=Wireshark - analizator ruchu w sieci
+ Comment[sv]=Nätverkstrafikanalysator
  Icon=wireshark.png
  TryExec=wireshark
--Exec=wireshark %f
-+Exec=gksu -u root wireshark
-+NotShowIn=KDE;
- Terminal=false
- MimeType=application/vnd.tcpdump.pcap;
- # Categorie entry according to version 1.0 of
- # http://www.freedesktop.org/wiki/Specifications/menu-spec
+@@ -78 +80 @@
 -Categories=System;Monitor;GTK;
 +Categories=GTK;Network;
