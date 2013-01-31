@@ -9,13 +9,11 @@
  
  	    "-L "*)
  	      #
-@@ -361,8 +361,8 @@
+@@ -361,7 +361,7 @@
  	    # Found it, and it's usable; use it to get the include flags
  	    # for libpcap.
  	    #
--	    CFLAGS="$CFLAGS `\"$PCAP_CONFIG\" --cflags`"
 -	    CPPFLAGS="$CPPFLAGS `\"$PCAP_CONFIG\" --cflags`"
-+	    CFLAGS="$CFLAGS `$PCAP_CONFIG --cflags`"
 +	    CPPFLAGS="$CPPFLAGS `$PCAP_CONFIG --cflags`"
  	  else
  	    #

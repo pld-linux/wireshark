@@ -25,12 +25,12 @@ Summary(pt_BR.UTF-8):	Analisador de tráfego de rede
 Summary(ru.UTF-8):	Анализатор сетевого траффика
 Summary(uk.UTF-8):	Аналізатор мережевого трафіку
 Name:		wireshark
-Version:	1.6.7
-Release:	2
+Version:	1.8.4
+Release:	1
 License:	GPL
 Group:		Networking/Utilities
 Source0:	http://www.wireshark.org/download/src/%{name}-%{version}.tar.bz2
-# Source0-md5:	7e39f1c0ea4abd8bffa5122df800ca5d
+# Source0-md5:	ce22aa0fe7ecb5af39c93ff905c7d026
 Patch0:		%{name}-Werror.patch
 Patch1:		%{name}-gcc43.patch
 Patch2:		%{name}-ac.patch
@@ -236,8 +236,7 @@ find -name Makefile.am | xargs sed -i -e 's/-Werror//g'
 %configure \
 	--enable-randpkt \
 	--enable-dftest \
-	--enable-threads \
-	--with-pcre \
+	--enable-packet-editor \
 %if %{with kerberos5}
 	--with-krb5 \
 	--with-ssl \
@@ -304,20 +303,18 @@ fi
 %attr(755,root,root) %{_bindir}/dftest
 %attr(750,root,wireshark) %{_bindir}/dumpcap
 %attr(755,root,root) %{_bindir}/editcap
-%attr(755,root,root) %{_bindir}/idl2wrs
 %attr(755,root,root) %{_bindir}/mergecap
 %attr(755,root,root) %{_bindir}/randpkt
 %attr(755,root,root) %{_bindir}/rawshark
 %attr(755,root,root) %{_bindir}/text2pcap
 %attr(755,root,root) %{_libdir}/libwireshark.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libwireshark.so.1
+%attr(755,root,root) %ghost %{_libdir}/libwireshark.so.2
 %attr(755,root,root) %{_libdir}/libwsutil.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libwsutil.so.1
+%attr(755,root,root) %ghost %{_libdir}/libwsutil.so.2
 %{_mandir}/man1/capinfos.1*
 %{_mandir}/man1/dftest.1*
 %{_mandir}/man1/dumpcap.1*
 %{_mandir}/man1/editcap.1*
-%{_mandir}/man1/idl2wrs.1*
 %{_mandir}/man1/mergecap.1*
 %{_mandir}/man1/rawshark.1*
 %{_mandir}/man1/randpkt.1*
@@ -333,7 +330,7 @@ fi
 %defattr(644,root,root,755)
 %doc wiretap/{README*,AUTHORS}
 %attr(755,root,root) %{_libdir}/libwiretap.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libwiretap.so.1
+%attr(755,root,root) %ghost %{_libdir}/libwiretap.so.2
 
 %files -n libwiretap-devel
 %defattr(644,root,root,755)
