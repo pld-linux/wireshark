@@ -124,9 +124,11 @@ This package provides set of tools for manipulating capture files. It
 contains:
 - capinfo - prints informatio about binary capture files,
 - dftest - shows display filter byte-code,
+- dumpcap - dumps network traffic to a file,
 - editcap - edit and/or translate the format of capture files,
-- idl2eth - corba IDL to Wireshark Plugin Generator,
 - mergecap - merges two capture files into one,
+- randpkt - generates libpcap trace file full of random packets,
+- rawshark - dumps and analyzes raw libpcap data,
 - text2cap - generate a capture file from an ASCII hexdump of packets.
 
 %description common -l es.UTF-8
@@ -145,9 +147,11 @@ Pakiet ten dostarcza także zestaw narzędzi do obróbki plików z
 przechwyconymi pakietami, obejmujący:
 - capinfo - do wyświetlania informacji o binarnych plikach zrzutu,
 - dftest - do pokazywania bajtkodu filtrów wyświetlania,
+- dumpcap - do zrzucania ruchu sieciowego do pliku,
 - editcap - do edycji plików i tłumaczenia ich na inne formaty,
-- idl2eth - do konwersji Corba IDL do wtyczek Wireshark,
 - mergecap - do łączenia dwóch plików w jeden,
+- randpkt - do generowania plikow cap z losowymi danymi,
+- rawshark - do obróbki plików cap,
 - text2cap - do generowania pliku cap z szesnastkowego zrzutu ASCII
   pakietów.
 
