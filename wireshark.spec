@@ -25,12 +25,12 @@ Summary(pt_BR.UTF-8):	Analisador de tráfego de rede
 Summary(ru.UTF-8):	Анализатор сетевого траффика
 Summary(uk.UTF-8):	Аналізатор мережевого трафіку
 Name:		wireshark
-Version:	1.8.7
+Version:	1.10.0
 Release:	1
 License:	GPL
 Group:		Networking/Utilities
 Source0:	http://www.wireshark.org/download/src/%{name}-%{version}.tar.bz2
-# Source0-md5:	f4198728a20aa40752906031e08544f8
+# Source0-md5:	72e51cd33fd33c7044a41c2ab51ad7af
 Patch0:		%{name}-Werror.patch
 Patch1:		%{name}-gcc43.patch
 Patch2:		%{name}-ac.patch
@@ -50,7 +50,7 @@ BuildRequires:	libpcap-devel >= 2:1.0.0-4
 BuildRequires:	libsmi-devel
 BuildRequires:	libtool
 BuildRequires:	libxslt-progs
-BuildRequires:	lua51-devel
+BuildRequires:	lua52-devel
 %{?with_snmp:BuildRequires:	net-snmp-devel}
 BuildRequires:	pcre-devel
 BuildRequires:	perl-tools-pod
@@ -229,7 +229,6 @@ pakietów.
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
-sed -i -e 's/lua5\.1/lua51/g' acinclude.m4
 find -name Makefile.am | xargs sed -i -e 's/-Werror//g'
 
 %build
@@ -246,7 +245,7 @@ find -name Makefile.am | xargs sed -i -e 's/-Werror//g'
 	--with-ssl \
 %endif
 	%{!?with_snmp:--without-net-snmp --without-ucdsnmp} \
-	--with-lua=/usr
+	--with-lua
 
 %{__make}
 
@@ -310,11 +309,12 @@ fi
 %attr(755,root,root) %{_bindir}/mergecap
 %attr(755,root,root) %{_bindir}/randpkt
 %attr(755,root,root) %{_bindir}/rawshark
+%attr(755,root,root) %{_bindir}/reordercap
 %attr(755,root,root) %{_bindir}/text2pcap
 %attr(755,root,root) %{_libdir}/libwireshark.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libwireshark.so.2
+%attr(755,root,root) %ghost %{_libdir}/libwireshark.so.3
 %attr(755,root,root) %{_libdir}/libwsutil.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libwsutil.so.2
+%attr(755,root,root) %ghost %{_libdir}/libwsutil.so.3
 %{_mandir}/man1/capinfos.1*
 %{_mandir}/man1/dftest.1*
 %{_mandir}/man1/dumpcap.1*
@@ -322,6 +322,7 @@ fi
 %{_mandir}/man1/mergecap.1*
 %{_mandir}/man1/rawshark.1*
 %{_mandir}/man1/randpkt.1*
+%{_mandir}/man1/reordercap.1*
 %{_mandir}/man1/text2pcap.1*
 %{_mandir}/man4/wireshark-filter.4*
 
@@ -334,7 +335,7 @@ fi
 %defattr(644,root,root,755)
 %doc wiretap/{README*,AUTHORS}
 %attr(755,root,root) %{_libdir}/libwiretap.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libwiretap.so.2
+%attr(755,root,root) %ghost %{_libdir}/libwiretap.so.3
 
 %files -n libwiretap-devel
 %defattr(644,root,root,755)
