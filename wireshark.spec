@@ -1,18 +1,7 @@
 # TODO
+# - gtk+3 bcond?
 # - use policykit to gain root
 # - use %caps when rpm supports it: %attr(750,root,wireshark) %caps(cap_net_raw,cap_net_admin=eip) %{_sbindir}/dumpcap
-# - think of loosing dependency loop:
-#   Executing rpm --upgrade -vh --root /...
-#   error: LOOP:
-#   error: removing libwiretap-1.2.4-1.i686 "Requires(auto): libwsutil.so.0" from tsort relations.
-#   error:     libwiretap-1.2.4-1.i686                  Requires(auto): libwsutil.so.0
-#   error: removing wireshark-common-1.2.4-1.i686 "Requires: libwiretap = 1.2.4-1" from tsort relations.
-#   error:     wireshark-common-1.2.4-1.i686            Requires: libwiretap = 1.2.4-1
-#   error: LOOP:
-#   error: removing libwiretap-1.2.3-1.i686 "Requires: libwiretap = 1.2.3-1" from tsort relations.
-#   error:     libwiretap-1.2.3-1.i686                  Requires: libwiretap = 1.2.3-1
-#   error: removing wireshark-common-1.2.3-1.i686 "Requires(auto): libwsutil.so.0" from tsort relations.
-#   error:     wireshark-common-1.2.3-1.i686            Requires(auto): libwsutil.so.0
 #
 # Conditional build:
 %bcond_without	kerberos5	# build without Kerberos V support
@@ -25,40 +14,47 @@ Summary(pt_BR.UTF-8):	Analisador de tráfego de rede
 Summary(ru.UTF-8):	Анализатор сетевого траффика
 Summary(uk.UTF-8):	Аналізатор мережевого трафіку
 Name:		wireshark
-Version:	1.10.0
+Version:	1.10.1
 Release:	1
 License:	GPL
 Group:		Networking/Utilities
 Source0:	http://www.wireshark.org/download/src/%{name}-%{version}.tar.bz2
-# Source0-md5:	72e51cd33fd33c7044a41c2ab51ad7af
+# Source0-md5:	d8915cf7555e2bbb699020a8736631e7
 Patch0:		%{name}-Werror.patch
 Patch1:		%{name}-gcc43.patch
 Patch2:		%{name}-ac.patch
 Patch3:		%{name}-desktop.patch
+Patch4:		%{name}-pod.patch
 URL:		http://www.wireshark.org/
-BuildRequires:	autoconf >= 2.52
-BuildRequires:	automake
+BuildRequires:	GeoIP-devel
+BuildRequires:	asciidoc
+BuildRequires:	autoconf >= 2.60
+BuildRequires:	automake >= 1:1.9
 BuildRequires:	bison
-BuildRequires:	elfutils-devel
+BuildRequires:	c-ares-devel
+BuildRequires:	doxygen
 BuildRequires:	flex
-BuildRequires:	gnutls-devel >= 1.0.0
-BuildRequires:	gtk+2-devel >= 1:2.0.0
+BuildRequires:	glib2-devel >= 1:2.14.0
+BuildRequires:	gnutls-devel >= 1.2.0
+BuildRequires:	gtk+2-devel >= 2:2.12.0
 %{?with_kerberos5:BuildRequires:	heimdal-devel}
 BuildRequires:	libcap-devel
-BuildRequires:	libgcrypt-devel >= 1.1.42
+BuildRequires:	libgcrypt-devel >= 1.1.92
+BuildRequires:	libnl-devel >= 3.2
 BuildRequires:	libpcap-devel >= 2:1.0.0-4
 BuildRequires:	libsmi-devel
 BuildRequires:	libtool
 BuildRequires:	libxslt-progs
 BuildRequires:	lua52-devel
 %{?with_snmp:BuildRequires:	net-snmp-devel}
-BuildRequires:	pcre-devel
+%{?with_kerberos5:BuildRequires:	openssl-devel}
 BuildRequires:	perl-tools-pod
 BuildRequires:	pkgconfig
 BuildRequires:	portaudio-devel
 BuildRequires:	sed >= 4.0
 BuildRequires:	zlib-devel
 Requires:	%{name}-common = %{version}-%{release}
+Requires:	gtk+2 >= 2:2.12.0
 Requires:	libpcap >= 0.4
 Provides:	ethereal
 Provides:	ethereal-gnome
@@ -213,7 +209,8 @@ libpcap, obecnie standardu przechwytywania pakietów w systemach Unix.
 Summary:	Header files for libwiretap packet capture library
 Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki libwiretap do przechwytywania pakietów
 Group:		Development/Libraries
-Requires:	gtk+2-devel >= 2.0.0
+Requires:	glib2-devel >= 1:2.14.0
+Requires:	libnl-devel >= 3.2
 Requires:	libwiretap = %{version}-%{release}
 
 %description -n libwiretap-devel
@@ -229,6 +226,7 @@ pakietów.
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
+%patch4 -p1
 find -name Makefile.am | xargs sed -i -e 's/-Werror//g'
 
 %build
@@ -237,15 +235,17 @@ find -name Makefile.am | xargs sed -i -e 's/-Werror//g'
 %{__autoconf}
 %{__automake}
 %configure \
-	--enable-randpkt \
 	--enable-dftest \
 	--enable-packet-editor \
+	--enable-randpkt \
+	--disable-silent-rules \
+	--disable-usr-local \
+	--with-lua \
 %if %{with kerberos5}
 	--with-krb5 \
 	--with-ssl \
 %endif
 	%{!?with_snmp:--without-net-snmp --without-ucdsnmp} \
-	--with-lua
 
 %{__make}
 
@@ -262,15 +262,15 @@ cp -p wireshark.desktop $RPM_BUILD_ROOT%{_desktopdir}
 cp -a wiretap/*.h $RPM_BUILD_ROOT%{_includedir}/wiretap
 
 # plugins *.la are useless - *.so are loaded through gmodule
-rm -f $RPM_BUILD_ROOT%{_libdir}/%{name}/plugins/%{version}*/*.la
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/%{name}/plugins/%{version}*/*.la
 
 # no headers installed for this library
-rm -f $RPM_BUILD_ROOT%{_libdir}/libwireshark.{so,la}
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/libwireshark.{so,la}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%pre common
+%pre	common
 %groupadd -P %{name}-common -g 104 wireshark
 
 %post	common
@@ -296,7 +296,7 @@ fi
 %attr(755,root,root) %{_libdir}/%{name}/plugins/%{version}*/*.so
 %{_datadir}/%{name}
 %{_desktopdir}/%{name}.desktop
-%{_pixmapsdir}/*.png
+%{_pixmapsdir}/%{name}.png
 %{_mandir}/man1/wireshark.1*
 
 %files common
@@ -312,9 +312,7 @@ fi
 %attr(755,root,root) %{_bindir}/reordercap
 %attr(755,root,root) %{_bindir}/text2pcap
 %attr(755,root,root) %{_libdir}/libwireshark.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libwireshark.so.3
-%attr(755,root,root) %{_libdir}/libwsutil.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libwsutil.so.3
+%attr(755,root,root) %ghost %{_libdir}/libwireshark.so.2
 %{_mandir}/man1/capinfos.1*
 %{_mandir}/man1/dftest.1*
 %{_mandir}/man1/dumpcap.1*
@@ -336,6 +334,8 @@ fi
 %doc wiretap/{README*,AUTHORS}
 %attr(755,root,root) %{_libdir}/libwiretap.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libwiretap.so.3
+%attr(755,root,root) %{_libdir}/libwsutil.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libwsutil.so.3
 
 %files -n libwiretap-devel
 %defattr(644,root,root,755)
