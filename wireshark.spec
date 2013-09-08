@@ -16,7 +16,7 @@ Summary(uk.UTF-8):	Аналізатор мережевого трафіку
 Name:		wireshark
 Version:	1.10.1
 Release:	1
-License:	GPL
+License:	GPL v2+
 Group:		Networking/Utilities
 Source0:	http://www.wireshark.org/download/src/%{name}-%{version}.tar.bz2
 # Source0-md5:	d8915cf7555e2bbb699020a8736631e7
@@ -196,6 +196,8 @@ Wireshark.
 Summary:	Packet capture and analysis library
 Summary(pl.UTF-8):	Biblioteka do przechwytywania i analizy pakietów
 Group:		Libraries
+Requires:	glib2 >= 1:2.14.0
+Requires:	libnl >= 3.2
 
 %description -n libwiretap
 Wiretap is a library that is being developed as a future replacement
