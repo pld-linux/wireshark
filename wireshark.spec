@@ -14,17 +14,16 @@ Summary(pt_BR.UTF-8):	Analisador de tráfego de rede
 Summary(ru.UTF-8):	Анализатор сетевого траффика
 Summary(uk.UTF-8):	Аналізатор мережевого трафіку
 Name:		wireshark
-Version:	1.10.1
+Version:	1.10.2
 Release:	1
 License:	GPL v2+
 Group:		Networking/Utilities
 Source0:	http://www.wireshark.org/download/src/%{name}-%{version}.tar.bz2
-# Source0-md5:	d8915cf7555e2bbb699020a8736631e7
+# Source0-md5:	cd7fedd0a67df5ad4905fd356efdc1e8
 Patch0:		%{name}-Werror.patch
 Patch1:		%{name}-gcc43.patch
 Patch2:		%{name}-ac.patch
 Patch3:		%{name}-desktop.patch
-Patch4:		%{name}-pod.patch
 URL:		http://www.wireshark.org/
 BuildRequires:	GeoIP-devel
 BuildRequires:	asciidoc
@@ -228,7 +227,6 @@ pakietów.
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
-%patch4 -p1
 find -name Makefile.am | xargs sed -i -e 's/-Werror//g'
 
 %build
@@ -314,7 +312,7 @@ fi
 %attr(755,root,root) %{_bindir}/reordercap
 %attr(755,root,root) %{_bindir}/text2pcap
 %attr(755,root,root) %{_libdir}/libwireshark.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libwireshark.so.2
+%attr(755,root,root) %ghost %{_libdir}/libwireshark.so.3
 %{_mandir}/man1/capinfos.1*
 %{_mandir}/man1/dftest.1*
 %{_mandir}/man1/dumpcap.1*
