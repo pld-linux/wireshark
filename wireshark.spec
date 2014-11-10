@@ -195,7 +195,7 @@ Wireshark.
 Summary:	Packet capture and analysis library
 Summary(pl.UTF-8):	Biblioteka do przechwytywania i analizy pakietów
 Group:		Libraries
-Requires:	glib2 >= 1:2.14.0
+Requires:	glib2 >= 1:2.22.0
 Requires:	libnl >= 3.2
 
 %description -n libwiretap
