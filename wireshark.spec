@@ -4,8 +4,10 @@
 # - use %caps when rpm supports it: %attr(750,root,wireshark) %caps(cap_net_raw,cap_net_admin=eip) %{_sbindir}/dumpcap
 #
 # Conditional build:
+%bcond_without	gtk3		# build without GTK+3 support
 %bcond_without	kerberos5	# build without Kerberos V support
 %bcond_without	snmp		# build without snmp support
+%bcond_without	qt		# build without Qt support
 
 Summary:	Network traffic and protocol analyzer
 Summary(es.UTF-8):	Analizador de tráfico de red
@@ -14,12 +16,12 @@ Summary(pt_BR.UTF-8):	Analisador de tráfego de rede
 Summary(ru.UTF-8):	Анализатор сетевого траффика
 Summary(uk.UTF-8):	Аналізатор мережевого трафіку
 Name:		wireshark
-Version:	1.10.3
-Release:	2
+Version:	1.12.4
+Release:	1
 License:	GPL v2+
 Group:		Networking/Utilities
 Source0:	http://www.wireshark.org/download/src/%{name}-%{version}.tar.bz2
-# Source0-md5:	ceb4b2bac5607d948e00bd950461be1c
+# Source0-md5:	acfa156fd35cb66c867b1ace992e4b5b
 Patch0:		%{name}-Werror.patch
 Patch1:		%{name}-gcc43.patch
 Patch2:		%{name}-ac.patch
@@ -35,7 +37,8 @@ BuildRequires:	doxygen
 BuildRequires:	flex
 BuildRequires:	glib2-devel >= 1:2.14.0
 BuildRequires:	gnutls-devel >= 1.2.0
-BuildRequires:	gtk+2-devel >= 2:2.12.0
+%{!?with_gtk3:BuildRequires:	gtk+2-devel >= 2:2.12.0}
+%{?with_gtk3:BuildRequires:	gtk+3-devel}
 %{?with_kerberos5:BuildRequires:	heimdal-devel}
 BuildRequires:	libcap-devel
 BuildRequires:	libgcrypt-devel >= 1.1.92
@@ -50,6 +53,10 @@ BuildRequires:	lua52-devel
 BuildRequires:	perl-tools-pod
 BuildRequires:	pkgconfig
 BuildRequires:	portaudio-devel
+%if %{with qt}
+BuildRequires:	QtCore-devel >= 4.6.0
+BuildRequires:	qt4-build
+%endif
 BuildRequires:	sed >= 4.0
 BuildRequires:	zlib-devel
 Requires:	%{name}-common = %{version}-%{release}
@@ -117,7 +124,8 @@ capabilities.
 
 This package provides set of tools for manipulating capture files. It
 contains:
-- capinfo - prints informatio about binary capture files,
+- capinfos - prints informatio about binary capture files,
+- captype - prints the file types of capture files,
 - dftest - shows display filter byte-code,
 - dumpcap - dumps network traffic to a file,
 - editcap - edit and/or translate the format of capture files,
@@ -140,7 +148,8 @@ wtyczek (plug-ins).
 
 Pakiet ten dostarcza także zestaw narzędzi do obróbki plików z
 przechwyconymi pakietami, obejmujący:
-- capinfo - do wyświetlania informacji o binarnych plikach zrzutu,
+- capinfos - do wyświetlania informacji o binarnych plikach zrzutu,
+- captype - do wyświetlania rodzaju plików zrzutu,
 - dftest - do pokazywania bajtkodu filtrów wyświetlania,
 - dumpcap - do zrzucania ruchu sieciowego do pliku,
 - editcap - do edycji plików i tłumaczenia ich na inne formaty,
@@ -160,6 +169,18 @@ Wireshark - это анализатор сетевого траффика для
 %description common -l uk.UTF-8
 Wireshark - це аналізатор мережевого трафіку для Unix-подібних ОС. Він
 базується на GTK+ та libpcap.
+
+%package qt
+Summary:	Qt-based network traffic and protocol analyzer
+Summary(pl.UTF-8):	Analizator ruchu i protokołów sieciowych oparty na Qt
+Group:		Networking
+
+%description qt
+An initial port to Qt (aka QtShark).
+
+%description qt -l pl.UTF-8
+Wstępna wersja analizatora wireshark oparta na Qt (znana też pod
+nazwą QtShark).
 
 %package -n twireshark
 Summary:	Text-mode network traffic and protocol analyzer
@@ -240,12 +261,14 @@ find -name Makefile.am | xargs sed -i -e 's/-Werror//g'
 	--enable-randpkt \
 	--disable-silent-rules \
 	--disable-usr-local \
+	%{?with_gtk3:--with-gtk3 --without-gtk2}%{!?with_gtk3:--with-gtk2 --without-gtk3} \
+	%{?with_qt:--with-qt}%{!?with_qt:--without-qt} \
 	--with-lua \
 %if %{with kerberos5}
 	--with-krb5 \
 	--with-ssl \
 %endif
-	%{!?with_snmp:--without-net-snmp --without-ucdsnmp} \
+	%{!?with_snmp:--without-net-snmp --without-ucdsnmp}
 
 %{__make}
 
@@ -303,6 +326,7 @@ fi
 %defattr(644,root,root,755)
 %doc AUTHORS* ChangeLog NEWS README{,.[lv]*} doc/{randpkt.txt,README.*}
 %attr(755,root,root) %{_bindir}/capinfos
+%attr(755,root,root) %{_bindir}/captype
 %attr(755,root,root) %{_bindir}/dftest
 %attr(750,root,wireshark) %{_bindir}/dumpcap
 %attr(755,root,root) %{_bindir}/editcap
@@ -312,7 +336,7 @@ fi
 %attr(755,root,root) %{_bindir}/reordercap
 %attr(755,root,root) %{_bindir}/text2pcap
 %attr(755,root,root) %{_libdir}/libwireshark.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libwireshark.so.3
+%attr(755,root,root) %ghost %{_libdir}/libwireshark.so.5
 %{_mandir}/man1/capinfos.1*
 %{_mandir}/man1/dftest.1*
 %{_mandir}/man1/dumpcap.1*
@@ -324,6 +348,11 @@ fi
 %{_mandir}/man1/text2pcap.1*
 %{_mandir}/man4/wireshark-filter.4*
 
+%if %{with qt}
+%files qt
+%attr(755,root,root) %{_bindir}/wireshark-qt
+%endif
+
 %files -n twireshark
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/tshark
@@ -332,15 +361,19 @@ fi
 %files -n libwiretap
 %defattr(644,root,root,755)
 %doc wiretap/{README*,AUTHORS}
+%attr(755,root,root) %{_libdir}/libfiletap.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libfiletap.so.0
 %attr(755,root,root) %{_libdir}/libwiretap.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libwiretap.so.3
+%attr(755,root,root) %ghost %{_libdir}/libwiretap.so.4
 %attr(755,root,root) %{_libdir}/libwsutil.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libwsutil.so.3
+%attr(755,root,root) %ghost %{_libdir}/libwsutil.so.4
 
 %files -n libwiretap-devel
 %defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libfiletap.so
 %attr(755,root,root) %{_libdir}/libwiretap.so
 %attr(755,root,root) %{_libdir}/libwsutil.so
+%{_libdir}/libfiletap.la
 %{_libdir}/libwiretap.la
 %{_libdir}/libwsutil.la
 %{_includedir}/wiretap
