@@ -179,8 +179,8 @@ Group:		Networking
 An initial port to Qt (aka QtShark).
 
 %description qt -l pl.UTF-8
-Wstępna wersja analizatora wireshark oparta na Qt (znana też pod
-nazwą QtShark).
+Wstępna wersja analizatora wireshark oparta na Qt (znana też pod nazwą
+QtShark).
 
 %package -n twireshark
 Summary:	Text-mode network traffic and protocol analyzer
@@ -350,6 +350,7 @@ fi
 
 %if %{with qt}
 %files qt
+%defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/wireshark-qt
 %endif
 
