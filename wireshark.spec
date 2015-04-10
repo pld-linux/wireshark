@@ -4,10 +4,15 @@
 # - use %caps when rpm supports it: %attr(750,root,wireshark) %caps(cap_net_raw,cap_net_admin=eip) %{_sbindir}/dumpcap
 #
 # Conditional build:
+%bcond_without	gui		# build without any GUI support
 %bcond_without	gtk3		# build without GTK+3 support
 %bcond_without	kerberos5	# build without Kerberos V support
 %bcond_without	snmp		# build without snmp support
 %bcond_without	qt		# build without Qt support
+
+%if %{without gui}
+%undefine with_qt
+%endif
 
 Summary:	Network traffic and protocol analyzer
 Summary(es.UTF-8):	Analizador de tráfico de red
@@ -37,8 +42,10 @@ BuildRequires:	doxygen
 BuildRequires:	flex
 BuildRequires:	glib2-devel >= 1:2.14.0
 BuildRequires:	gnutls-devel >= 1.2.0
+%if %{with gui}
 %{!?with_gtk3:BuildRequires:	gtk+2-devel >= 2:2.12.0}
 %{?with_gtk3:BuildRequires:	gtk+3-devel}
+%endif
 %{?with_kerberos5:BuildRequires:	heimdal-devel}
 BuildRequires:	libcap-devel
 BuildRequires:	libgcrypt-devel >= 1.1.92
@@ -52,7 +59,8 @@ BuildRequires:	lua52-devel
 %{?with_kerberos5:BuildRequires:	openssl-devel}
 BuildRequires:	perl-tools-pod
 BuildRequires:	pkgconfig
-BuildRequires:	portaudio-devel
+%{?with_gui:BuildRequires:	portaudio-devel}
+BuildRequires:	rpmbuild(macros) >= 1.527
 %if %{with qt}
 BuildRequires:	QtCore-devel >= 4.6.0
 BuildRequires:	qt4-build
@@ -60,7 +68,9 @@ BuildRequires:	qt4-build
 BuildRequires:	sed >= 4.0
 BuildRequires:	zlib-devel
 Requires:	%{name}-common = %{version}-%{release}
+%if %{with gui}
 Requires:	gtk+2 >= 2:2.12.0
+%endif
 Requires:	libpcap >= 0.4
 Provides:	ethereal
 Provides:	ethereal-gnome
@@ -261,8 +271,11 @@ find -name Makefile.am | xargs sed -i -e 's/-Werror//g'
 	--enable-randpkt \
 	--disable-silent-rules \
 	--disable-usr-local \
+%if %{with gui}
 	%{?with_gtk3:--with-gtk3 --without-gtk2}%{!?with_gtk3:--with-gtk2 --without-gtk3} \
-	%{?with_qt:--with-qt}%{!?with_qt:--without-qt} \
+%endif
+	%{__with_without qt} \
+	%{__enable_disable gui wireshark} \
 	--with-lua \
 %if %{with kerberos5}
 	--with-krb5 \
@@ -310,21 +323,23 @@ fi
 %post	-n libwiretap -p /sbin/ldconfig
 %postun	-n libwiretap -p /sbin/ldconfig
 
+%if %{with gui}
 %files
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/wireshark
-%dir %{_libdir}/%{name}
-%dir %{_libdir}/%{name}/plugins
-%dir %{_libdir}/%{name}/plugins/%{version}*
-%attr(755,root,root) %{_libdir}/%{name}/plugins/%{version}*/*.so
 %{_datadir}/%{name}
 %{_desktopdir}/%{name}.desktop
 %{_pixmapsdir}/%{name}.png
 %{_mandir}/man1/wireshark.1*
+%endif
 
 %files common
 %defattr(644,root,root,755)
 %doc AUTHORS* ChangeLog NEWS README{,.[lv]*} doc/{randpkt.txt,README.*}
+%dir %{_libdir}/%{name}
+%dir %{_libdir}/%{name}/plugins
+%dir %{_libdir}/%{name}/plugins/%{version}*
+%attr(755,root,root) %{_libdir}/%{name}/plugins/%{version}*/*.so
 %attr(755,root,root) %{_bindir}/capinfos
 %attr(755,root,root) %{_bindir}/captype
 %attr(755,root,root) %{_bindir}/dftest
