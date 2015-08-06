@@ -33,6 +33,7 @@ Patch2:		%{name}-ac.patch
 Patch3:		%{name}-desktop.patch
 URL:		http://www.wireshark.org/
 BuildRequires:	GeoIP-devel
+BuildRequires:	QtGui-devel
 BuildRequires:	asciidoc
 BuildRequires:	autoconf >= 2.60
 BuildRequires:	automake >= 1:1.9
