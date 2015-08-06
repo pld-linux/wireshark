@@ -33,7 +33,6 @@ Patch2:		%{name}-ac.patch
 Patch3:		%{name}-desktop.patch
 URL:		http://www.wireshark.org/
 BuildRequires:	GeoIP-devel
-BuildRequires:	QtGui-devel
 BuildRequires:	asciidoc
 BuildRequires:	autoconf >= 2.60
 BuildRequires:	automake >= 1:1.9
@@ -64,6 +63,7 @@ BuildRequires:	pkgconfig
 BuildRequires:	rpmbuild(macros) >= 1.527
 %if %{with qt}
 BuildRequires:	QtCore-devel >= 4.6.0
+BuildRequires:	QtGui-devel
 BuildRequires:	qt4-build
 %endif
 BuildRequires:	sed >= 4.0
