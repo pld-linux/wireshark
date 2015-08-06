@@ -267,6 +267,10 @@ find -name Makefile.am | xargs sed -i -e 's/-Werror//g'
 %{__autoconf}
 %{__automake}
 %configure \
+%if %{with qt}
+        MOC=moc-qt4 \
+        UIC=uic-qt4 \
+%endif
 	--enable-dftest \
 	--enable-packet-editor \
 	--enable-randpkt \
