@@ -62,9 +62,10 @@ BuildRequires:	pkgconfig
 %{?with_gui:BuildRequires:	portaudio-devel}
 BuildRequires:	rpmbuild(macros) >= 1.527
 %if %{with qt}
-BuildRequires:	QtCore-devel >= 4.6.0
-BuildRequires:	QtGui-devel
-BuildRequires:	qt4-build
+BuildRequires:	Qt5Core-devel
+BuildRequires:	Qt5PrintSupport-devel
+BuildRequires:	Qt5Widgets-devel
+BuildRequires:	qt5-build
 %endif
 BuildRequires:	sed >= 4.0
 BuildRequires:	zlib-devel
@@ -266,11 +267,11 @@ find -name Makefile.am | xargs sed -i -e 's/-Werror//g'
 %{__aclocal} -I aclocal-fallback
 %{__autoconf}
 %{__automake}
-%configure \
 %if %{with qt}
-        MOC=moc-qt4 \
-        UIC=uic-qt4 \
+MOC=moc-qt5 \
+UIC=uic-qt5 \
 %endif
+%configure \
 	--enable-dftest \
 	--enable-packet-editor \
 	--enable-randpkt \

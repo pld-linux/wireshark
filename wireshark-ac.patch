@@ -30,3 +30,23 @@
  	  fi
  	  AC_DEFINE(HAVE_LIBPCAP, 1, [Define to use libpcap library])
  	else
+--- wireshark-1.12.4/configure.ac~	2015-03-04 18:08:41.000000000 +0100
++++ wireshark-1.12.4/configure.ac	2015-08-06 22:12:48.770312334 +0200
+@@ -1569,7 +1569,7 @@
+ # installed; if they're still doing that in current Fedora releases,
+ # perhaps there will also be XXX-qt5 when they pick up Qt 5.
+ #
+-AC_PATH_PROG(UIC, uic)
++AC_PATH_PROG(UIC, uic-qt5)
+ if test "x$UIC" = x
+ then
+ 	AC_PATH_PROG(UIC, uic-qt4)
+@@ -1595,7 +1595,7 @@
+ 	fi
+ fi
+ AC_SUBST(UIC)
+-AC_PATH_PROG(MOC, moc)
++AC_PATH_PROG(MOC, moc-qt5)
+ if test "x$MOC" = x
+ then
+ 	AC_PATH_PROG(MOC, moc-qt4)
