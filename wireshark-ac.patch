@@ -1,6 +1,7 @@
---- wireshark-1.4.0rc1/acinclude.m4~	2010-06-29 13:18:13.710088062 +0200
-+++ wireshark-1.4.0rc1/acinclude.m4	2010-06-29 13:19:37.996897805 +0200
-@@ -338,7 +338,7 @@
+diff -ruN wireshark-2.0.1.orig/acinclude.m4 wireshark-2.0.1/acinclude.m4
+--- wireshark-2.0.1.orig/acinclude.m4	2015-12-29 22:49:18.000000000 +0100
++++ wireshark-2.0.1/acinclude.m4	2016-01-11 00:38:48.501985907 +0100
+@@ -389,7 +389,7 @@
  	    # work.
  	    #
  	    AC_MSG_CHECKING(for broken pcap-config)
@@ -9,16 +10,15 @@
  
  	    "-L "*)
  	      #
-@@ -361,7 +361,7 @@
- 	    # Found it, and it's usable; use it to get the include flags
+@@ -413,6 +413,7 @@
  	    # for libpcap.
  	    #
--	    CPPFLAGS="$CPPFLAGS `\"$PCAP_CONFIG\" --cflags`"
+ 	    CPPFLAGS="$CPPFLAGS `\"$PCAP_CONFIG\" --cflags`"
 +	    CPPFLAGS="$CPPFLAGS `$PCAP_CONFIG --cflags`"
  	  else
  	    #
  	    # Didn't find it; we have to look for libpcap ourselves.
-@@ -433,9 +433,9 @@
+@@ -481,9 +482,9 @@
  	  # libraries libpcap needs.
  	  #
  	  if test x$enable_static = xyes; then
@@ -30,23 +30,3 @@
  	  fi
  	  AC_DEFINE(HAVE_LIBPCAP, 1, [Define to use libpcap library])
  	else
---- wireshark-1.12.4/configure.ac~	2015-03-04 18:08:41.000000000 +0100
-+++ wireshark-1.12.4/configure.ac	2015-08-06 22:12:48.770312334 +0200
-@@ -1569,7 +1569,7 @@
- # installed; if they're still doing that in current Fedora releases,
- # perhaps there will also be XXX-qt5 when they pick up Qt 5.
- #
--AC_PATH_PROG(UIC, uic)
-+AC_PATH_PROG(UIC, uic-qt5)
- if test "x$UIC" = x
- then
- 	AC_PATH_PROG(UIC, uic-qt4)
-@@ -1595,7 +1595,7 @@
- 	fi
- fi
- AC_SUBST(UIC)
--AC_PATH_PROG(MOC, moc)
-+AC_PATH_PROG(MOC, moc-qt5)
- if test "x$MOC" = x
- then
- 	AC_PATH_PROG(MOC, moc-qt4)

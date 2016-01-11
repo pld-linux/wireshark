@@ -21,16 +21,15 @@ Summary(pt_BR.UTF-8):	Analisador de tráfego de rede
 Summary(ru.UTF-8):	Анализатор сетевого траффика
 Summary(uk.UTF-8):	Аналізатор мережевого трафіку
 Name:		wireshark
-Version:	1.12.7
+Version:	2.0.1
 Release:	1
 License:	GPL v2+
 Group:		Networking/Utilities
 Source0:	http://www.wireshark.org/download/src/%{name}-%{version}.tar.bz2
-# Source0-md5:	c8ae53f648b1dcbf6e74495401a0f1ab
+# Source0-md5:	c1610ab2238965363b811e5188750fb1
 Patch0:		%{name}-Werror.patch
-Patch1:		%{name}-gcc43.patch
-Patch2:		%{name}-ac.patch
-Patch3:		%{name}-desktop.patch
+Patch1:		%{name}-ac.patch
+Patch2:		%{name}-desktop.patch
 URL:		http://www.wireshark.org/
 BuildRequires:	GeoIP-devel
 BuildRequires:	asciidoc
@@ -186,6 +185,7 @@ Wireshark - це аналізатор мережевого трафіку для
 Summary:	Qt-based network traffic and protocol analyzer
 Summary(pl.UTF-8):	Analizator ruchu i protokołów sieciowych oparty na Qt
 Group:		Networking
+Requires:	Qt5Gui-platform-xcb
 
 %description qt
 An initial port to Qt (aka QtShark).
@@ -259,7 +259,6 @@ pakietów.
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
-%patch3 -p1
 find -name Makefile.am | xargs sed -i -e 's/-Werror//g'
 
 %build
@@ -299,7 +298,9 @@ install -d $RPM_BUILD_ROOT{%{_desktopdir},%{_pixmapsdir},%{_includedir}/wiretap}
 	DESTDIR=$RPM_BUILD_ROOT
 
 cp -p image/hi48-app-wireshark.png $RPM_BUILD_ROOT%{_pixmapsdir}/%{name}.png
-cp -p wireshark.desktop $RPM_BUILD_ROOT%{_desktopdir}
+%{?with_qt:cp -p wireshark-gtk.desktop $RPM_BUILD_ROOT%{_desktopdir}/wireshark.desktop}
+%{?with_gtk3:cp -p wireshark.desktop $RPM_BUILD_ROOT%{_desktopdir}/wireshark-qt.desktop}
+%{__rm} -f $RPM_BUILD_ROOT%{_desktopdir}/wireshark-gtk.desktop
 
 cp -a wiretap/*.h $RPM_BUILD_ROOT%{_includedir}/wiretap
 
@@ -308,6 +309,9 @@ cp -a wiretap/*.h $RPM_BUILD_ROOT%{_includedir}/wiretap
 
 # no headers installed for this library
 %{__rm} $RPM_BUILD_ROOT%{_libdir}/libwireshark.{so,la}
+
+%{?with_qt:mv $RPM_BUILD_ROOT%{_bindir}/wireshark{,-qt}}
+%{?with_gtk3:mv $RPM_BUILD_ROOT%{_bindir}/wireshark{-gtk,}}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -318,6 +322,7 @@ rm -rf $RPM_BUILD_ROOT
 %post	common
 /sbin/ldconfig
 /sbin/setcap 'CAP_NET_RAW+eip CAP_NET_ADMIN+eip' %{_bindir}/dumpcap
+%update_mime_database
 exit 0
 
 %postun	common
@@ -325,6 +330,7 @@ exit 0
 if [ "$1" = "0" ]; then
 	%groupremove wireshark
 fi
+%update_mime_database
 
 %post	-n libwiretap -p /sbin/ldconfig
 %postun	-n libwiretap -p /sbin/ldconfig
@@ -334,8 +340,23 @@ fi
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/wireshark
 %{_datadir}/%{name}
-%{_desktopdir}/%{name}.desktop
+%{_desktopdir}/*.desktop
 %{_pixmapsdir}/%{name}.png
+%{_iconsdir}/hicolor/16x16/apps/%{name}.png
+%{_iconsdir}/hicolor/16x16/mimetypes/application-%{name}-doc.png
+%{_iconsdir}/hicolor/24x24/apps/%{name}.png
+%{_iconsdir}/hicolor/24x24/mimetypes/application-%{name}-doc.png
+%{_iconsdir}/hicolor/32x32/apps/%{name}.png
+%{_iconsdir}/hicolor/32x32/mimetypes/application-%{name}-doc.png
+%{_iconsdir}/hicolor/48x48/apps/%{name}.png
+%{_iconsdir}/hicolor/48x48/mimetypes/application-%{name}-doc.png
+%{_iconsdir}/hicolor/64x64/apps/%{name}.png
+%{_iconsdir}/hicolor/64x64/mimetypes/application-%{name}-doc.png
+%{_iconsdir}/hicolor/128x128/apps/%{name}.png
+%{_iconsdir}/hicolor/128x128/mimetypes/application-%{name}-doc.png
+%{_iconsdir}/hicolor/256x256/apps/%{name}.png
+%{_iconsdir}/hicolor/256x256/mimetypes/application-%{name}-doc.png
+%{_iconsdir}/hicolor/scalable/apps/%{name}.svg
 %{_mandir}/man1/wireshark.1*
 %endif
 
@@ -346,18 +367,22 @@ fi
 %dir %{_libdir}/%{name}/plugins
 %dir %{_libdir}/%{name}/plugins/%{version}*
 %attr(755,root,root) %{_libdir}/%{name}/plugins/%{version}*/*.so
+%attr(755,root,root) %{_bindir}/androiddump
 %attr(755,root,root) %{_bindir}/capinfos
 %attr(755,root,root) %{_bindir}/captype
 %attr(755,root,root) %{_bindir}/dftest
 %attr(750,root,wireshark) %{_bindir}/dumpcap
 %attr(755,root,root) %{_bindir}/editcap
+%attr(755,root,root) %{_bindir}/idl2wrs
 %attr(755,root,root) %{_bindir}/mergecap
 %attr(755,root,root) %{_bindir}/randpkt
 %attr(755,root,root) %{_bindir}/rawshark
 %attr(755,root,root) %{_bindir}/reordercap
 %attr(755,root,root) %{_bindir}/text2pcap
 %attr(755,root,root) %{_libdir}/libwireshark.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libwireshark.so.5
+%attr(755,root,root) %ghost %{_libdir}/libwireshark.so.6
+%{_datadir}/appdata/wireshark.appdata.xml
+%{_datadir}/mime/packages/wireshark.xml
 %{_mandir}/man1/capinfos.1*
 %{_mandir}/man1/dftest.1*
 %{_mandir}/man1/dumpcap.1*
@@ -382,20 +407,16 @@ fi
 
 %files -n libwiretap
 %defattr(644,root,root,755)
-%doc wiretap/{README*,AUTHORS}
-%attr(755,root,root) %{_libdir}/libfiletap.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libfiletap.so.0
+%doc wiretap/README*
 %attr(755,root,root) %{_libdir}/libwiretap.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libwiretap.so.4
+%attr(755,root,root) %ghost %{_libdir}/libwiretap.so.5
 %attr(755,root,root) %{_libdir}/libwsutil.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libwsutil.so.4
+%attr(755,root,root) %ghost %{_libdir}/libwsutil.so.6
 
 %files -n libwiretap-devel
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libfiletap.so
 %attr(755,root,root) %{_libdir}/libwiretap.so
 %attr(755,root,root) %{_libdir}/libwsutil.so
-%{_libdir}/libfiletap.la
 %{_libdir}/libwiretap.la
 %{_libdir}/libwsutil.la
 %{_includedir}/wiretap
