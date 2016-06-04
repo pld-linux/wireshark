@@ -1,16 +1,17 @@
 # TODO
-# - gtk+3 bcond?
 # - use policykit to gain root
 # - use %caps when rpm supports it: %attr(750,root,wireshark) %caps(cap_net_raw,cap_net_admin=eip) %{_sbindir}/dumpcap
 #
 # Conditional build:
-%bcond_without	gui		# build without any GUI support
-%bcond_without	gtk3		# build without GTK+3 support
-%bcond_without	kerberos5	# build without Kerberos V support
-%bcond_without	snmp		# build without snmp support
-%bcond_without	qt		# build without Qt support
+%bcond_without	kerberos5	# Kerberos V support
+%bcond_without	snmp		# SNMP support
+%bcond_without	gui		# any GUI
+%bcond_without	gtk		# GTK+ (2 or 3) GUI
+%bcond_with	gtk2		# GTK+ GUI based on GTK+ 2 instead of GTK+ 3
+%bcond_without	qt		# Qt GUI
 
 %if %{without gui}
+%undefine with_gtk
 %undefine with_qt
 %endif
 
@@ -22,7 +23,7 @@ Summary(ru.UTF-8):	Анализатор сетевого траффика
 Summary(uk.UTF-8):	Аналізатор мережевого трафіку
 Name:		wireshark
 Version:	2.0.3
-Release:	1
+Release:	2
 License:	GPL v2+
 Group:		Networking/Utilities
 Source0:	http://www.wireshark.org/download/src/%{name}-%{version}.tar.bz2
@@ -39,15 +40,15 @@ BuildRequires:	bison
 BuildRequires:	c-ares-devel
 BuildRequires:	doxygen
 BuildRequires:	flex
-BuildRequires:	glib2-devel >= 1:2.14.0
-BuildRequires:	gnutls-devel >= 1.2.0
+BuildRequires:	glib2-devel >= 1:2.22.0
+BuildRequires:	gnutls-devel >= 3.1.10
 %if %{with gui}
-%{!?with_gtk3:BuildRequires:	gtk+2-devel >= 2:2.12.0}
-%{?with_gtk3:BuildRequires:	gtk+3-devel}
+%{?with_gtk2:BuildRequires:	gtk+2-devel >= 2:2.12.0}
+%{!?with_gtk2:BuildRequires:	gtk+3-devel >= 3.0.0}
 %endif
 %{?with_kerberos5:BuildRequires:	heimdal-devel}
 BuildRequires:	libcap-devel
-BuildRequires:	libgcrypt-devel >= 1.1.92
+BuildRequires:	libgcrypt-devel >= 1.4.2
 BuildRequires:	libnl-devel >= 3.2
 BuildRequires:	libpcap-devel >= 2:1.0.0-4
 BuildRequires:	libsmi-devel
@@ -55,24 +56,28 @@ BuildRequires:	libtool
 BuildRequires:	libxslt-progs
 BuildRequires:	lua52-devel
 %{?with_snmp:BuildRequires:	net-snmp-devel}
-%{?with_kerberos5:BuildRequires:	openssl-devel}
 BuildRequires:	perl-tools-pod
-BuildRequires:	pkgconfig
+BuildRequires:	pkgconfig >= 1:0.7
 %{?with_gui:BuildRequires:	portaudio-devel}
+BuildRequires:	python >= 1:2.5
 BuildRequires:	rpmbuild(macros) >= 1.527
+%{?with_gui:BuildRequires:	sbc-devel >= 1.0}
+BuildRequires:	sed >= 4.0
+BuildRequires:	zlib-devel
 %if %{with qt}
 BuildRequires:	Qt5Core-devel
 BuildRequires:	Qt5PrintSupport-devel
 BuildRequires:	Qt5Widgets-devel
+BuildRequires:	libstdc++-devel
 BuildRequires:	qt5-build
 %endif
-BuildRequires:	sed >= 4.0
-BuildRequires:	zlib-devel
-Requires:	%{name}-common = %{version}-%{release}
-%if %{with gui}
+Requires:	%{name}-gui-common = %{version}-%{release}
+%if %{with gtk2}
 Requires:	gtk+2 >= 2:2.12.0
+%else
+Requires:	gtk+3 >= 3.0.0
 %endif
-Requires:	libpcap >= 0.4
+Suggests:	xdg-utils
 Provides:	ethereal
 Provides:	ethereal-gnome
 Obsoletes:	ethereal
@@ -111,14 +116,30 @@ Wireshark - это анализатор сетевого траффика для
 Wireshark - це аналізатор мережевого трафіку для Unix-подібних ОС. Він
 базується на GTK+ та libpcap.
 
+%package gui-common
+Summary:	Network traffic and protocol analyzer - GUI common files
+Summary(pl.UTF-8):	Analizator ruchu i protokołów sieciowych - wspólne pliki interfejsów graficznych
+Group:		Networking/Utilities
+Requires:	%{name}-common = %{version}-%{release}
+
+%description gui-common
+Network traffic and protocol analyzer - files common for all Wireshark
+GUIs (GTK+, Qt).
+
+%description gui-common -l pl.UTF-8
+Analizator ruchu i protokołów sieciowych - pliki wspólne dla
+wszystkich interfejsów graficznych Wiresharka (GTK+, Qt).
+
 %package common
 Summary:	Network traffic and protocol analyzer - common files
 Summary(pl.UTF-8):	Analizator ruchu i protokołów sieciowych - wspólne pliki
 Group:		Networking
+Requires:	gnutls >= 3.1.10
+Requires:	libpcap >= 0.4
 Requires:	libwiretap = %{version}-%{release}
-Provides:	%{name}-tools
 Provides:	ethereal-common
 Provides:	group(wireshark)
+Provides:	wireshark-tools
 Obsoletes:	ethereal-common
 Obsoletes:	wireshark-tools
 Requires(post,postun):	/sbin/ldconfig
@@ -133,8 +154,8 @@ severeal useful features, including a rich display filter language,
 the ability to view the ASCII contents of a TCP connection and plug-in
 capabilities.
 
-This package provides set of tools for manipulating capture files. It
-contains:
+This package provides the shared library, plugins, data and a set of
+tools for manipulating capture files. It contains:
 - capinfos - prints informatio about binary capture files,
 - captype - prints the file types of capture files,
 - dftest - shows display filter byte-code,
@@ -157,8 +178,9 @@ użytecznych cech, takich jak rozbudowany język filtrów wyświetlania,
 możliwość oglądania przebiegu sesji TCP oraz możliwość dołączania
 wtyczek (plug-ins).
 
-Pakiet ten dostarcza także zestaw narzędzi do obróbki plików z
-przechwyconymi pakietami, obejmujący:
+Ten pakiet ten zawiera bibliotekę współdzieloną, wtyczki, dane oraz
+zestaw narzędzi do obróbki plików z przechwyconymi pakietami,
+obejmujący:
 - capinfos - do wyświetlania informacji o binarnych plikach zrzutu,
 - captype - do wyświetlania rodzaju plików zrzutu,
 - dftest - do pokazywania bajtkodu filtrów wyświetlania,
@@ -185,6 +207,7 @@ Wireshark - це аналізатор мережевого трафіку для
 Summary:	Qt-based network traffic and protocol analyzer
 Summary(pl.UTF-8):	Analizator ruchu i protokołów sieciowych oparty na Qt
 Group:		Networking
+Requires:	%{name}-gui-common = %{version}-%{release}
 Requires:	Qt5Gui-platform-xcb
 
 %description qt
@@ -229,6 +252,7 @@ Summary:	Packet capture and analysis library
 Summary(pl.UTF-8):	Biblioteka do przechwytywania i analizy pakietów
 Group:		Libraries
 Requires:	glib2 >= 1:2.22.0
+Requires:	libgcrypt >= 1.4.2
 Requires:	libnl >= 3.2
 
 %description -n libwiretap
@@ -243,7 +267,8 @@ libpcap, obecnie standardu przechwytywania pakietów w systemach Unix.
 Summary:	Header files for libwiretap packet capture library
 Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki libwiretap do przechwytywania pakietów
 Group:		Development/Libraries
-Requires:	glib2-devel >= 1:2.14.0
+Requires:	glib2-devel >= 1:2.22.0
+Requires:	libgcrypt-devel >= 1.4.2
 Requires:	libnl-devel >= 3.2
 Requires:	libwiretap = %{version}-%{release}
 
@@ -271,20 +296,23 @@ MOC=moc-qt5 \
 UIC=uic-qt5 \
 %endif
 %configure \
+	HTML_VIEWER=/usr/bin/xdg-open \
 	--enable-dftest \
 	--enable-packet-editor \
 	--enable-randpkt \
 	--disable-silent-rules \
 	--disable-usr-local \
-%if %{with gui}
-	%{?with_gtk3:--with-gtk3 --without-gtk2}%{!?with_gtk3:--with-gtk2 --without-gtk3} \
+%if %{with gtk}
+	%{?with_gtk2:--with-gtk2 --without-gtk3}%{!?with_gtk2:--with-gtk3 --without-gtk2} \
+%else
+	--without-gtk2 \
+	--without-gtk3 \
 %endif
 	%{__with_without qt} \
 	%{__enable_disable gui wireshark} \
 	--with-lua \
 %if %{with kerberos5}
 	--with-krb5 \
-	--with-ssl \
 %endif
 	%{!?with_snmp:--without-net-snmp --without-ucdsnmp}
 
@@ -298,9 +326,10 @@ install -d $RPM_BUILD_ROOT{%{_desktopdir},%{_pixmapsdir},%{_includedir}/wiretap}
 	DESTDIR=$RPM_BUILD_ROOT
 
 cp -p image/hi48-app-wireshark.png $RPM_BUILD_ROOT%{_pixmapsdir}/%{name}.png
-%{?with_qt:cp -p wireshark-gtk.desktop $RPM_BUILD_ROOT%{_desktopdir}/wireshark.desktop}
-%{?with_gtk3:cp -p wireshark.desktop $RPM_BUILD_ROOT%{_desktopdir}/wireshark-qt.desktop}
-%{__rm} -f $RPM_BUILD_ROOT%{_desktopdir}/wireshark-gtk.desktop
+
+%{__rm} $RPM_BUILD_ROOT%{_desktopdir}/wireshark*.desktop
+%{?with_gtk:cp -p wireshark-gtk.desktop $RPM_BUILD_ROOT%{_desktopdir}/wireshark.desktop}
+%{?with_qt:cp -p wireshark.desktop $RPM_BUILD_ROOT%{_desktopdir}/wireshark-qt.desktop}
 
 cp -a wiretap/*.h $RPM_BUILD_ROOT%{_includedir}/wiretap
 
@@ -310,11 +339,17 @@ cp -a wiretap/*.h $RPM_BUILD_ROOT%{_includedir}/wiretap
 # no headers installed for this library
 %{__rm} $RPM_BUILD_ROOT%{_libdir}/libwireshark.{so,la}
 
-%{?with_qt:mv $RPM_BUILD_ROOT%{_bindir}/wireshark{,-qt}}
-%{?with_gtk3:mv $RPM_BUILD_ROOT%{_bindir}/wireshark{-gtk,}}
+%{?with_qt:%{__mv} $RPM_BUILD_ROOT%{_bindir}/wireshark{,-qt}}
+%{?with_gtk:%{__mv} $RPM_BUILD_ROOT%{_bindir}/wireshark{-gtk,}}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
+
+%pre	gui-common
+%update_mime_database
+
+%postun	gui-common
+%update_mime_database
 
 %pre	common
 %groupadd -P %{name}-common -g 104 wireshark
@@ -322,7 +357,6 @@ rm -rf $RPM_BUILD_ROOT
 %post	common
 /sbin/ldconfig
 /sbin/setcap 'CAP_NET_RAW+eip CAP_NET_ADMIN+eip' %{_bindir}/dumpcap
-%update_mime_database
 exit 0
 
 %postun	common
@@ -330,17 +364,23 @@ exit 0
 if [ "$1" = "0" ]; then
 	%groupremove wireshark
 fi
-%update_mime_database
 
 %post	-n libwiretap -p /sbin/ldconfig
 %postun	-n libwiretap -p /sbin/ldconfig
 
-%if %{with gui}
+%if %{with gtk}
 %files
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/wireshark
+%{_desktopdir}/wireshark.desktop
+%endif
+
+%if %{with gui}
+%files gui-common
+%defattr(644,root,root,755)
 %{_datadir}/%{name}
-%{_desktopdir}/*.desktop
+%{_datadir}/appdata/wireshark.appdata.xml
+%{_datadir}/mime/packages/wireshark.xml
 %{_pixmapsdir}/%{name}.png
 %{_iconsdir}/hicolor/16x16/apps/%{name}.png
 %{_iconsdir}/hicolor/16x16/mimetypes/application-%{name}-doc.png
@@ -362,7 +402,7 @@ fi
 
 %files common
 %defattr(644,root,root,755)
-%doc AUTHORS* ChangeLog NEWS README{,.[lv]*} doc/{randpkt.txt,README.*}
+%doc AUTHORS* ChangeLog NEWS README README.linux README.vmware doc/README.*
 %dir %{_libdir}/%{name}
 %dir %{_libdir}/%{name}/plugins
 %dir %{_libdir}/%{name}/plugins/%{version}*
@@ -381,8 +421,6 @@ fi
 %attr(755,root,root) %{_bindir}/text2pcap
 %attr(755,root,root) %{_libdir}/libwireshark.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libwireshark.so.6
-%{_datadir}/appdata/wireshark.appdata.xml
-%{_datadir}/mime/packages/wireshark.xml
 %{_mandir}/man1/androiddump.1*
 %{_mandir}/man1/capinfos.1*
 %{_mandir}/man1/dftest.1*
@@ -399,6 +437,7 @@ fi
 %files qt
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/wireshark-qt
+%{_desktopdir}/wireshark-qt.desktop
 %endif
 
 %files -n twireshark
