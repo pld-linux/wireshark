@@ -22,15 +22,16 @@ Summary(pt_BR.UTF-8):	Analisador de tráfego de rede
 Summary(ru.UTF-8):	Анализатор сетевого траффика
 Summary(uk.UTF-8):	Аналізатор мережевого трафіку
 Name:		wireshark
-Version:	2.0.3
-Release:	2
+Version:	2.2.0
+Release:	1
 License:	GPL v2+
 Group:		Networking/Utilities
 Source0:	http://www.wireshark.org/download/src/%{name}-%{version}.tar.bz2
-# Source0-md5:	62dc20f5a77542feed2e38f18db8ae3b
+# Source0-md5:	c7de0997f74934f25b456846cf75cb81
 Patch0:		%{name}-Werror.patch
 Patch1:		%{name}-ac.patch
 Patch2:		%{name}-desktop.patch
+Patch3:		%{name}-krb5-defines.patch
 URL:		http://www.wireshark.org/
 BuildRequires:	GeoIP-devel
 BuildRequires:	asciidoc
@@ -70,6 +71,7 @@ BuildRequires:	Qt5PrintSupport-devel
 BuildRequires:	Qt5Widgets-devel
 BuildRequires:	libstdc++-devel
 BuildRequires:	qt5-build
+BuildRequires:	qt5-linguist
 %endif
 Requires:	%{name}-gui-common = %{version}-%{release}
 %if %{with gtk2}
@@ -284,6 +286,7 @@ pakietów.
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
+%patch3 -p1
 find -name Makefile.am | xargs sed -i -e 's/-Werror//g'
 
 %build
@@ -404,10 +407,12 @@ fi
 %defattr(644,root,root,755)
 %doc AUTHORS* ChangeLog NEWS README README.linux README.vmware doc/README.*
 %dir %{_libdir}/%{name}
+%dir %{_libdir}/%{name}/extcap
 %dir %{_libdir}/%{name}/plugins
 %dir %{_libdir}/%{name}/plugins/%{version}*
+%attr(755,root,root) %{_libdir}/%{name}/extcap/androiddump
+%attr(755,root,root) %{_libdir}/%{name}/extcap/randpktdump
 %attr(755,root,root) %{_libdir}/%{name}/plugins/%{version}*/*.so
-%attr(755,root,root) %{_bindir}/androiddump
 %attr(755,root,root) %{_bindir}/capinfos
 %attr(755,root,root) %{_bindir}/captype
 %attr(755,root,root) %{_bindir}/dftest
@@ -420,7 +425,7 @@ fi
 %attr(755,root,root) %{_bindir}/reordercap
 %attr(755,root,root) %{_bindir}/text2pcap
 %attr(755,root,root) %{_libdir}/libwireshark.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libwireshark.so.6
+%attr(755,root,root) %ghost %{_libdir}/libwireshark.so.8
 %{_mandir}/man1/androiddump.1*
 %{_mandir}/man1/capinfos.1*
 %{_mandir}/man1/dftest.1*
@@ -429,8 +434,10 @@ fi
 %{_mandir}/man1/mergecap.1*
 %{_mandir}/man1/rawshark.1*
 %{_mandir}/man1/randpkt.1*
+%{_mandir}/man1/randpktdump.1*
 %{_mandir}/man1/reordercap.1*
 %{_mandir}/man1/text2pcap.1*
+%{_mandir}/man4/extcap.4*
 %{_mandir}/man4/wireshark-filter.4*
 
 %if %{with qt}
@@ -449,14 +456,18 @@ fi
 %defattr(644,root,root,755)
 %doc wiretap/README*
 %attr(755,root,root) %{_libdir}/libwiretap.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libwiretap.so.5
+%attr(755,root,root) %ghost %{_libdir}/libwiretap.so.6
+%attr(755,root,root) %{_libdir}/libwscodecs.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libwscodecs.so.1
 %attr(755,root,root) %{_libdir}/libwsutil.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libwsutil.so.6
+%attr(755,root,root) %ghost %{_libdir}/libwsutil.so.7
 
 %files -n libwiretap-devel
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libwiretap.so
+%attr(755,root,root) %{_libdir}/libwscodecs.so
 %attr(755,root,root) %{_libdir}/libwsutil.so
 %{_libdir}/libwiretap.la
+%{_libdir}/libwscodecs.la
 %{_libdir}/libwsutil.la
 %{_includedir}/wiretap
