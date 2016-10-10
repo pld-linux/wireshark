@@ -22,12 +22,12 @@ Summary(pt_BR.UTF-8):	Analisador de tráfego de rede
 Summary(ru.UTF-8):	Анализатор сетевого траффика
 Summary(uk.UTF-8):	Аналізатор мережевого трафіку
 Name:		wireshark
-Version:	2.2.0
+Version:	2.2.1
 Release:	1
 License:	GPL v2+
 Group:		Networking/Utilities
 Source0:	http://www.wireshark.org/download/src/%{name}-%{version}.tar.bz2
-# Source0-md5:	c7de0997f74934f25b456846cf75cb81
+# Source0-md5:	49a1023a69ac108ca089d750eee50e37
 Patch0:		%{name}-Werror.patch
 Patch1:		%{name}-ac.patch
 Patch2:		%{name}-desktop.patch
