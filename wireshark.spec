@@ -22,16 +22,15 @@ Summary(pt_BR.UTF-8):	Analisador de tráfego de rede
 Summary(ru.UTF-8):	Анализатор сетевого траффика
 Summary(uk.UTF-8):	Аналізатор мережевого трафіку
 Name:		wireshark
-Version:	2.2.1
-Release:	2
+Version:	2.2.7
+Release:	1
 License:	GPL v2+
 Group:		Networking/Utilities
 Source0:	http://www.wireshark.org/download/src/%{name}-%{version}.tar.bz2
-# Source0-md5:	49a1023a69ac108ca089d750eee50e37
+# Source0-md5:	a4d880554c7f925dafef60fa313b580d
 Patch0:		%{name}-Werror.patch
 Patch1:		%{name}-ac.patch
 Patch2:		%{name}-desktop.patch
-Patch3:		%{name}-krb5-defines.patch
 URL:		http://www.wireshark.org/
 BuildRequires:	GeoIP-devel
 BuildRequires:	asciidoc
@@ -286,7 +285,6 @@ pakietów.
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
-%patch3 -p1
 find -name Makefile.am | xargs sed -i -e 's/-Werror//g'
 
 %build
