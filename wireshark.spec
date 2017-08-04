@@ -22,25 +22,27 @@ Summary(pt_BR.UTF-8):	Analisador de tráfego de rede
 Summary(ru.UTF-8):	Анализатор сетевого траффика
 Summary(uk.UTF-8):	Аналізатор мережевого трафіку
 Name:		wireshark
-Version:	2.2.7
+Version:	2.4.0
 Release:	1
 License:	GPL v2+
 Group:		Networking/Utilities
-Source0:	http://www.wireshark.org/download/src/%{name}-%{version}.tar.bz2
-# Source0-md5:	a4d880554c7f925dafef60fa313b580d
+Source0:	https://www.wireshark.org/download/src/%{name}-%{version}.tar.xz
+# Source0-md5:	655106f8cf3bb8f521336d3a8ab5b10b
 Patch0:		%{name}-Werror.patch
 Patch1:		%{name}-ac.patch
 Patch2:		%{name}-desktop.patch
-URL:		http://www.wireshark.org/
+URL:		https://www.wireshark.org/
 BuildRequires:	GeoIP-devel
 BuildRequires:	asciidoc
-BuildRequires:	autoconf >= 2.60
-BuildRequires:	automake >= 1:1.9
+BuildRequires:	autoconf >= 2.64
+BuildRequires:	automake >= 1:1.11
 BuildRequires:	bison
 BuildRequires:	c-ares-devel
 BuildRequires:	doxygen
 BuildRequires:	flex
-BuildRequires:	glib2-devel >= 1:2.22.0
+BuildRequires:	gcc >= 5:3.2
+%{?with_gtk:BuildRequires:	gdk-pixbuf2-devel >= 2.26}
+BuildRequires:	glib2-devel >= 1:2.32
 BuildRequires:	gnutls-devel >= 3.1.10
 %if %{with gui}
 %{?with_gtk2:BuildRequires:	gtk+2-devel >= 2:2.12.0}
@@ -51,28 +53,41 @@ BuildRequires:	libcap-devel
 BuildRequires:	libgcrypt-devel >= 1.4.2
 BuildRequires:	libnl-devel >= 3.2
 BuildRequires:	libpcap-devel >= 2:1.0.0-4
+BuildRequires:	libssh-devel >= 0.6.0
 BuildRequires:	libsmi-devel
-BuildRequires:	libtool
+BuildRequires:	libstdc++-devel
+BuildRequires:	libtool >= 2:2.2.2
+BuildRequires:	libxml2-devel >= 2.0
 BuildRequires:	libxslt-progs
 BuildRequires:	lua52-devel
+BuildRequires:	lz4-devel
 %{?with_snmp:BuildRequires:	net-snmp-devel}
+BuildRequires:	nghttp2-devel
 BuildRequires:	perl-tools-pod
 BuildRequires:	pkgconfig >= 1:0.7
 %{?with_gui:BuildRequires:	portaudio-devel}
 BuildRequires:	python >= 1:2.5
 BuildRequires:	rpmbuild(macros) >= 1.527
 %{?with_gui:BuildRequires:	sbc-devel >= 1.0}
+%{?with_qt:BuildRequires:	speexdsp-devel}
 BuildRequires:	sed >= 4.0
+BuildRequires:	snappy-devel
+BuildRequires:	spandsp-devel
+BuildRequires:	tar >= 1:1.22
+BuildRequires:	w3m
+BuildRequires:	xz
 BuildRequires:	zlib-devel
 %if %{with qt}
-BuildRequires:	Qt5Core-devel
-BuildRequires:	Qt5PrintSupport-devel
-BuildRequires:	Qt5Widgets-devel
-BuildRequires:	libstdc++-devel
-BuildRequires:	qt5-build
-BuildRequires:	qt5-linguist
+BuildRequires:	Qt5Core-devel >= 5
+BuildRequires:	Qt5Multimedia-devel >= 5
+BuildRequires:	Qt5PrintSupport-devel >= 5
+BuildRequires:	Qt5Widgets-devel >= 5
+BuildRequires:	libstdc++-devel >= 5
+BuildRequires:	qt5-build >= 5
+BuildRequires:	qt5-linguist >= 5
 %endif
 Requires:	%{name}-gui-common = %{version}-%{release}
+Requires:	gdk-pixbuf2 >= 2.26
 %if %{with gtk2}
 Requires:	gtk+2 >= 2:2.12.0
 %else
@@ -131,19 +146,33 @@ GUIs (GTK+, Qt).
 Analizator ruchu i protokołów sieciowych - pliki wspólne dla
 wszystkich interfejsów graficznych Wiresharka (GTK+, Qt).
 
+%package qt
+Summary:	Qt-based network traffic and protocol analyzer
+Summary(pl.UTF-8):	Analizator ruchu i protokołów sieciowych oparty na Qt
+Group:		Networking
+Requires:	%{name}-gui-common = %{version}-%{release}
+Requires:	Qt5Gui-platform-xcb
+
+%description qt
+An initial port to Qt (aka QtShark).
+
+%description qt -l pl.UTF-8
+Wstępna wersja analizatora wireshark oparta na Qt (znana też pod nazwą
+QtShark).
+
 %package common
 Summary:	Network traffic and protocol analyzer - common files
 Summary(pl.UTF-8):	Analizator ruchu i protokołów sieciowych - wspólne pliki
 Group:		Networking
+Requires:	%{name}-libs = %{version}-%{release}
 Requires:	gnutls >= 3.1.10
 Requires:	libpcap >= 0.4
-Requires:	libwiretap = %{version}-%{release}
+Requires:	libssh >= 0.6.0
 Provides:	ethereal-common
 Provides:	group(wireshark)
 Provides:	wireshark-tools
 Obsoletes:	ethereal-common
 Obsoletes:	wireshark-tools
-Requires(post,postun):	/sbin/ldconfig
 Requires(post,postun):	/sbin/setcap
 
 %description common
@@ -204,20 +233,6 @@ Wireshark - это анализатор сетевого траффика для
 Wireshark - це аналізатор мережевого трафіку для Unix-подібних ОС. Він
 базується на GTK+ та libpcap.
 
-%package qt
-Summary:	Qt-based network traffic and protocol analyzer
-Summary(pl.UTF-8):	Analizator ruchu i protokołów sieciowych oparty na Qt
-Group:		Networking
-Requires:	%{name}-gui-common = %{version}-%{release}
-Requires:	Qt5Gui-platform-xcb
-
-%description qt
-An initial port to Qt (aka QtShark).
-
-%description qt -l pl.UTF-8
-Wstępna wersja analizatora wireshark oparta na Qt (znana też pod nazwą
-QtShark).
-
 %package -n twireshark
 Summary:	Text-mode network traffic and protocol analyzer
 Summary(pl.UTF-8):	Tekstowy analizator ruchu i protokołów sieciowych
@@ -248,37 +263,36 @@ tcpdumpem i innymi podobnymi narzędziami.
 Esta é uma versão para modo texto do analisador de tráfego de rede
 Wireshark.
 
-%package -n libwiretap
-Summary:	Packet capture and analysis library
-Summary(pl.UTF-8):	Biblioteka do przechwytywania i analizy pakietów
+%package libs
+Summary:	Wireshark packet capture and dissection libraries
+Summary(pl.UTF-8):	Biblioteki Wiresharka do przechwytywania i sekcji pakietów
 Group:		Libraries
-Requires:	glib2 >= 1:2.22.0
+Requires:	glib2 >= 1:2.32
 Requires:	libgcrypt >= 1.4.2
 Requires:	libnl >= 3.2
+Obsoletes:	libwiretap < 2.4.0
 
-%description -n libwiretap
-Wiretap is a library that is being developed as a future replacement
-for libpcap, the current standard Unix library for packet capturing.
+%description libs
+Wireshark packet capture and dissection libraries.
 
-%description -n libwiretap -l pl.UTF-8
-Biblioteka Wiretap rozwijana jest jako przyszły następca biblioteki
-libpcap, obecnie standardu przechwytywania pakietów w systemach Unix.
+%description libs -l pl.UTF-8
+Biblioteki Wiresharka do przechwytywania i sekcji pakietów.
 
-%package -n libwiretap-devel
-Summary:	Header files for libwiretap packet capture library
-Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki libwiretap do przechwytywania pakietów
+%package devel
+Summary:	Header files for Wireshark libraries
+Summary(pl.UTF-8):	Pliki nagłówkowe bibliotek Wiresharka
 Group:		Development/Libraries
-Requires:	glib2-devel >= 1:2.22.0
+Requires:	%{name}-libs = %{version}-%{release}
+Requires:	glib2-devel >= 1:2.32
 Requires:	libgcrypt-devel >= 1.4.2
 Requires:	libnl-devel >= 3.2
-Requires:	libwiretap = %{version}-%{release}
+Obsoletes:	libwiretap-devel < 2.4.0
 
-%description -n libwiretap-devel
-Header files for libwiretap packet capture library.
+%description devel
+Header files for Wireshark libraries.
 
-%description -n libwiretap-devel -l pl.UTF-8
-Pliki nagłówkowe biblioteki libwiretap służącej do przechwytywania
-pakietów.
+%description devel -l pl.UTF-8
+Pliki nagłówkowe bibliotek Wiresharka.
 
 %prep
 %setup -q
@@ -296,32 +310,31 @@ find -name Makefile.am | xargs sed -i -e 's/-Werror//g'
 MOC=moc-qt5 \
 UIC=uic-qt5 \
 %endif
+CPPFLAGS="%{rpmcppflags} $(pkg-config --cflags liblz4)"
 %configure \
 	HTML_VIEWER=/usr/bin/xdg-open \
 	--enable-dftest \
 	--enable-packet-editor \
 	--enable-randpkt \
+	--enable-tfshark \
+	%{__enable_disable gui wireshark} \
 	--disable-silent-rules \
 	--disable-usr-local \
 %if %{with gtk}
-	%{?with_gtk2:--with-gtk2 --without-gtk3}%{!?with_gtk2:--with-gtk3 --without-gtk2} \
-%else
-	--without-gtk2 \
-	--without-gtk3 \
+	%{?with_gtk2:--with-gtk=2}%{!?with_gtk2:--with-gtk=3} \
 %endif
-	%{__with_without qt} \
-	%{__enable_disable gui wireshark} \
-	--with-lua \
 %if %{with kerberos5}
 	--with-krb5 \
 %endif
+	--with-lua \
+	%{__with_without qt} \
 	%{!?with_snmp:--without-net-snmp --without-ucdsnmp}
 
 %{__make}
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_desktopdir},%{_pixmapsdir},%{_includedir}/wiretap}
+install -d $RPM_BUILD_ROOT{%{_desktopdir},%{_pixmapsdir},%{_includedir}/wireshark}
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
@@ -332,13 +345,23 @@ cp -p image/hi48-app-wireshark.png $RPM_BUILD_ROOT%{_pixmapsdir}/%{name}.png
 %{?with_gtk:cp -p wireshark-gtk.desktop $RPM_BUILD_ROOT%{_desktopdir}/wireshark.desktop}
 %{?with_qt:cp -p wireshark.desktop $RPM_BUILD_ROOT%{_desktopdir}/wireshark-qt.desktop}
 
-cp -a wiretap/*.h $RPM_BUILD_ROOT%{_includedir}/wiretap
+# headers (from Fedora, inspired by debian/wireshark-dev.header-files)
+install -d $RPM_BUILD_ROOT%{_includedir}/wireshark/{epan/{crypt,ftypes,dfilter,dissectors,wmem},wiretap,wsutil}
+install config.h register.h $RPM_BUILD_ROOT%{_includedir}/wireshark
+install cfile.h file.h      $RPM_BUILD_ROOT%{_includedir}/wireshark
+install ws_diag_control.h   $RPM_BUILD_ROOT%{_includedir}/wireshark
+install ws_symbol_export.h  $RPM_BUILD_ROOT%{_includedir}/wireshark
+install epan/*.h            $RPM_BUILD_ROOT%{_includedir}/wireshark/epan
+install epan/crypt/*.h      $RPM_BUILD_ROOT%{_includedir}/wireshark/epan/crypt
+install epan/ftypes/*.h     $RPM_BUILD_ROOT%{_includedir}/wireshark/epan/ftypes
+install epan/dfilter/*.h    $RPM_BUILD_ROOT%{_includedir}/wireshark/epan/dfilter
+install epan/dissectors/*.h $RPM_BUILD_ROOT%{_includedir}/wireshark/epan/dissectors
+install epan/wmem/*.h       $RPM_BUILD_ROOT%{_includedir}/wireshark/epan/wmem
+install wiretap/*.h         $RPM_BUILD_ROOT%{_includedir}/wireshark/wiretap
+install wsutil/*.h          $RPM_BUILD_ROOT%{_includedir}/wireshark/wsutil
 
 # plugins *.la are useless - *.so are loaded through gmodule
 %{__rm} $RPM_BUILD_ROOT%{_libdir}/%{name}/plugins/%{version}*/*.la
-
-# no headers installed for this library
-%{__rm} $RPM_BUILD_ROOT%{_libdir}/libwireshark.{so,la}
 
 %{?with_qt:%{__mv} $RPM_BUILD_ROOT%{_bindir}/wireshark{,-qt}}
 %{?with_gtk:%{__mv} $RPM_BUILD_ROOT%{_bindir}/wireshark{-gtk,}}
@@ -356,18 +379,16 @@ rm -rf $RPM_BUILD_ROOT
 %groupadd -P %{name}-common -g 104 wireshark
 
 %post	common
-/sbin/ldconfig
 /sbin/setcap 'CAP_NET_RAW+eip CAP_NET_ADMIN+eip' %{_bindir}/dumpcap
 exit 0
 
 %postun	common
-/sbin/ldconfig
 if [ "$1" = "0" ]; then
 	%groupremove wireshark
 fi
 
-%post	-n libwiretap -p /sbin/ldconfig
-%postun	-n libwiretap -p /sbin/ldconfig
+%post	libs -p /sbin/ldconfig
+%postun	libs -p /sbin/ldconfig
 
 %if %{with gtk}
 %files
@@ -401,6 +422,13 @@ fi
 %{_mandir}/man1/wireshark.1*
 %endif
 
+%if %{with qt}
+%files qt
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_bindir}/wireshark-qt
+%{_desktopdir}/wireshark-qt.desktop
+%endif
+
 %files common
 %defattr(644,root,root,755)
 %doc AUTHORS* ChangeLog NEWS README README.linux README.vmware doc/README.*
@@ -408,8 +436,11 @@ fi
 %dir %{_libdir}/%{name}/extcap
 %dir %{_libdir}/%{name}/plugins
 %dir %{_libdir}/%{name}/plugins/%{version}*
+%attr(755,root,root) %{_libdir}/%{name}/extcap/ciscodump
 %attr(755,root,root) %{_libdir}/%{name}/extcap/androiddump
 %attr(755,root,root) %{_libdir}/%{name}/extcap/randpktdump
+%attr(755,root,root) %{_libdir}/%{name}/extcap/sshdump
+%attr(755,root,root) %{_libdir}/%{name}/extcap/udpdump
 %attr(755,root,root) %{_libdir}/%{name}/plugins/%{version}*/*.so
 %attr(755,root,root) %{_bindir}/capinfos
 %attr(755,root,root) %{_bindir}/captype
@@ -421,9 +452,9 @@ fi
 %attr(755,root,root) %{_bindir}/randpkt
 %attr(755,root,root) %{_bindir}/rawshark
 %attr(755,root,root) %{_bindir}/reordercap
+%attr(755,root,root) %{_bindir}/sharkd
 %attr(755,root,root) %{_bindir}/text2pcap
-%attr(755,root,root) %{_libdir}/libwireshark.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libwireshark.so.8
+%attr(755,root,root) %{_bindir}/tfshark
 %{_mandir}/man1/androiddump.1*
 %{_mandir}/man1/capinfos.1*
 %{_mandir}/man1/dftest.1*
@@ -434,38 +465,37 @@ fi
 %{_mandir}/man1/randpkt.1*
 %{_mandir}/man1/randpktdump.1*
 %{_mandir}/man1/reordercap.1*
+%{_mandir}/man1/sshdump.1*
 %{_mandir}/man1/text2pcap.1*
 %{_mandir}/man4/extcap.4*
 %{_mandir}/man4/wireshark-filter.4*
-
-%if %{with qt}
-%files qt
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_bindir}/wireshark-qt
-%{_desktopdir}/wireshark-qt.desktop
-%endif
 
 %files -n twireshark
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/tshark
 %{_mandir}/man1/tshark*.1*
 
-%files -n libwiretap
+%files libs
 %defattr(644,root,root,755)
 %doc wiretap/README*
+%attr(755,root,root) %{_libdir}/libwireshark.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libwireshark.so.10
 %attr(755,root,root) %{_libdir}/libwiretap.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libwiretap.so.6
+%attr(755,root,root) %ghost %{_libdir}/libwiretap.so.7
 %attr(755,root,root) %{_libdir}/libwscodecs.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libwscodecs.so.1
+%attr(755,root,root) %ghost %{_libdir}/libwscodecs.so.0
 %attr(755,root,root) %{_libdir}/libwsutil.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libwsutil.so.7
+%attr(755,root,root) %ghost %{_libdir}/libwsutil.so.8
 
-%files -n libwiretap-devel
+%files devel
 %defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libwireshark.so
 %attr(755,root,root) %{_libdir}/libwiretap.so
 %attr(755,root,root) %{_libdir}/libwscodecs.so
 %attr(755,root,root) %{_libdir}/libwsutil.so
+%{_libdir}/libwireshark.la
 %{_libdir}/libwiretap.la
 %{_libdir}/libwscodecs.la
 %{_libdir}/libwsutil.la
-%{_includedir}/wiretap
+%{_includedir}/wireshark
+%{_pkgconfigdir}/wireshark.pc
