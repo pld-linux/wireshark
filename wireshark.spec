@@ -22,12 +22,12 @@ Summary(pt_BR.UTF-8):	Analisador de tráfego de rede
 Summary(ru.UTF-8):	Анализатор сетевого траффика
 Summary(uk.UTF-8):	Аналізатор мережевого трафіку
 Name:		wireshark
-Version:	2.4.0
+Version:	2.4.4
 Release:	1
 License:	GPL v2+
 Group:		Networking/Utilities
 Source0:	https://www.wireshark.org/download/src/%{name}-%{version}.tar.xz
-# Source0-md5:	655106f8cf3bb8f521336d3a8ab5b10b
+# Source0-md5:	660db152b7d6974c0e2ff12aa8a4fce6
 Patch0:		%{name}-Werror.patch
 Patch1:		%{name}-ac.patch
 Patch2:		%{name}-desktop.patch
@@ -467,6 +467,7 @@ fi
 %{_mandir}/man1/reordercap.1*
 %{_mandir}/man1/sshdump.1*
 %{_mandir}/man1/text2pcap.1*
+%{_mandir}/man1/udpdump.1*
 %{_mandir}/man4/extcap.4*
 %{_mandir}/man4/wireshark-filter.4*
 
@@ -479,11 +480,11 @@ fi
 %defattr(644,root,root,755)
 %doc wiretap/README*
 %attr(755,root,root) %{_libdir}/libwireshark.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libwireshark.so.10
+%attr(755,root,root) %ghost %{_libdir}/libwireshark.so.9
 %attr(755,root,root) %{_libdir}/libwiretap.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libwiretap.so.7
 %attr(755,root,root) %{_libdir}/libwscodecs.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libwscodecs.so.0
+%attr(755,root,root) %ghost %{_libdir}/libwscodecs.so.1
 %attr(755,root,root) %{_libdir}/libwsutil.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libwsutil.so.8
 
