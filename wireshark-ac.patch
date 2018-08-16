@@ -10,23 +10,24 @@ diff -ruN wireshark-2.0.1.orig/acinclude.m4 wireshark-2.0.1/acinclude.m4
  
  	    "-L "*)
  	      #
-@@ -413,6 +413,7 @@
+@@ -413,7 +413,7 @@
+ 	    # Found it, and it's usable; use it to get the include flags
  	    # for libpcap.
  	    #
- 	    CPPFLAGS="$CPPFLAGS `\"$PCAP_CONFIG\" --cflags`"
-+	    CPPFLAGS="$CPPFLAGS `$PCAP_CONFIG --cflags`"
- 	  else
+-	    PCAP_CFLAGS="`\"$PCAP_CONFIG\" --cflags`"
++	    PCAP_CFLAGS="`$PCAP_CONFIG --cflags`"
  	    #
- 	    # Didn't find it; we have to look for libpcap ourselves.
+ 	    # We have pcap-config; we assume that means we have libpcap
+ 	    # installed and that pcap-config will tell us whatever
 @@ -481,9 +482,9 @@
- 	  # libraries libpcap needs.
- 	  #
- 	  if test x$enable_static = xyes; then
--	    PCAP_LIBS="`\"$PCAP_CONFIG\" --libs --static`"
-+	    PCAP_LIBS="`$PCAP_CONFIG --libs --static`"
+ 	    # libraries libpcap needs.
+ 	    #
+ 	    if test x$enable_static = xyes; then
+-	      PCAP_LIBS="`\"$PCAP_CONFIG\" --libs --static`"
++	      PCAP_LIBS="`$PCAP_CONFIG --libs --static`"
+ 	    else
+-	      PCAP_LIBS="`\"$PCAP_CONFIG\" --libs`"
++	      PCAP_LIBS="`$PCAP_CONFIG --libs`"
+ 	    fi
+ 	    AC_DEFINE(HAVE_LIBPCAP, 1, [Define to use libpcap library])
  	  else
--	    PCAP_LIBS="`\"$PCAP_CONFIG\" --libs`"
-+	    PCAP_LIBS="`$PCAP_CONFIG --libs`"
- 	  fi
- 	  AC_DEFINE(HAVE_LIBPCAP, 1, [Define to use libpcap library])
- 	else

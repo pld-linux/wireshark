@@ -1,0 +1,14 @@
+--- wireshark-2.6.2/Makefile.am~	2018-08-16 23:23:54.000000000 +0200
++++ wireshark-2.6.2/Makefile.am	2018-08-16 23:51:34.936542791 +0200
+@@ -45,10 +45,10 @@
+ 	@text2pcap_bin@		\
+ 	@tfshark_bin@		\
+ 	@tshark_bin@		\
++	@dftest_bin@		\
+ 	@wireshark_bin@
+ 
+ noinst_PROGRAMS = \
+-	@dftest_bin@		\
+ 	@fuzzshark_bin@
+ 
+ EXTRA_PROGRAMS = wireshark-gtk wireshark tshark tfshark capinfos captype \

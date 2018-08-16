@@ -22,15 +22,16 @@ Summary(pt_BR.UTF-8):	Analisador de tráfego de rede
 Summary(ru.UTF-8):	Анализатор сетевого траффика
 Summary(uk.UTF-8):	Аналізатор мережевого трафіку
 Name:		wireshark
-Version:	2.4.5
-Release:	2
+Version:	2.6.2
+Release:	1
 License:	GPL v2+
 Group:		Networking/Utilities
 Source0:	https://www.wireshark.org/download/src/%{name}-%{version}.tar.xz
-# Source0-md5:	2b6f1f37c72fa15a0a1863016a0abcc0
+# Source0-md5:	086d235509717190d06554b2ab870209
 Patch0:		%{name}-Werror.patch
 Patch1:		%{name}-ac.patch
 Patch2:		%{name}-desktop.patch
+Patch3:		dftest.patch
 URL:		https://www.wireshark.org/
 BuildRequires:	GeoIP-devel
 BuildRequires:	asciidoc
@@ -299,6 +300,7 @@ Pliki nagłówkowe bibliotek Wiresharka.
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
+%patch3 -p1
 find -name Makefile.am | xargs sed -i -e 's/-Werror//g'
 
 %build
@@ -339,7 +341,7 @@ install -d $RPM_BUILD_ROOT{%{_desktopdir},%{_pixmapsdir},%{_includedir}/wireshar
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
-cp -p image/hi48-app-wireshark.png $RPM_BUILD_ROOT%{_pixmapsdir}/%{name}.png
+cp -p image/wsicon48.png $RPM_BUILD_ROOT%{_pixmapsdir}/%{name}.png
 
 %{__rm} $RPM_BUILD_ROOT%{_desktopdir}/wireshark*.desktop
 %{?with_gtk:cp -p wireshark-gtk.desktop $RPM_BUILD_ROOT%{_desktopdir}/wireshark.desktop}
@@ -347,7 +349,7 @@ cp -p image/hi48-app-wireshark.png $RPM_BUILD_ROOT%{_pixmapsdir}/%{name}.png
 
 # headers (from Fedora, inspired by debian/wireshark-dev.header-files)
 install -d $RPM_BUILD_ROOT%{_includedir}/wireshark/{epan/{crypt,ftypes,dfilter,dissectors,wmem},wiretap,wsutil}
-install config.h register.h $RPM_BUILD_ROOT%{_includedir}/wireshark
+install config.h            $RPM_BUILD_ROOT%{_includedir}/wireshark
 install cfile.h file.h      $RPM_BUILD_ROOT%{_includedir}/wireshark
 install ws_diag_control.h   $RPM_BUILD_ROOT%{_includedir}/wireshark
 install ws_symbol_export.h  $RPM_BUILD_ROOT%{_includedir}/wireshark
@@ -361,7 +363,7 @@ install wiretap/*.h         $RPM_BUILD_ROOT%{_includedir}/wireshark/wiretap
 install wsutil/*.h          $RPM_BUILD_ROOT%{_includedir}/wireshark/wsutil
 
 # plugins *.la are useless - *.so are loaded through gmodule
-%{__rm} $RPM_BUILD_ROOT%{_libdir}/%{name}/plugins/%{version}*/*.la
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/%{name}/plugins/*/*/*.la
 
 %{?with_qt:%{__mv} $RPM_BUILD_ROOT%{_bindir}/wireshark{,-qt}}
 %{?with_gtk:%{__mv} $RPM_BUILD_ROOT%{_bindir}/wireshark{-gtk,}}
@@ -431,17 +433,22 @@ fi
 
 %files common
 %defattr(644,root,root,755)
-%doc AUTHORS* ChangeLog NEWS README README.linux README.vmware doc/README.*
+%doc AUTHORS* ChangeLog NEWS README.md README.linux doc/README.*
 %dir %{_libdir}/%{name}
 %dir %{_libdir}/%{name}/extcap
 %dir %{_libdir}/%{name}/plugins
-%dir %{_libdir}/%{name}/plugins/%{version}*
+%dir %{_libdir}/%{name}/plugins/2.6
+%dir %{_libdir}/%{name}/plugins/2.6/codecs
+%dir %{_libdir}/%{name}/plugins/2.6/epan
+%dir %{_libdir}/%{name}/plugins/2.6/wiretap
 %attr(755,root,root) %{_libdir}/%{name}/extcap/ciscodump
 %attr(755,root,root) %{_libdir}/%{name}/extcap/androiddump
 %attr(755,root,root) %{_libdir}/%{name}/extcap/randpktdump
 %attr(755,root,root) %{_libdir}/%{name}/extcap/sshdump
 %attr(755,root,root) %{_libdir}/%{name}/extcap/udpdump
-%attr(755,root,root) %{_libdir}/%{name}/plugins/%{version}*/*.so
+%attr(755,root,root) %{_libdir}/%{name}/plugins/2.6/codecs/*.so
+%attr(755,root,root) %{_libdir}/%{name}/plugins/2.6/epan/*.so
+%attr(755,root,root) %{_libdir}/%{name}/plugins/2.6/wiretap/*.so
 %attr(755,root,root) %{_bindir}/capinfos
 %attr(755,root,root) %{_bindir}/captype
 %attr(755,root,root) %{_bindir}/dftest
@@ -457,6 +464,7 @@ fi
 %attr(755,root,root) %{_bindir}/tfshark
 %{_mandir}/man1/androiddump.1*
 %{_mandir}/man1/capinfos.1*
+%{_mandir}/man1/captype.1*
 %{_mandir}/man1/dftest.1*
 %{_mandir}/man1/dumpcap.1*
 %{_mandir}/man1/editcap.1*
@@ -480,13 +488,13 @@ fi
 %defattr(644,root,root,755)
 %doc wiretap/README*
 %attr(755,root,root) %{_libdir}/libwireshark.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libwireshark.so.9
+%attr(755,root,root) %ghost %{_libdir}/libwireshark.so.10
 %attr(755,root,root) %{_libdir}/libwiretap.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libwiretap.so.7
+%attr(755,root,root) %ghost %{_libdir}/libwiretap.so.8
 %attr(755,root,root) %{_libdir}/libwscodecs.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libwscodecs.so.1
+%attr(755,root,root) %ghost %{_libdir}/libwscodecs.so.2
 %attr(755,root,root) %{_libdir}/libwsutil.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libwsutil.so.8
+%attr(755,root,root) %ghost %{_libdir}/libwsutil.so.9
 
 %files devel
 %defattr(644,root,root,755)
