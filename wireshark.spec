@@ -22,12 +22,12 @@ Summary(pt_BR.UTF-8):	Analisador de tráfego de rede
 Summary(ru.UTF-8):	Анализатор сетевого траффика
 Summary(uk.UTF-8):	Аналізатор мережевого трафіку
 Name:		wireshark
-Version:	2.6.2
+Version:	2.6.4
 Release:	1
 License:	GPL v2+
 Group:		Networking/Utilities
 Source0:	https://www.wireshark.org/download/src/%{name}-%{version}.tar.xz
-# Source0-md5:	086d235509717190d06554b2ab870209
+# Source0-md5:	8aa7b8c8ce0b6ce4256a081493819d6f
 Patch0:		%{name}-Werror.patch
 Patch1:		%{name}-ac.patch
 Patch2:		%{name}-desktop.patch
@@ -456,6 +456,7 @@ fi
 %attr(755,root,root) %{_bindir}/editcap
 %attr(755,root,root) %{_bindir}/idl2wrs
 %attr(755,root,root) %{_bindir}/mergecap
+%attr(755,root,root) %{_bindir}/mmdbresolve
 %attr(755,root,root) %{_bindir}/randpkt
 %attr(755,root,root) %{_bindir}/rawshark
 %attr(755,root,root) %{_bindir}/reordercap
@@ -465,10 +466,12 @@ fi
 %{_mandir}/man1/androiddump.1*
 %{_mandir}/man1/capinfos.1*
 %{_mandir}/man1/captype.1*
+%{_mandir}/man1/ciscodump.1*
 %{_mandir}/man1/dftest.1*
 %{_mandir}/man1/dumpcap.1*
 %{_mandir}/man1/editcap.1*
 %{_mandir}/man1/mergecap.1*
+%{_mandir}/man1/mmdbresolve.1*
 %{_mandir}/man1/rawshark.1*
 %{_mandir}/man1/randpkt.1*
 %{_mandir}/man1/randpktdump.1*
