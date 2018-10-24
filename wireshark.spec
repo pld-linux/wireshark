@@ -343,7 +343,7 @@ install -d $RPM_BUILD_ROOT{%{_desktopdir},%{_pixmapsdir},%{_includedir}/wireshar
 
 cp -p image/wsicon48.png $RPM_BUILD_ROOT%{_pixmapsdir}/%{name}.png
 
-%{__rm} $RPM_BUILD_ROOT%{_desktopdir}/wireshark*.desktop
+%{?with_gui:%{__rm} $RPM_BUILD_ROOT%{_desktopdir}/wireshark*.desktop}
 %{?with_gtk:cp -p wireshark-gtk.desktop $RPM_BUILD_ROOT%{_desktopdir}/wireshark.desktop}
 %{?with_qt:cp -p wireshark.desktop $RPM_BUILD_ROOT%{_desktopdir}/wireshark-qt.desktop}
 
