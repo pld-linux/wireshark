@@ -52,6 +52,7 @@ BuildRequires:	gnutls-devel >= 3.1.10
 %{?with_kerberos5:BuildRequires:	heimdal-devel}
 BuildRequires:	libcap-devel
 BuildRequires:	libgcrypt-devel >= 1.4.2
+BuildRequires:	libmaxminddb-devel
 BuildRequires:	libnl-devel >= 3.2
 BuildRequires:	libpcap-devel >= 2:1.0.0-4
 BuildRequires:	libssh-devel >= 0.6.0
