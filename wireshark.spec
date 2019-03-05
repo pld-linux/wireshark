@@ -24,9 +24,10 @@ Patch0:		%{name}-desktop.patch
 URL:		https://www.wireshark.org/
 BuildRequires:	GeoIP-devel
 BuildRequires:	asciidoc
+BuildRequires:	bcg729-devel
 BuildRequires:	bison
 BuildRequires:	cmake
-BuildRequires:	c-ares-devel
+BuildRequires:	c-ares-devel >= 1.5.0
 BuildRequires:	doxygen
 BuildRequires:	flex
 BuildRequires:	gcc >= 5:3.2
