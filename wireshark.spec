@@ -20,7 +20,6 @@ License:	GPL v2+
 Group:		Networking/Utilities
 Source0:	https://www.wireshark.org/download/src/%{name}-%{version}.tar.xz
 # Source0-md5:	258d62ac7434d126dc497303c8f7961b
-Patch0:		%{name}-desktop.patch
 URL:		https://www.wireshark.org/
 BuildRequires:	GeoIP-devel
 BuildRequires:	asciidoc
@@ -256,7 +255,6 @@ Pliki nagłówkowe bibliotek Wiresharka.
 
 %prep
 %setup -q
-%patch0 -p1
 
 %build
 %cmake -G "Unix Makefiles" \
