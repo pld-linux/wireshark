@@ -50,11 +50,10 @@ BuildRequires:	lz4-devel
 BuildRequires:	nghttp2-devel
 BuildRequires:	perl-tools-pod
 BuildRequires:	pkgconfig >= 1:0.7
-%{?with_gui:BuildRequires:	portaudio-devel}
 BuildRequires:	python3 >= 1:3.4
 BuildRequires:	rpmbuild(macros) >= 1.527
 %{?with_gui:BuildRequires:	sbc-devel >= 1.0}
-%{?with_qt:BuildRequires:	speexdsp-devel}
+%{?with_gui:BuildRequires:	speexdsp-devel}
 BuildRequires:	sed >= 4.0
 BuildRequires:	snappy-devel
 BuildRequires:	spandsp-devel
@@ -62,7 +61,7 @@ BuildRequires:	tar >= 1:1.22
 BuildRequires:	w3m
 BuildRequires:	xz
 BuildRequires:	zlib-devel
-%if %{with qt}
+%if %{with gui}
 BuildRequires:	Qt5Core-devel >= 5.2
 BuildRequires:	Qt5Multimedia-devel >= 5.2
 BuildRequires:	Qt5PrintSupport-devel >= 5.2
@@ -73,11 +72,6 @@ BuildRequires:	qt5-linguist >= 5.2
 %endif
 Requires:	%{name}-gui-common = %{version}-%{release}
 Requires:	gdk-pixbuf2 >= 2.26
-%if %{with gtk2}
-Requires:	gtk+2 >= 2:2.12.0
-%else
-Requires:	gtk+3 >= 3.0.0
-%endif
 Suggests:	xdg-utils
 Provides:	ethereal
 Provides:	ethereal-gnome
@@ -89,7 +83,7 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
 Wireshark is the name for powerful graphical network sniffer, traffic
-and protocol analyzer based on GTK+ and libpcap libraries. It lets you
+and protocol analyzer based on QT and libpcap libraries. It lets you
 capture and interactively browse the contents of network frames with
 vast knowledge of more than 100 network protocols. Wireshark has
 severeal useful features, including a rich display filter language,
@@ -101,7 +95,7 @@ Analizador de tráfico de red.
 
 %description -l pl.UTF-8
 Wireshark jest potężnym, graficznym snifferem, analizatorem ruchu oraz
-protokołów sieciowych opartym na bibliotekach GTK+ oraz libpcap.
+protokołów sieciowych opartym na bibliotekach QT oraz libpcap.
 Umożliwia on przechwytywanie oraz interaktywną analizę zawartości
 ramek oraz ponad stu protokołów sieciowych. Wireshark posiada wiele
 użytecznych cech, takich jak rozbudowany język filtrów wyświetlania,
@@ -109,15 +103,15 @@ możliwość oglądania przebiegu sesji TCP oraz możliwość dołączania
 wtyczek (plug-ins).
 
 %description -l pt_BR.UTF-8
-O Wireshark é um analisador de protocolo de rede baseado no GTK+.
+O Wireshark é um analisador de protocolo de rede baseado no QT.
 
 %description -l ru.UTF-8
 Wireshark - это анализатор сетевого траффика для Unix-подобных ОС. Он
-базируется на GTK+ и libpcap.
+базируется на QT и libpcap.
 
 %description -l uk.UTF-8
 Wireshark - це аналізатор мережевого трафіку для Unix-подібних ОС. Він
-базується на GTK+ та libpcap.
+базується на QT та libpcap.
 
 %package common
 Summary:	Network traffic and protocol analyzer - common files
@@ -136,7 +130,7 @@ Requires(post,postun):	/sbin/setcap
 
 %description common
 Wireshark is the name for powerful graphical network sniffer, traffic
-and protocol analyzer based on GTK+ and libpcap libraries. It lets you
+and protocol analyzer based on QT and libpcap libraries. It lets you
 capture and interactively browse the contents of network frames with
 vast knowledge of more than 100 network protocols. Wireshark has
 severeal useful features, including a rich display filter language,
@@ -160,7 +154,7 @@ Analizador de tráfico de red.
 
 %description common -l pl.UTF-8
 Wireshark jest potężnym, graficznym snifferem, analizatorem ruchu oraz
-protokołów sieciowych opartym na bibliotekach GTK+ oraz libpcap.
+protokołów sieciowych opartym na bibliotekach QT oraz libpcap.
 Umożliwia on przechwytywanie oraz interaktywną analizę zawartości
 ramek oraz ponad stu protokołów sieciowych. Wireshark posiada wiele
 użytecznych cech, takich jak rozbudowany język filtrów wyświetlania,
@@ -182,15 +176,15 @@ obejmujący:
   pakietów.
 
 %description common -l pt_BR.UTF-8
-O Wireshark é um analisador de protocolo de rede baseado no GTK+.
+O Wireshark é um analisador de protocolo de rede baseado no QT.
 
 %description common -l ru.UTF-8
 Wireshark - это анализатор сетевого траффика для Unix-подобных ОС. Он
-базируется на GTK+ и libpcap.
+базируется на QT и libpcap.
 
 %description common -l uk.UTF-8
 Wireshark - це аналізатор мережевого трафіку для Unix-подібних ОС. Він
-базується на GTK+ та libpcap.
+базується на QT та libpcap.
 
 %package -n twireshark
 Summary:	Text-mode network traffic and protocol analyzer
