@@ -264,13 +264,16 @@ Pliki nagłówkowe bibliotek Wiresharka.
   -DENABLE_QT5=ON \
   -DENABLE_LUA=ON \
   -DBUILD_mmdbresolve=ON \
-  -DBUILD_randpktdump=OFF \
-  -DBUILD_androiddump=OFF \
+  -DBUILD_randpktdump=ON \
+  -DBUILD_androiddump=ON \
+  -DBUILD_tfshark=OFF \
+  -DBUILD_corbaidl2wrs=ON \
+  -DBUILD_dcerpcidl2wrs=ON \
+  -DBUILD_xxx2deb=ON \
   -DENABLE_SMI=ON \
   -DENABLE_PORTAUDIO=ON \
   -DENABLE_PLUGINS=ON \
-  -DENABLE_NETLINK=ON \
-  -DBUILD_dcerpcidl2wrs=OFF
+  -DENABLE_NETLINK=ON
 
 %{__make}
 
@@ -364,10 +367,12 @@ fi
 %dir %{_libdir}/%{name}/plugins/3.0/codecs
 %dir %{_libdir}/%{name}/plugins/3.0/epan
 %dir %{_libdir}/%{name}/plugins/3.0/wiretap
+%attr(755,root,root) %{_libdir}/%{name}/extcap/androiddump
 %attr(755,root,root) %{_libdir}/%{name}/extcap/ciscodump
-#%attr(755,root,root) %{_libdir}/%{name}/extcap/androiddump
-#%attr(755,root,root) %{_libdir}/%{name}/extcap/randpktdump
+%attr(755,root,root) %{_libdir}/%{name}/extcap/dpauxmon
+%attr(755,root,root) %{_libdir}/%{name}/extcap/randpktdump
 %attr(755,root,root) %{_libdir}/%{name}/extcap/sshdump
+%attr(755,root,root) %{_libdir}/%{name}/extcap/sdjournal
 %attr(755,root,root) %{_libdir}/%{name}/extcap/udpdump
 %attr(755,root,root) %{_libdir}/%{name}/plugins/3.0/codecs/*.so
 %attr(755,root,root) %{_libdir}/%{name}/plugins/3.0/epan/*.so
@@ -377,7 +382,7 @@ fi
 #%attr(755,root,root) %{_bindir}/dftest
 %attr(750,root,wireshark) %{_bindir}/dumpcap
 %attr(755,root,root) %{_bindir}/editcap
-#%attr(755,root,root) %{_bindir}/idl2wrs
+%attr(755,root,root) %{_bindir}/idl2wrs
 %attr(755,root,root) %{_bindir}/mergecap
 %attr(755,root,root) %{_bindir}/mmdbresolve
 %attr(755,root,root) %{_bindir}/randpkt
