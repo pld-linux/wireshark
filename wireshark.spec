@@ -1,6 +1,22 @@
 # TODO
 # - use policykit to gain root
 # - use %caps when rpm supports it: %attr(750,root,wireshark) %caps(cap_net_raw,cap_net_admin=eip) %{_sbindir}/dumpcap
+# - unpackaged files (datadir ?):
+# warning: Installed (but unpackaged) file(s) found:
+#        /usr/lib64/wireshark/cmake/FindGLIB2.cmake
+#        /usr/lib64/wireshark/cmake/FindWSWinLibs.cmake
+#        /usr/lib64/wireshark/cmake/LocatePythonModule.cmake
+#        /usr/lib64/wireshark/cmake/UseAsn2Wrs.cmake
+#        /usr/lib64/wireshark/cmake/UseMakePluginReg.cmake
+#        /usr/lib64/wireshark/cmake/WiresharkConfig.cmake
+#        /usr/lib64/wireshark/cmake/WiresharkConfigVersion.cmake
+#        /usr/lib64/wireshark/cmake/WiresharkTargets-pld.cmake
+#        /usr/lib64/wireshark/cmake/WiresharkTargets.cmake
+#        /usr/share/AUTHORS-SHORT
+#        /usr/share/COPYING
+#        /usr/share/androiddump.html
+#        /usr/share/asn2deb.html
+#	(...)
 #
 # Conditional build:
 %bcond_without	kerberos5	# Kerberos V support
