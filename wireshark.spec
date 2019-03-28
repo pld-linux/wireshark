@@ -31,7 +31,7 @@ Summary(ru.UTF-8):	Анализатор сетевого траффика
 Summary(uk.UTF-8):	Аналізатор мережевого трафіку
 Name:		wireshark
 Version:	3.0.0
-Release:	0.1
+Release:	1
 License:	GPL v2+
 Group:		Networking/Utilities
 Source0:	https://www.wireshark.org/download/src/%{name}-%{version}.tar.xz
@@ -86,7 +86,6 @@ BuildRequires:	libstdc++-devel >= 5
 BuildRequires:	qt5-build >= 5.2
 BuildRequires:	qt5-linguist >= 5.2
 %endif
-Requires:	%{name}-gui-common = %{version}-%{release}
 Requires:	gdk-pixbuf2 >= 2.26
 Suggests:	xdg-utils
 Provides:	ethereal
