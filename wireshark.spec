@@ -30,12 +30,12 @@ Summary(pt_BR.UTF-8):	Analisador de tráfego de rede
 Summary(ru.UTF-8):	Анализатор сетевого траффика
 Summary(uk.UTF-8):	Аналізатор мережевого трафіку
 Name:		wireshark
-Version:	3.0.0
-Release:	2
+Version:	3.0.1
+Release:	1
 License:	GPL v2+
 Group:		Networking/Utilities
 Source0:	https://www.wireshark.org/download/src/%{name}-%{version}.tar.xz
-# Source0-md5:	258d62ac7434d126dc497303c8f7961b
+# Source0-md5:	370a113e1c8ec240c4621cfb5abb0c52
 Patch0:		cmake.patch
 URL:		https://www.wireshark.org/
 BuildRequires:	GeoIP-devel
