@@ -15,12 +15,11 @@ Summary(ru.UTF-8):	Анализатор сетевого траффика
 Summary(uk.UTF-8):	Аналізатор мережевого трафіку
 Name:		wireshark
 Version:	3.2.4
-Release:	1
+Release:	2
 License:	GPL v2+
 Group:		Networking/Utilities
 Source0:	https://www.wireshark.org/download/src/%{name}-%{version}.tar.xz
 # Source0-md5:	4bbee1bdd5b88343733590fabfffddf3
-Patch0:		cmake.patch
 URL:		https://www.wireshark.org/
 BuildRequires:	bcg729-devel
 BuildRequires:	bison
@@ -257,7 +256,6 @@ Pliki nagłówkowe bibliotek Wiresharka.
 
 %prep
 %setup -q
-%patch0 -p1
 
 %build
 install -d build
