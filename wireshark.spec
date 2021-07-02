@@ -7,6 +7,7 @@
 %bcond_without	snmp		# SNMP support
 %bcond_without	gui		# without QT GUI
 
+%define		branch_ver	3.4
 Summary:	Network traffic and protocol analyzer
 Summary(es.UTF-8):	Analizador de tráfico de red
 Summary(pl.UTF-8):	Analizator ruchu i protokołów sieciowych
@@ -14,12 +15,12 @@ Summary(pt_BR.UTF-8):	Analisador de tráfego de rede
 Summary(ru.UTF-8):	Анализатор сетевого траффика
 Summary(uk.UTF-8):	Аналізатор мережевого трафіку
 Name:		wireshark
-Version:	3.2.4
-Release:	2
+Version:	3.4.6
+Release:	1
 License:	GPL v2+
 Group:		Networking/Utilities
 Source0:	https://www.wireshark.org/download/src/%{name}-%{version}.tar.xz
-# Source0-md5:	4bbee1bdd5b88343733590fabfffddf3
+# Source0-md5:	93e5fca965b7fcd6642aba1f43b80dcd
 URL:		https://www.wireshark.org/
 BuildRequires:	bcg729-devel
 BuildRequires:	bison
@@ -348,10 +349,10 @@ fi
 %doc AUTHORS* ChangeLog NEWS README.md README.linux doc/README.*
 %dir %{_libdir}/%{name}/extcap
 %dir %{_libdir}/%{name}/plugins
-%dir %{_libdir}/%{name}/plugins/3.2
-%dir %{_libdir}/%{name}/plugins/3.2/codecs
-%dir %{_libdir}/%{name}/plugins/3.2/epan
-%dir %{_libdir}/%{name}/plugins/3.2/wiretap
+%dir %{_libdir}/%{name}/plugins/%{branch_ver}
+%dir %{_libdir}/%{name}/plugins/%{branch_ver}/codecs
+%dir %{_libdir}/%{name}/plugins/%{branch_ver}/epan
+%dir %{_libdir}/%{name}/plugins/%{branch_ver}/wiretap
 %attr(755,root,root) %{_libdir}/%{name}/extcap/androiddump
 %attr(755,root,root) %{_libdir}/%{name}/extcap/ciscodump
 %attr(755,root,root) %{_libdir}/%{name}/extcap/dpauxmon
@@ -359,9 +360,9 @@ fi
 %attr(755,root,root) %{_libdir}/%{name}/extcap/sshdump
 %attr(755,root,root) %{_libdir}/%{name}/extcap/sdjournal
 %attr(755,root,root) %{_libdir}/%{name}/extcap/udpdump
-%attr(755,root,root) %{_libdir}/%{name}/plugins/3.2/codecs/*.so
-%attr(755,root,root) %{_libdir}/%{name}/plugins/3.2/epan/*.so
-%attr(755,root,root) %{_libdir}/%{name}/plugins/3.2/wiretap/*.so
+%attr(755,root,root) %{_libdir}/%{name}/plugins/%{branch_ver}/codecs/*.so
+%attr(755,root,root) %{_libdir}/%{name}/plugins/%{branch_ver}/epan/*.so
+%attr(755,root,root) %{_libdir}/%{name}/plugins/%{branch_ver}/wiretap/*.so
 %attr(755,root,root) %{_bindir}/capinfos
 %attr(755,root,root) %{_bindir}/captype
 %attr(750,root,wireshark) %{_bindir}/dumpcap
@@ -404,11 +405,11 @@ fi
 %files libs
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libwireshark.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libwireshark.so.13
+%attr(755,root,root) %ghost %{_libdir}/libwireshark.so.14
 %attr(755,root,root) %{_libdir}/libwiretap.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libwiretap.so.10
+%attr(755,root,root) %ghost %{_libdir}/libwiretap.so.11
 %attr(755,root,root) %{_libdir}/libwsutil.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libwsutil.so.11
+%attr(755,root,root) %ghost %{_libdir}/libwsutil.so.12
 %dir %{_libdir}/%{name}
 
 %files devel
