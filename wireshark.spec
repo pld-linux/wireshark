@@ -15,12 +15,12 @@ Summary(pt_BR.UTF-8):	Analisador de tráfego de rede
 Summary(ru.UTF-8):	Анализатор сетевого траффика
 Summary(uk.UTF-8):	Аналізатор мережевого трафіку
 Name:		wireshark
-Version:	3.4.6
+Version:	3.4.8
 Release:	1
 License:	GPL v2+
 Group:		Networking/Utilities
 Source0:	https://www.wireshark.org/download/src/%{name}-%{version}.tar.xz
-# Source0-md5:	93e5fca965b7fcd6642aba1f43b80dcd
+# Source0-md5:	13aea3ee0edbc8f875971eccf2d11b20
 URL:		https://www.wireshark.org/
 BuildRequires:	bcg729-devel
 BuildRequires:	bison
