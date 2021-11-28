@@ -7,7 +7,7 @@
 %bcond_without	snmp		# SNMP support
 %bcond_without	gui		# without QT GUI
 
-%define		branch_ver	3.4
+%define		branch_ver	3.6
 Summary:	Network traffic and protocol analyzer
 Summary(es.UTF-8):	Analizador de tráfico de red
 Summary(pl.UTF-8):	Analizator ruchu i protokołów sieciowych
@@ -15,32 +15,32 @@ Summary(pt_BR.UTF-8):	Analisador de tráfego de rede
 Summary(ru.UTF-8):	Анализатор сетевого траффика
 Summary(uk.UTF-8):	Аналізатор мережевого трафіку
 Name:		wireshark
-Version:	3.4.10
+Version:	3.6.0
 Release:	1
 License:	GPL v2+
 Group:		Networking/Utilities
 Source0:	https://www.wireshark.org/download/src/%{name}-%{version}.tar.xz
-# Source0-md5:	907514ab422700621a2e91196360125f
+# Source0-md5:	d8aa90ed29c4136e076627b527083e0c
 URL:		https://www.wireshark.org/
 BuildRequires:	bcg729-devel
 BuildRequires:	bison
-BuildRequires:	cmake >= 3.5
 BuildRequires:	c-ares-devel >= 1.5.0
+BuildRequires:	cmake >= 3.5
 BuildRequires:	doxygen
 BuildRequires:	flex
 BuildRequires:	gcc >= 5:3.2
 BuildRequires:	gettext-tools
-BuildRequires:	glib2-devel >= 1:2.32
-BuildRequires:	gnutls-devel >= 3.2.0
+BuildRequires:	glib2-devel >= 1:2.38
+BuildRequires:	gnutls-devel >= 3.3.0
 %{?with_kerberos5:BuildRequires:	heimdal-devel}
 BuildRequires:	libbrotli-devel
 BuildRequires:	libcap-devel
-BuildRequires:	libgcrypt-devel >= 1.4.2
+BuildRequires:	libgcrypt-devel >= 1.5.0
 BuildRequires:	libmaxminddb-devel
 BuildRequires:	libnl-devel >= 3.2
 BuildRequires:	libpcap-devel >= 2:1.0.0-4
-BuildRequires:	libssh-devel >= 0.6.0
 BuildRequires:	libsmi-devel
+BuildRequires:	libssh-devel >= 0.6.0
 BuildRequires:	libstdc++-devel >= 6:4.7
 BuildRequires:	libtool >= 2:2.2.2
 BuildRequires:	libxml2-devel >= 2.0
@@ -57,24 +57,24 @@ BuildRequires:	rpmbuild(macros) >= 1.527
 BuildRequires:	ruby-asciidoctor >= 1.5
 %{?with_gui:BuildRequires:	sbc-devel >= 1.0}
 BuildRequires:	sed >= 4.0
-%{?with_gui:BuildRequires:	speexdsp-devel}
 BuildRequires:	snappy-devel
 BuildRequires:	spandsp-devel
+%{?with_gui:BuildRequires:	speexdsp-devel}
 BuildRequires:	systemd-devel
 BuildRequires:	tar >= 1:1.22
 BuildRequires:	w3m
 BuildRequires:	xz
-BuildRequires:	zstd-devel >= 1.0.0
 BuildRequires:	zlib-devel
+BuildRequires:	zstd-devel >= 1.0.0
 %if %{with gui}
-BuildRequires:	Qt5Core-devel >= 5.2
-BuildRequires:	Qt5Multimedia-devel >= 5.2
-BuildRequires:	Qt5PrintSupport-devel >= 5.2
-BuildRequires:	Qt5Svg-devel >= 5.2
-BuildRequires:	Qt5Widgets-devel >= 5.2
+BuildRequires:	Qt5Core-devel >= 5.3
+BuildRequires:	Qt5Multimedia-devel >= 5.3
+BuildRequires:	Qt5PrintSupport-devel >= 5.3
+BuildRequires:	Qt5Svg-devel >= 5.3
+BuildRequires:	Qt5Widgets-devel >= 5.3
 BuildRequires:	libstdc++-devel >= 6:5
-BuildRequires:	qt5-build >= 5.2
-BuildRequires:	qt5-linguist >= 5.2
+BuildRequires:	qt5-build >= 5.3
+BuildRequires:	qt5-linguist >= 5.3
 %endif
 Requires(post,postun):	gtk-update-icon-cache
 Requires(post,postun):	shared-mime-info
@@ -290,8 +290,6 @@ rm -rf $RPM_BUILD_ROOT
 # used by installed headers, but not installed by cmake
 cp -p build/config.h $RPM_BUILD_ROOT%{_includedir}/wireshark
 
-%{__rm} $RPM_BUILD_ROOT%{_docdir}/*.html
-
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -322,25 +320,25 @@ fi
 %files
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/wireshark
-%{_desktopdir}/wireshark.desktop
+%{_desktopdir}/org.wireshark.Wireshark.desktop
 %{_datadir}/%{name}
-%{_datadir}/appdata/wireshark.appdata.xml
-%{_datadir}/mime/packages/wireshark.xml
-%{_iconsdir}/hicolor/16x16/apps/%{name}.png
-%{_iconsdir}/hicolor/16x16/mimetypes/application-%{name}-doc.png
-%{_iconsdir}/hicolor/24x24/apps/%{name}.png
-%{_iconsdir}/hicolor/24x24/mimetypes/application-%{name}-doc.png
-%{_iconsdir}/hicolor/32x32/apps/%{name}.png
-%{_iconsdir}/hicolor/32x32/mimetypes/application-%{name}-doc.png
-%{_iconsdir}/hicolor/48x48/apps/%{name}.png
-%{_iconsdir}/hicolor/48x48/mimetypes/application-%{name}-doc.png
-%{_iconsdir}/hicolor/64x64/apps/%{name}.png
-%{_iconsdir}/hicolor/64x64/mimetypes/application-%{name}-doc.png
-%{_iconsdir}/hicolor/128x128/apps/%{name}.png
-%{_iconsdir}/hicolor/128x128/mimetypes/application-%{name}-doc.png
-%{_iconsdir}/hicolor/256x256/apps/%{name}.png
-%{_iconsdir}/hicolor/256x256/mimetypes/application-%{name}-doc.png
-%{_iconsdir}/hicolor/scalable/apps/%{name}.svg
+%{_datadir}/metainfo/org.wireshark.Wireshark.metainfo.xml
+%{_datadir}/mime/packages/org.wireshark.Wireshark.xml
+%{_iconsdir}/hicolor/16x16/apps/org.wireshark.Wireshark.png
+%{_iconsdir}/hicolor/16x16/mimetypes/org.wireshark.Wireshark-mimetype.png
+%{_iconsdir}/hicolor/24x24/apps/org.wireshark.Wireshark.png
+%{_iconsdir}/hicolor/24x24/mimetypes/org.wireshark.Wireshark-mimetype.png
+%{_iconsdir}/hicolor/32x32/apps/org.wireshark.Wireshark.png
+%{_iconsdir}/hicolor/32x32/mimetypes/org.wireshark.Wireshark-mimetype.png
+%{_iconsdir}/hicolor/48x48/apps/org.wireshark.Wireshark.png
+%{_iconsdir}/hicolor/48x48/mimetypes/org.wireshark.Wireshark-mimetype.png
+%{_iconsdir}/hicolor/64x64/apps/org.wireshark.Wireshark.png
+%{_iconsdir}/hicolor/64x64/mimetypes/org.wireshark.Wireshark-mimetype.png
+%{_iconsdir}/hicolor/128x128/apps/org.wireshark.Wireshark.png
+%{_iconsdir}/hicolor/128x128/mimetypes/org.wireshark.Wireshark-mimetype.png
+%{_iconsdir}/hicolor/256x256/apps/org.wireshark.Wireshark.png
+%{_iconsdir}/hicolor/256x256/mimetypes/org.wireshark.Wireshark-mimetype.png
+%{_iconsdir}/hicolor/scalable/apps/org.wireshark.Wireshark.svg
 %{_mandir}/man1/wireshark.1*
 %endif
 
@@ -383,6 +381,7 @@ fi
 %{_mandir}/man1/dpauxmon.1*
 %{_mandir}/man1/dumpcap.1*
 %{_mandir}/man1/editcap.1*
+%{_mandir}/man1/etwdump.1.*
 %{_mandir}/man1/idl2wrs.1*
 %{_mandir}/man1/mergecap.1*
 %{_mandir}/man1/mmdbresolve.1*
@@ -405,11 +404,11 @@ fi
 %files libs
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libwireshark.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libwireshark.so.14
+%attr(755,root,root) %ghost %{_libdir}/libwireshark.so.15
 %attr(755,root,root) %{_libdir}/libwiretap.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libwiretap.so.11
+%attr(755,root,root) %ghost %{_libdir}/libwiretap.so.12
 %attr(755,root,root) %{_libdir}/libwsutil.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libwsutil.so.12
+%attr(755,root,root) %ghost %{_libdir}/libwsutil.so.13
 %dir %{_libdir}/%{name}
 
 %files devel
