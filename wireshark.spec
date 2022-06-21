@@ -83,10 +83,10 @@ Requires:	hicolor-icon-theme
 Suggests:	xdg-utils
 Provides:	ethereal
 Provides:	ethereal-gnome
-Obsoletes:	ethereal
-Obsoletes:	ethereal-gnome
-Obsoletes:	wireshark-gui-common
-Obsoletes:	wireshark-qt
+Obsoletes:	ethereal < 1
+Obsoletes:	ethereal-gnome < 1
+Obsoletes:	wireshark-gui-common < 3
+Obsoletes:	wireshark-qt < 3
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -133,8 +133,8 @@ Requires:	libssh >= 0.6.0
 Provides:	ethereal-common
 Provides:	group(wireshark)
 Provides:	wireshark-tools
-Obsoletes:	ethereal-common
-Obsoletes:	wireshark-tools
+Obsoletes:	ethereal-common < 1
+Obsoletes:	wireshark-tools < 1.0.3-3
 
 %description common
 Wireshark is the name for powerful graphical network sniffer, traffic
@@ -202,7 +202,7 @@ Group:		Networking
 Requires:	%{name}-common = %{version}-%{release}
 Requires:	libpcap >= 0.4
 Provides:	tethereal
-Obsoletes:	tethereal
+Obsoletes:	tethereal < 1
 
 %description -n twireshark
 Twireshark is a network protocol analyzer. It lets you capture packet
