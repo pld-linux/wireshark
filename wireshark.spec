@@ -8,6 +8,7 @@
 %bcond_without	gui		# without QT GUI
 
 %define		branch_ver	3.6
+%define		qt_ver		5.6
 Summary:	Network traffic and protocol analyzer
 Summary(es.UTF-8):	Analizador de tráfico de red
 Summary(pl.UTF-8):	Analizator ruchu i protokołów sieciowych
@@ -31,11 +32,11 @@ BuildRequires:	flex
 BuildRequires:	gcc >= 5:3.2
 BuildRequires:	gettext-tools
 BuildRequires:	glib2-devel >= 1:2.38
-BuildRequires:	gnutls-devel >= 3.3.0
+BuildRequires:	gnutls-devel >= 3.4.0
 %{?with_kerberos5:BuildRequires:	heimdal-devel}
 BuildRequires:	libbrotli-devel
 BuildRequires:	libcap-devel
-BuildRequires:	libgcrypt-devel >= 1.5.0
+BuildRequires:	libgcrypt-devel >= 1.8.0
 BuildRequires:	libmaxminddb-devel
 BuildRequires:	libnl-devel >= 3.2
 BuildRequires:	libpcap-devel >= 2:1.0.0-4
@@ -50,6 +51,7 @@ BuildRequires:	lz4-devel
 BuildRequires:	minizip-devel
 %{?with_snmp:BuildRequires:	net-snmp-devel}
 BuildRequires:	nghttp2-devel
+BuildRequires:	opus-devel
 BuildRequires:	perl-tools-pod
 BuildRequires:	pkgconfig >= 1:0.7
 BuildRequires:	python3 >= 1:3.4
@@ -62,22 +64,28 @@ BuildRequires:	spandsp-devel
 %{?with_gui:BuildRequires:	speexdsp-devel}
 BuildRequires:	systemd-devel
 BuildRequires:	tar >= 1:1.22
+BuildRequires:	webrtc-libilbc-devel
 BuildRequires:	w3m
 BuildRequires:	xz
 BuildRequires:	zlib-devel
 BuildRequires:	zstd-devel >= 1.0.0
 %if %{with gui}
-BuildRequires:	Qt5Core-devel >= 5.3
-BuildRequires:	Qt5Multimedia-devel >= 5.3
-BuildRequires:	Qt5PrintSupport-devel >= 5.3
-BuildRequires:	Qt5Svg-devel >= 5.3
-BuildRequires:	Qt5Widgets-devel >= 5.3
+BuildRequires:	Qt5Core-devel >= %{qt_ver}
+BuildRequires:	Qt5Gui-devel >= %{qt_ver}
+BuildRequires:	Qt5Multimedia-devel >= %{qt_ver}
+BuildRequires:	Qt5PrintSupport-devel >= %{qt_ver}
+BuildRequires:	Qt5Widgets-devel >= %{qt_ver}
 BuildRequires:	libstdc++-devel >= 6:5
-BuildRequires:	qt5-build >= 5.3
-BuildRequires:	qt5-linguist >= 5.3
+BuildRequires:	qt5-build >= %{qt_ver}
+BuildRequires:	qt5-linguist >= %{qt_ver}
 %endif
 Requires(post,postun):	gtk-update-icon-cache
 Requires(post,postun):	shared-mime-info
+Requires:	Qt5Core >= %{qt_ver}
+Requires:	Qt5Gui >= %{qt_ver}
+Requires:	Qt5Multimedia >= %{qt_ver}
+Requires:	Qt5PrintSupport >= %{qt_ver}
+Requires:	Qt5Widgets >= %{qt_ver}
 Requires:	gdk-pixbuf2 >= 2.26
 Requires:	hicolor-icon-theme
 Suggests:	xdg-utils
@@ -127,7 +135,7 @@ Summary(pl.UTF-8):	Analizator ruchu i protokołów sieciowych - wspólne pliki
 Group:		Networking
 Requires(post,postun):	/sbin/setcap
 Requires:	%{name}-libs = %{version}-%{release}
-Requires:	gnutls >= 3.1.10
+Requires:	gnutls >= 3.4.0
 Requires:	libpcap >= 0.4
 Requires:	libssh >= 0.6.0
 Provides:	ethereal-common
@@ -228,9 +236,11 @@ Wireshark.
 Summary:	Wireshark packet capture and dissection libraries
 Summary(pl.UTF-8):	Biblioteki Wiresharka do przechwytywania i sekcji pakietów
 Group:		Libraries
-Requires:	glib2 >= 1:2.32
-Requires:	libgcrypt >= 1.4.2
+Requires:	c-ares >= 1.5.0
+Requires:	glib2 >= 1:2.38
+Requires:	libgcrypt >= 1.8.0
 Requires:	libnl >= 3.2
+Requires:	zstd >= 1.0.0
 Obsoletes:	libwiretap < 2.4.0
 
 %description libs
@@ -244,8 +254,8 @@ Summary:	Header files for Wireshark libraries
 Summary(pl.UTF-8):	Pliki nagłówkowe bibliotek Wiresharka
 Group:		Development/Libraries
 Requires:	%{name}-libs = %{version}-%{release}
-Requires:	glib2-devel >= 1:2.32
-Requires:	libgcrypt-devel >= 1.4.2
+Requires:	glib2-devel >= 1:2.38
+Requires:	libgcrypt-devel >= 1.8.0
 Requires:	libnl-devel >= 3.2
 Obsoletes:	libwiretap-devel < 2.4.0
 
