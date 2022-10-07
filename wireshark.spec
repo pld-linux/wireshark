@@ -7,8 +7,8 @@
 %bcond_without	snmp		# SNMP support
 %bcond_without	gui		# without QT GUI
 
-%define		branch_ver	3.6
-%define		qt_ver		5.6
+%define		branch_ver	4.0
+%define		qt_ver		5.12
 Summary:	Network traffic and protocol analyzer
 Summary(es.UTF-8):	Analizador de tráfico de red
 Summary(pl.UTF-8):	Analizator ruchu i protokołów sieciowych
@@ -16,23 +16,23 @@ Summary(pt_BR.UTF-8):	Analisador de tráfego de rede
 Summary(ru.UTF-8):	Анализатор сетевого траффика
 Summary(uk.UTF-8):	Аналізатор мережевого трафіку
 Name:		wireshark
-Version:	3.6.8
+Version:	4.0.0
 Release:	1
 License:	GPL v2+
 Group:		Networking/Utilities
 Source0:	https://2.na.dl.wireshark.org/src/%{name}-%{version}.tar.xz
-# Source0-md5:	d612af33d202892b48878607adfc6e24
+# Source0-md5:	809bb7780c6d945e5eef39415cb5b099
 URL:		https://www.wireshark.org/
 BuildRequires:	bcg729-devel
 BuildRequires:	bison
-BuildRequires:	c-ares-devel >= 1.5.0
-BuildRequires:	cmake >= 3.5
+BuildRequires:	c-ares-devel >= 1.13.0
+BuildRequires:	cmake >= 3.10
 BuildRequires:	doxygen
 BuildRequires:	flex
 BuildRequires:	gcc >= 5:3.2
 BuildRequires:	gettext-tools
-BuildRequires:	glib2-devel >= 1:2.38
-BuildRequires:	gnutls-devel >= 3.4.0
+BuildRequires:	glib2-devel >= 1:2.50.0
+BuildRequires:	gnutls-devel >= 3.5.8
 %{?with_kerberos5:BuildRequires:	heimdal-devel}
 BuildRequires:	libbrotli-devel
 # libcap-devel doesn't pull libcap, but only libcap-libs
@@ -52,11 +52,11 @@ BuildRequires:	lua52-devel
 BuildRequires:	lz4-devel
 BuildRequires:	minizip-devel
 %{?with_snmp:BuildRequires:	net-snmp-devel}
-BuildRequires:	nghttp2-devel
+BuildRequires:	nghttp2-devel >= 1.11.0
 BuildRequires:	opus-devel
 BuildRequires:	perl-tools-pod
 BuildRequires:	pkgconfig >= 1:0.7
-BuildRequires:	python3 >= 1:3.4
+BuildRequires:	python3 >= 1:3.6
 BuildRequires:	rpmbuild(macros) >= 1.527
 BuildRequires:	ruby-asciidoctor >= 1.5
 %{?with_gui:BuildRequires:	sbc-devel >= 1.0}
@@ -137,7 +137,7 @@ Summary(pl.UTF-8):	Analizator ruchu i protokołów sieciowych - wspólne pliki
 Group:		Networking
 Requires(post,postun):	/sbin/setcap
 Requires:	%{name}-libs = %{version}-%{release}
-Requires:	gnutls >= 3.4.0
+Requires:	gnutls >= 3.5.8
 Requires:	libpcap >= 0.4
 Requires:	libssh >= 0.6.0
 Provides:	ethereal-common
@@ -238,8 +238,8 @@ Wireshark.
 Summary:	Wireshark packet capture and dissection libraries
 Summary(pl.UTF-8):	Biblioteki Wiresharka do przechwytywania i sekcji pakietów
 Group:		Libraries
-Requires:	c-ares >= 1.5.0
-Requires:	glib2 >= 1:2.38
+Requires:	c-ares >= 1.13.0
+Requires:	glib2 >= 1:2.50.0
 Requires:	libgcrypt >= 1.8.0
 Requires:	libnl >= 3.2
 Requires:	zstd >= 1.0.0
@@ -256,7 +256,7 @@ Summary:	Header files for Wireshark libraries
 Summary(pl.UTF-8):	Pliki nagłówkowe bibliotek Wiresharka
 Group:		Development/Libraries
 Requires:	%{name}-libs = %{version}-%{release}
-Requires:	glib2-devel >= 1:2.38
+Requires:	glib2-devel >= 1:2.50.0
 Requires:	libgcrypt-devel >= 1.8.0
 Requires:	libnl-devel >= 3.2
 Obsoletes:	libwiretap-devel < 2.4.0
@@ -370,6 +370,7 @@ fi
 %attr(755,root,root) %{_libdir}/%{name}/extcap/sshdump
 %attr(755,root,root) %{_libdir}/%{name}/extcap/sdjournal
 %attr(755,root,root) %{_libdir}/%{name}/extcap/udpdump
+%attr(755,root,root) %{_libdir}/%{name}/extcap/wifidump
 %attr(755,root,root) %{_libdir}/%{name}/plugins/%{branch_ver}/codecs/*.so
 %attr(755,root,root) %{_libdir}/%{name}/plugins/%{branch_ver}/epan/*.so
 %attr(755,root,root) %{_libdir}/%{name}/plugins/%{branch_ver}/wiretap/*.so
@@ -405,6 +406,7 @@ fi
 %{_mandir}/man1/sshdump.1*
 %{_mandir}/man1/text2pcap.1*
 %{_mandir}/man1/udpdump.1*
+%{_mandir}/man1/wifidump.1*
 %{_mandir}/man4/extcap.4*
 %{_mandir}/man4/wireshark-filter.4*
 
@@ -416,11 +418,11 @@ fi
 %files libs
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libwireshark.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libwireshark.so.15
+%attr(755,root,root) %ghost %{_libdir}/libwireshark.so.16
 %attr(755,root,root) %{_libdir}/libwiretap.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libwiretap.so.12
+%attr(755,root,root) %ghost %{_libdir}/libwiretap.so.13
 %attr(755,root,root) %{_libdir}/libwsutil.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libwsutil.so.13
+%attr(755,root,root) %ghost %{_libdir}/libwsutil.so.14
 %dir %{_libdir}/%{name}
 
 %files devel
