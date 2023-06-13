@@ -85,6 +85,7 @@ BuildRequires:	qt5-linguist >= %{qt_ver}
 Requires(post,postun):	desktop-file-utils
 Requires(post,postun):	gtk-update-icon-cache
 Requires(post,postun):	shared-mime-info
+Requires:	%{name}-common = %{version}-%{release}
 Requires:	Qt5Core >= %{qt_ver}
 Requires:	Qt5Gui >= %{qt_ver}
 Requires:	Qt5Multimedia >= %{qt_ver}
