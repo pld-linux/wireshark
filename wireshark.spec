@@ -82,6 +82,7 @@ BuildRequires:	libstdc++-devel >= 6:5
 BuildRequires:	qt5-build >= %{qt_ver}
 BuildRequires:	qt5-linguist >= %{qt_ver}
 %endif
+Requires(post,postun):	desktop-file-utils
 Requires(post,postun):	gtk-update-icon-cache
 Requires(post,postun):	shared-mime-info
 Requires:	Qt5Core >= %{qt_ver}
@@ -308,10 +309,12 @@ rm -rf $RPM_BUILD_ROOT
 
 %pre
 %update_icon_cache hicolor
+%update_desktop_database
 %update_mime_database
 
 %postun
 %update_icon_cache hicolor
+%update_desktop_database
 %update_mime_database
 
 %pre	common
