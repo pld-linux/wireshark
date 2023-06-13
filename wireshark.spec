@@ -307,7 +307,7 @@ cp -p build/config.h $RPM_BUILD_ROOT%{_includedir}/wireshark
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%pre
+%post
 %update_icon_cache hicolor
 %update_desktop_database
 %update_mime_database
