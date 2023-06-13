@@ -309,12 +309,12 @@ rm -rf $RPM_BUILD_ROOT
 
 %post
 %update_icon_cache hicolor
-%update_desktop_database
+%update_desktop_database_post
 %update_mime_database
 
 %postun
 %update_icon_cache hicolor
-%update_desktop_database
+%update_desktop_database_postun
 %update_mime_database
 
 %pre	common
