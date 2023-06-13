@@ -72,6 +72,7 @@ BuildRequires:	xz
 BuildRequires:	zlib-devel
 BuildRequires:	zstd-devel >= 1.0.0
 %if %{with gui}
+BuildRequires:	Qt5Concurrent-devel >= %{qt_ver}
 BuildRequires:	Qt5Core-devel >= %{qt_ver}
 BuildRequires:	Qt5Gui-devel >= %{qt_ver}
 BuildRequires:	Qt5Multimedia-devel >= %{qt_ver}
