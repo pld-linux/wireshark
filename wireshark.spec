@@ -57,7 +57,7 @@ BuildRequires:	opus-devel
 BuildRequires:	perl-tools-pod
 BuildRequires:	pkgconfig >= 1:0.7
 BuildRequires:	python3 >= 1:3.6
-BuildRequires:	rpmbuild(macros) >= 1.527
+BuildRequires:	rpmbuild(macros) >= 1.605
 BuildRequires:	ruby-asciidoctor >= 1.5
 %{?with_gui:BuildRequires:	sbc-devel >= 1.0}
 BuildRequires:	sed >= 4.0
