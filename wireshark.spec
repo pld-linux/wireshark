@@ -24,7 +24,6 @@ Source0:	https://2.na.dl.wireshark.org/src/%{name}-%{version}.tar.xz
 # Source0-md5:	8290f8a148de88665ecbf745a14f2916
 URL:		https://www.wireshark.org/
 BuildRequires:	bcg729-devel
-BuildRequires:	bison
 BuildRequires:	c-ares-devel >= 1.13.0
 BuildRequires:	cmake >= 3.10
 BuildRequires:	doxygen
@@ -54,7 +53,8 @@ BuildRequires:	minizip-devel
 %{?with_snmp:BuildRequires:	net-snmp-devel}
 BuildRequires:	nghttp2-devel >= 1.11.0
 BuildRequires:	opus-devel
-BuildRequires:	perl-tools-pod
+BuildRequires:	pcre2-8-devel
+BuildRequires:	perl-base
 BuildRequires:	pkgconfig >= 1:0.7
 BuildRequires:	python3 >= 1:3.6
 BuildRequires:	rpmbuild(macros) >= 1.742
@@ -63,7 +63,7 @@ BuildRequires:	ruby-asciidoctor >= 1.5
 BuildRequires:	sed >= 4.0
 BuildRequires:	snappy-devel
 BuildRequires:	spandsp-devel
-%{?with_gui:BuildRequires:	speexdsp-devel}
+BuildRequires:	speexdsp-devel
 BuildRequires:	systemd-devel
 BuildRequires:	tar >= 1:1.22
 BuildRequires:	webrtc-libilbc-devel
