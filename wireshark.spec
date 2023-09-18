@@ -57,7 +57,7 @@ BuildRequires:	opus-devel
 BuildRequires:	perl-tools-pod
 BuildRequires:	pkgconfig >= 1:0.7
 BuildRequires:	python3 >= 1:3.6
-BuildRequires:	rpmbuild(macros) >= 1.605
+BuildRequires:	rpmbuild(macros) >= 1.742
 BuildRequires:	ruby-asciidoctor >= 1.5
 %{?with_gui:BuildRequires:	sbc-devel >= 1.0}
 BuildRequires:	sed >= 4.0
@@ -283,7 +283,7 @@ cd build
 	-DBUILD_mmdbresolve=ON \
 	-DBUILD_randpktdump=ON \
 	-DBUILD_tfshark=OFF \
-	-DBUILD_wireshark=ON \
+	%{cmake_on_off gui BUILD_wireshark} \
 	-DCMAKE_INSTALL_DATADIR:PATH=share/wireshark \
 	-DCMAKE_INSTALL_LIBDIR:PATH=%{_lib} \
 	-DDISABLE_WERROR=ON \
