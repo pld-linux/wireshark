@@ -6,9 +6,11 @@
 %bcond_without	kerberos5	# Kerberos V support
 %bcond_without	snmp		# SNMP support
 %bcond_without	gui		# without QT GUI
+%bcond_with	qt5		# use Qt5 instead of Qt6
 
 %define		branch_ver	4.0
-%define		qt_ver		5.12
+%define		qt5_ver		5.12
+%define		qt6_ver		6
 Summary:	Network traffic and protocol analyzer
 Summary(es.UTF-8):	Analizador de tráfico de red
 Summary(pl.UTF-8):	Analizator ruchu i protokołów sieciowych
@@ -72,25 +74,47 @@ BuildRequires:	xz
 BuildRequires:	zlib-devel
 BuildRequires:	zstd-devel >= 1.0.0
 %if %{with gui}
-BuildRequires:	Qt5Concurrent-devel >= %{qt_ver}
-BuildRequires:	Qt5Core-devel >= %{qt_ver}
-BuildRequires:	Qt5Gui-devel >= %{qt_ver}
-BuildRequires:	Qt5Multimedia-devel >= %{qt_ver}
-BuildRequires:	Qt5PrintSupport-devel >= %{qt_ver}
-BuildRequires:	Qt5Widgets-devel >= %{qt_ver}
+%if %{with qt5}
+BuildRequires:	Qt5Concurrent-devel >= %{qt5_ver}
+BuildRequires:	Qt5Core-devel >= %{qt5_ver}
+BuildRequires:	Qt5Gui-devel >= %{qt5_ver}
+BuildRequires:	Qt5Multimedia-devel >= %{qt5_ver}
+BuildRequires:	Qt5PrintSupport-devel >= %{qt5_ver}
+BuildRequires:	Qt5Widgets-devel >= %{qt5_ver}
 BuildRequires:	libstdc++-devel >= 6:5
-BuildRequires:	qt5-build >= %{qt_ver}
-BuildRequires:	qt5-linguist >= %{qt_ver}
+BuildRequires:	qt5-build >= %{qt5_ver}
+BuildRequires:	qt5-linguist >= %{qt5_ver}
+%else
+BuildRequires:	Qt6Concurrent-devel >= %{qt6_ver}
+BuildRequires:	Qt6Core-devel >= %{qt6_ver}
+BuildRequires:	Qt6Gui-devel >= %{qt6_ver}
+BuildRequires:	Qt6Multimedia-devel >= %{qt6_ver}
+BuildRequires:	Qt6PrintSupport-devel >= %{qt6_ver}
+BuildRequires:	Qt6Qt5Compat-devel >= %{qt6_ver}
+BuildRequires:	Qt6Widgets-devel >= %{qt6_ver}
+BuildRequires:	libstdc++-devel >= 6:9
+BuildRequires:	qt6-build >= %{qt6_ver}
+BuildRequires:	qt6-linguist >= %{qt6_ver}
+%endif
 %endif
 Requires(post,postun):	desktop-file-utils
 Requires(post,postun):	gtk-update-icon-cache
 Requires(post,postun):	shared-mime-info
 Requires:	%{name}-common = %{version}-%{release}
-Requires:	Qt5Core >= %{qt_ver}
-Requires:	Qt5Gui >= %{qt_ver}
-Requires:	Qt5Multimedia >= %{qt_ver}
-Requires:	Qt5PrintSupport >= %{qt_ver}
-Requires:	Qt5Widgets >= %{qt_ver}
+%if %{with qt5}
+Requires:	Qt5Core >= %{qt5_ver}
+Requires:	Qt5Gui >= %{qt5_ver}
+Requires:	Qt5Multimedia >= %{qt5_ver}
+Requires:	Qt5PrintSupport >= %{qt5_ver}
+Requires:	Qt5Widgets >= %{qt5_ver}
+%else
+Requires:	Qt6Core >= %{qt6_ver}
+Requires:	Qt6Gui >= %{qt6_ver}
+Requires:	Qt6Multimedia >= %{qt6_ver}
+Requires:	Qt6PrintSupport >= %{qt6_ver}
+Requires:	Qt6Qt5Compat >= %{qt6_ver}
+Requires:	Qt6Widgets >= %{qt6_ver}
+%endif
 Requires:	gdk-pixbuf2 >= 2.26
 Requires:	hicolor-icon-theme
 Suggests:	xdg-utils
@@ -292,7 +316,8 @@ cd build
 	-DENABLE_PLUGINS=ON \
 	-DENABLE_PORTAUDIO=ON \
 	-DENABLE_QT5=ON \
-	-DENABLE_SMI=ON
+	-DENABLE_SMI=ON \
+	-DUSE_qt6=%{!?with_qt5:ON}%{?with_qt5:OFF}
 
 %{__make}
 
