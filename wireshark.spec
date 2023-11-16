@@ -8,7 +8,7 @@
 %bcond_without	gui		# without QT GUI
 %bcond_with	qt5		# use Qt5 instead of Qt6
 
-%define		branch_ver	4.0
+%define		branch_ver	4.2
 %define		qt5_ver		5.12
 %define		qt6_ver		6
 Summary:	Network traffic and protocol analyzer
@@ -18,21 +18,21 @@ Summary(pt_BR.UTF-8):	Analisador de tráfego de rede
 Summary(ru.UTF-8):	Анализатор сетевого траффика
 Summary(uk.UTF-8):	Аналізатор мережевого трафіку
 Name:		wireshark
-Version:	4.0.11
+Version:	4.2.0
 Release:	1
 License:	GPL v2+
 Group:		Networking/Utilities
 Source0:	https://2.na.dl.wireshark.org/src/%{name}-%{version}.tar.xz
-# Source0-md5:	c3599a62b60d22170e4e818b05861ba1
+# Source0-md5:	37658796acb4e7a04a84fa8c5393c9a1
 URL:		https://www.wireshark.org/
 BuildRequires:	bcg729-devel
 BuildRequires:	c-ares-devel >= 1.13.0
-BuildRequires:	cmake >= 3.10
+BuildRequires:	cmake >= 3.13
 BuildRequires:	doxygen
 BuildRequires:	flex
 BuildRequires:	gcc >= 5:3.2
 BuildRequires:	gettext-tools
-BuildRequires:	glib2-devel >= 1:2.50.0
+BuildRequires:	glib2-devel >= 1:2.54.0
 BuildRequires:	gnutls-devel >= 3.5.8
 %{?with_kerberos5:BuildRequires:	heimdal-devel}
 BuildRequires:	libbrotli-devel
@@ -54,6 +54,8 @@ BuildRequires:	lz4-devel
 BuildRequires:	minizip-devel
 %{?with_snmp:BuildRequires:	net-snmp-devel}
 BuildRequires:	nghttp2-devel >= 1.11.0
+BuildRequires:	nghttp3-devel
+BuildRequires:	opencore-amr-devel
 BuildRequires:	opus-devel
 BuildRequires:	pcre2-8-devel
 BuildRequires:	perl-base
@@ -266,7 +268,7 @@ Summary:	Wireshark packet capture and dissection libraries
 Summary(pl.UTF-8):	Biblioteki Wiresharka do przechwytywania i sekcji pakietów
 Group:		Libraries
 Requires:	c-ares >= 1.13.0
-Requires:	glib2 >= 1:2.50.0
+Requires:	glib2 >= 1:2.54.0
 Requires:	libgcrypt >= 1.8.0
 Requires:	libnl >= 3.2
 Requires:	zstd >= 1.0.0
@@ -283,7 +285,7 @@ Summary:	Header files for Wireshark libraries
 Summary(pl.UTF-8):	Pliki nagłówkowe bibliotek Wiresharka
 Group:		Development/Libraries
 Requires:	%{name}-libs = %{version}-%{release}
-Requires:	glib2-devel >= 1:2.50.0
+Requires:	glib2-devel >= 1:2.54.0
 Requires:	libgcrypt-devel >= 1.8.0
 Requires:	libnl-devel >= 3.2
 Obsoletes:	libwiretap-devel < 2.4.0
@@ -298,9 +300,7 @@ Pliki nagłówkowe bibliotek Wiresharka.
 %setup -q
 
 %build
-install -d build
-cd build
-%cmake .. \
+%cmake -B build \
 	-DBUILD_androiddump=ON \
 	-DBUILD_corbaidl2wrs=ON \
 	-DBUILD_dcerpcidl2wrs=ON \
@@ -319,12 +319,12 @@ cd build
 	-DENABLE_SMI=ON \
 	-DUSE_qt6=%{!?with_qt5:ON}%{?with_qt5:OFF}
 
-%{__make}
+%{__make} -C build
 
 %install
 rm -rf $RPM_BUILD_ROOT
 
-%{__make} -C build install \
+%{__make} -C build install install-headers \
 	DESTDIR=$RPM_BUILD_ROOT
 
 # used by installed headers, but not installed by cmake
@@ -380,7 +380,6 @@ fi
 %{_iconsdir}/hicolor/128x128/mimetypes/org.wireshark.Wireshark-mimetype.png
 %{_iconsdir}/hicolor/256x256/apps/org.wireshark.Wireshark.png
 %{_iconsdir}/hicolor/256x256/mimetypes/org.wireshark.Wireshark-mimetype.png
-%{_iconsdir}/hicolor/scalable/apps/org.wireshark.Wireshark.svg
 %{_mandir}/man1/wireshark.1*
 %endif
 
@@ -420,7 +419,6 @@ fi
 %{_mandir}/man1/capinfos.1*
 %{_mandir}/man1/captype.1*
 %{_mandir}/man1/ciscodump.1*
-%{_mandir}/man1/dftest.1*
 %{_mandir}/man1/dpauxmon.1*
 %{_mandir}/man1/dumpcap.1*
 %{_mandir}/man1/editcap.1*
@@ -448,11 +446,11 @@ fi
 %files libs
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libwireshark.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libwireshark.so.16
+%attr(755,root,root) %ghost %{_libdir}/libwireshark.so.17
 %attr(755,root,root) %{_libdir}/libwiretap.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libwiretap.so.13
+%attr(755,root,root) %ghost %{_libdir}/libwiretap.so.14
 %attr(755,root,root) %{_libdir}/libwsutil.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libwsutil.so.14
+%attr(755,root,root) %ghost %{_libdir}/libwsutil.so.15
 %dir %{_libdir}/%{name}
 
 %files devel
@@ -463,4 +461,4 @@ fi
 %attr(755,root,root) %{_libdir}/libwsutil.so
 %{_includedir}/wireshark
 %{_pkgconfigdir}/wireshark.pc
-%{_libdir}/%{name}/cmake
+%{_libdir}/cmake/%{name}
