@@ -3,6 +3,7 @@
 # - use %caps when rpm supports it: %attr(750,root,wireshark) %caps(cap_net_raw,cap_net_admin=eip) %{_sbindir}/dumpcap
 #
 # Conditional build:
+%bcond_with	falcosecurity	# Falco plugins support + falcodump and logray apps
 %bcond_without	kerberos5	# Kerberos V support
 %bcond_without	snmp		# SNMP support
 %bcond_without	gui		# without QT GUI
@@ -29,6 +30,7 @@ BuildRequires:	bcg729-devel
 BuildRequires:	c-ares-devel >= 1.13.0
 BuildRequires:	cmake >= 3.13
 BuildRequires:	doxygen
+%{?with_falcosecurity:BuildRequires:	falcosecurity-libs-devel}
 BuildRequires:	flex
 BuildRequires:	gcc >= 5:3.2
 BuildRequires:	gettext-tools
@@ -299,16 +301,23 @@ Pliki nagłówkowe bibliotek Wiresharka.
 %prep
 %setup -q
 
+%if %{with falcosecurity}
+%{__sed} -i -e 's/CMAKE_CXX_STANDARD 11/CMAKE_CXX_STANDARD 17/' CMakeLists.txt
+%endif
+
 %build
 %cmake -B build \
 	-DBUILD_androiddump=ON \
 	-DBUILD_corbaidl2wrs=ON \
 	-DBUILD_dcerpcidl2wrs=ON \
+	%{?with_falcosecurity:-DBUILD_falcodump=ON} \
+	%{?with_falcosecurity:-DBUILD_logray=ON} \
 	-DBUILD_mmdbresolve=ON \
 	-DBUILD_randpktdump=ON \
 	-DBUILD_tfshark=OFF \
 	%{cmake_on_off gui BUILD_wireshark} \
 	-DCMAKE_INSTALL_DATADIR:PATH=share/wireshark \
+	-DCMAKE_INSTALL_DOCDIR:PATH=%{_docdir}/wireshark \
 	-DCMAKE_INSTALL_LIBDIR:PATH=%{_lib} \
 	-DDISABLE_WERROR=ON \
 	-DENABLE_LUA=ON \
@@ -381,28 +390,21 @@ fi
 %{_iconsdir}/hicolor/256x256/apps/org.wireshark.Wireshark.png
 %{_iconsdir}/hicolor/256x256/mimetypes/org.wireshark.Wireshark-mimetype.png
 %{_mandir}/man1/wireshark.1*
+%if %{with falcosecurity}
+%attr(755,root,root) %{_bindir}/logray
+%{_datadir}/metainfo/org.wireshark.Logray.metainfo.xml
+%{_datadir}/mime/packages/org.wireshark.Logray.xml
+%{_desktopdir}/org.wireshark.Logray.desktop
+%{_iconsdir}/hicolor/*x*/apps/org.wireshark.Logray.png
+%{_iconsdir}/hicolor/*x*/mimetypes/org.wireshark.Logray-mimetype.png
+%{_iconsdir}/hicolor/scalable/apps/org.wireshark.Logray.svg
+%endif
 %endif
 
 %files common
 %defattr(644,root,root,755)
 %doc AUTHORS* ChangeLog NEWS README.md README.linux doc/README.*
-%dir %{_libdir}/%{name}/extcap
-%dir %{_libdir}/%{name}/plugins
-%dir %{_libdir}/%{name}/plugins/%{branch_ver}
-%dir %{_libdir}/%{name}/plugins/%{branch_ver}/codecs
-%dir %{_libdir}/%{name}/plugins/%{branch_ver}/epan
-%dir %{_libdir}/%{name}/plugins/%{branch_ver}/wiretap
-%attr(755,root,root) %{_libdir}/%{name}/extcap/androiddump
-%attr(755,root,root) %{_libdir}/%{name}/extcap/ciscodump
-%attr(755,root,root) %{_libdir}/%{name}/extcap/dpauxmon
-%attr(755,root,root) %{_libdir}/%{name}/extcap/randpktdump
-%attr(755,root,root) %{_libdir}/%{name}/extcap/sshdump
-%attr(755,root,root) %{_libdir}/%{name}/extcap/sdjournal
-%attr(755,root,root) %{_libdir}/%{name}/extcap/udpdump
-%attr(755,root,root) %{_libdir}/%{name}/extcap/wifidump
-%attr(755,root,root) %{_libdir}/%{name}/plugins/%{branch_ver}/codecs/*.so
-%attr(755,root,root) %{_libdir}/%{name}/plugins/%{branch_ver}/epan/*.so
-%attr(755,root,root) %{_libdir}/%{name}/plugins/%{branch_ver}/wiretap/*.so
+%doc %{_docdir}/wireshark
 %attr(755,root,root) %{_bindir}/capinfos
 %attr(755,root,root) %{_bindir}/captype
 %attr(750,root,wireshark) %{_bindir}/dumpcap
@@ -415,6 +417,26 @@ fi
 %attr(755,root,root) %{_bindir}/reordercap
 %attr(755,root,root) %{_bindir}/sharkd
 %attr(755,root,root) %{_bindir}/text2pcap
+%dir %{_libdir}/%{name}/extcap
+%attr(755,root,root) %{_libdir}/%{name}/extcap/androiddump
+%attr(755,root,root) %{_libdir}/%{name}/extcap/ciscodump
+%attr(755,root,root) %{_libdir}/%{name}/extcap/dpauxmon
+%if %{with falcosecurity}
+%attr(755,root,root) %{_libdir}/%{name}/extcap/falcodump
+%endif
+%attr(755,root,root) %{_libdir}/%{name}/extcap/randpktdump
+%attr(755,root,root) %{_libdir}/%{name}/extcap/sshdump
+%attr(755,root,root) %{_libdir}/%{name}/extcap/sdjournal
+%attr(755,root,root) %{_libdir}/%{name}/extcap/udpdump
+%attr(755,root,root) %{_libdir}/%{name}/extcap/wifidump
+%dir %{_libdir}/%{name}/plugins
+%dir %{_libdir}/%{name}/plugins/%{branch_ver}
+%dir %{_libdir}/%{name}/plugins/%{branch_ver}/codecs
+%attr(755,root,root) %{_libdir}/%{name}/plugins/%{branch_ver}/codecs/*.so
+%dir %{_libdir}/%{name}/plugins/%{branch_ver}/epan
+%attr(755,root,root) %{_libdir}/%{name}/plugins/%{branch_ver}/epan/*.so
+%dir %{_libdir}/%{name}/plugins/%{branch_ver}/wiretap
+%attr(755,root,root) %{_libdir}/%{name}/plugins/%{branch_ver}/wiretap/*.so
 %{_mandir}/man1/androiddump.1*
 %{_mandir}/man1/capinfos.1*
 %{_mandir}/man1/captype.1*
@@ -422,7 +444,10 @@ fi
 %{_mandir}/man1/dpauxmon.1*
 %{_mandir}/man1/dumpcap.1*
 %{_mandir}/man1/editcap.1*
-%{_mandir}/man1/etwdump.1.*
+%{_mandir}/man1/etwdump.1*
+%if %{with falcosecurity}
+%{_mandir}/man1/falcodump.1*
+%endif
 %{_mandir}/man1/idl2wrs.1*
 %{_mandir}/man1/mergecap.1*
 %{_mandir}/man1/mmdbresolve.1*
@@ -461,4 +486,4 @@ fi
 %attr(755,root,root) %{_libdir}/libwsutil.so
 %{_includedir}/wireshark
 %{_pkgconfigdir}/wireshark.pc
-%{_libdir}/cmake/%{name}
+%{_libdir}/cmake/wireshark
