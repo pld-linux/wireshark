@@ -9,7 +9,7 @@
 %bcond_without	gui		# without QT GUI
 %bcond_with	qt5		# use Qt5 instead of Qt6
 
-%define		branch_ver	4.2
+%define		branch_ver	4.4
 %define		qt5_ver		5.12
 %define		qt6_ver		6
 Summary:	Network traffic and protocol analyzer
@@ -19,20 +19,23 @@ Summary(pt_BR.UTF-8):	Analisador de tráfego de rede
 Summary(ru.UTF-8):	Анализатор сетевого траффика
 Summary(uk.UTF-8):	Аналізатор мережевого трафіку
 Name:		wireshark
-Version:	4.2.6
+Version:	4.4.1
 Release:	1
 License:	GPL v2+
 Group:		Networking/Utilities
 Source0:	https://2.na.dl.wireshark.org/src/%{name}-%{version}.tar.xz
-# Source0-md5:	e118da25ca399111a4e5d947385c7c79
+# Source0-md5:	f6c14c48f2c5fe8d7bd52236a0a4001f
+Patch0:		%{name}-cares.patch
+Patch1:		%{name}-falcosecurity.patch
 URL:		https://www.wireshark.org/
 BuildRequires:	bcg729-devel
 BuildRequires:	c-ares-devel >= 1.13.0
 BuildRequires:	cmake >= 3.13
 BuildRequires:	doxygen
-%{?with_falcosecurity:BuildRequires:	falcosecurity-libs-devel}
+%{?with_falcosecurity:BuildRequires:	falcosecurity-libs-devel >= 0.18}
 BuildRequires:	flex
-BuildRequires:	gcc >= 5:3.2
+# C11
+BuildRequires:	gcc >= 5:4.7
 BuildRequires:	gettext-tools
 BuildRequires:	glib2-devel >= 1:2.54.0
 BuildRequires:	gnutls-devel >= 3.5.8
@@ -46,12 +49,13 @@ BuildRequires:	libmaxminddb-devel
 BuildRequires:	libnl-devel >= 3.2
 BuildRequires:	libpcap-devel >= 2:1.0.0-4
 BuildRequires:	libsmi-devel
-BuildRequires:	libssh-devel >= 0.6.0
+BuildRequires:	libssh-devel >= 0.8.5
 BuildRequires:	libstdc++-devel >= 6:4.7
 BuildRequires:	libtool >= 2:2.2.2
 BuildRequires:	libxml2-devel >= 2.0
 BuildRequires:	libxslt-progs
-BuildRequires:	lua52-devel
+# 5.4 (preferred) or 5.3
+BuildRequires:	lua54-devel
 BuildRequires:	lz4-devel
 BuildRequires:	minizip-devel
 %{?with_snmp:BuildRequires:	net-snmp-devel}
@@ -168,9 +172,10 @@ Summary(pl.UTF-8):	Analizator ruchu i protokołów sieciowych - wspólne pliki
 Group:		Networking
 Requires(post,postun):	/sbin/setcap
 Requires:	%{name}-libs = %{version}-%{release}
+%{?with_falcosecurity:Requires:	falcosecurity-libs >= 0.18}
 Requires:	gnutls >= 3.5.8
 Requires:	libpcap >= 0.4
-Requires:	libssh >= 0.6.0
+Requires:	libssh >= 0.8.5
 Provides:	ethereal-common
 Provides:	group(wireshark)
 Provides:	wireshark-tools
@@ -300,6 +305,8 @@ Pliki nagłówkowe bibliotek Wiresharka.
 
 %prep
 %setup -q
+%patch0 -p1
+%patch1 -p1
 
 %if %{with falcosecurity}
 %{__sed} -i -e 's/CMAKE_CXX_STANDARD 11/CMAKE_CXX_STANDARD 17/' CMakeLists.txt
@@ -403,7 +410,7 @@ fi
 
 %files common
 %defattr(644,root,root,755)
-%doc AUTHORS* ChangeLog NEWS README.md README.linux doc/README.*
+%doc AUTHORS ChangeLog README.md README.DECT README.linux doc/README.*
 %doc %{_docdir}/wireshark
 %attr(755,root,root) %{_bindir}/capinfos
 %attr(755,root,root) %{_bindir}/captype
@@ -421,9 +428,6 @@ fi
 %attr(755,root,root) %{_libdir}/%{name}/extcap/androiddump
 %attr(755,root,root) %{_libdir}/%{name}/extcap/ciscodump
 %attr(755,root,root) %{_libdir}/%{name}/extcap/dpauxmon
-%if %{with falcosecurity}
-%attr(755,root,root) %{_libdir}/%{name}/extcap/falcodump
-%endif
 %attr(755,root,root) %{_libdir}/%{name}/extcap/randpktdump
 %attr(755,root,root) %{_libdir}/%{name}/extcap/sshdump
 %attr(755,root,root) %{_libdir}/%{name}/extcap/sdjournal
@@ -437,6 +441,11 @@ fi
 %attr(755,root,root) %{_libdir}/%{name}/plugins/%{branch_ver}/epan/*.so
 %dir %{_libdir}/%{name}/plugins/%{branch_ver}/wiretap
 %attr(755,root,root) %{_libdir}/%{name}/plugins/%{branch_ver}/wiretap/*.so
+%if %{with falcosecurity}
+%dir %{_libdir}/logray
+%dir %{_libdir}/logray/extcap
+%attr(755,root,root) %{_libdir}/logray/extcap/falcodump
+%endif
 %{_mandir}/man1/androiddump.1*
 %{_mandir}/man1/capinfos.1*
 %{_mandir}/man1/captype.1*
@@ -471,11 +480,11 @@ fi
 %files libs
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libwireshark.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libwireshark.so.17
+%attr(755,root,root) %ghost %{_libdir}/libwireshark.so.18
 %attr(755,root,root) %{_libdir}/libwiretap.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libwiretap.so.14
+%attr(755,root,root) %ghost %{_libdir}/libwiretap.so.15
 %attr(755,root,root) %{_libdir}/libwsutil.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libwsutil.so.15
+%attr(755,root,root) %ghost %{_libdir}/libwsutil.so.16
 %dir %{_libdir}/%{name}
 
 %files devel
