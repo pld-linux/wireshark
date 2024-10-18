@@ -20,7 +20,7 @@ Summary(ru.UTF-8):	Анализатор сетевого траффика
 Summary(uk.UTF-8):	Аналізатор мережевого трафіку
 Name:		wireshark
 Version:	4.4.1
-Release:	1
+Release:	2
 License:	GPL v2+
 Group:		Networking/Utilities
 Source0:	https://2.na.dl.wireshark.org/src/%{name}-%{version}.tar.xz
@@ -325,6 +325,7 @@ Pliki nagłówkowe bibliotek Wiresharka.
 	%{cmake_on_off gui BUILD_wireshark} \
 	-DCMAKE_INSTALL_DATADIR:PATH=share/wireshark \
 	-DCMAKE_INSTALL_DOCDIR:PATH=%{_docdir}/wireshark \
+	-DCMAKE_INSTALL_INCLUDEDIR:PATH=include \
 	-DCMAKE_INSTALL_LIBDIR:PATH=%{_lib} \
 	-DDISABLE_WERROR=ON \
 	-DENABLE_LUA=ON \
