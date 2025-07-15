@@ -305,8 +305,8 @@ Pliki nagłówkowe bibliotek Wiresharka.
 
 %prep
 %setup -q
-%patch0 -p1
-%patch1 -p1
+%patch -P0 -p1
+%patch -P1 -p1
 
 %if %{with falcosecurity}
 %{__sed} -i -e 's/CMAKE_CXX_STANDARD 11/CMAKE_CXX_STANDARD 17/' CMakeLists.txt
