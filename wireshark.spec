@@ -19,14 +19,12 @@ Summary(pt_BR.UTF-8):	Analisador de tráfego de rede
 Summary(ru.UTF-8):	Анализатор сетевого траффика
 Summary(uk.UTF-8):	Аналізатор мережевого трафіку
 Name:		wireshark
-Version:	4.4.1
-Release:	3
+Version:	4.4.8
+Release:	1
 License:	GPL v2+
 Group:		Networking/Utilities
 Source0:	https://2.na.dl.wireshark.org/src/%{name}-%{version}.tar.xz
-# Source0-md5:	f6c14c48f2c5fe8d7bd52236a0a4001f
-Patch0:		%{name}-cares.patch
-Patch1:		%{name}-falcosecurity.patch
+# Source0-md5:	bb883527d9975998d2c246a88c30d2ae
 URL:		https://www.wireshark.org/
 BuildRequires:	bcg729-devel
 BuildRequires:	c-ares-devel >= 1.13.0
@@ -305,8 +303,6 @@ Pliki nagłówkowe bibliotek Wiresharka.
 
 %prep
 %setup -q
-%patch -P0 -p1
-%patch -P1 -p1
 
 %if %{with falcosecurity}
 %{__sed} -i -e 's/CMAKE_CXX_STANDARD 11/CMAKE_CXX_STANDARD 17/' CMakeLists.txt
