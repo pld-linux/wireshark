@@ -33,7 +33,7 @@ BuildRequires:	doxygen
 %{?with_falcosecurity:BuildRequires:	falcosecurity-libs-devel >= 0.18}
 BuildRequires:	flex
 # C11
-BuildRequires:	gcc >= 5:4.7
+BuildRequires:	gcc >= 6:4.7
 BuildRequires:	gettext-tools
 BuildRequires:	glib2-devel >= 1:2.54.0
 BuildRequires:	gnutls-devel >= 3.5.8
