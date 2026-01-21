@@ -9,9 +9,9 @@
 %bcond_without	gui		# without QT GUI
 %bcond_with	qt5		# use Qt5 instead of Qt6
 
-%define		branch_ver	4.4
+%define		branch_ver	4.6
 %define		qt5_ver		5.12
-%define		qt6_ver		6
+%define		qt6_ver		6.10.1
 Summary:	Network traffic and protocol analyzer
 Summary(es.UTF-8):	Analizador de tráfico de red
 Summary(pl.UTF-8):	Analizator ruchu i protokołów sieciowych
@@ -19,12 +19,12 @@ Summary(pt_BR.UTF-8):	Analisador de tráfego de rede
 Summary(ru.UTF-8):	Анализатор сетевого траффика
 Summary(uk.UTF-8):	Аналізатор мережевого трафіку
 Name:		wireshark
-Version:	4.4.13
+Version:	4.6.3
 Release:	1
 License:	GPL v2+
 Group:		Networking/Utilities
 Source0:	https://2.na.dl.wireshark.org/src/%{name}-%{version}.tar.xz
-# Source0-md5:	af9389ac747435212f4d15b7a49794af
+# Source0-md5:	30a0b5908a905f2d1ac4bee503554706
 URL:		https://www.wireshark.org/
 BuildRequires:	bcg729-devel
 BuildRequires:	c-ares-devel >= 1.13.0
@@ -50,12 +50,14 @@ BuildRequires:	libsmi-devel
 BuildRequires:	libssh-devel >= 0.8.5
 BuildRequires:	libstdc++-devel >= 6:4.7
 BuildRequires:	libtool >= 2:2.2.2
-BuildRequires:	libxml2-devel >= 2.0
+BuildRequires:	libxml2-devel >= 2.9.7
 BuildRequires:	libxslt-progs
 # 5.4 (preferred) or 5.3
 BuildRequires:	lua54-devel
-BuildRequires:	lz4-devel
+BuildRequires:	lz4-devel >= 1.8.0
 BuildRequires:	minizip-devel
+# problems with compiling with minizip-ng
+#BuildRequires:	minizip-ng-devel
 %{?with_snmp:BuildRequires:	net-snmp-devel}
 BuildRequires:	nghttp2-devel >= 1.11.0
 BuildRequires:	nghttp3-devel
@@ -74,10 +76,12 @@ BuildRequires:	spandsp-devel
 BuildRequires:	speexdsp-devel
 BuildRequires:	systemd-devel
 BuildRequires:	tar >= 1:1.22
-BuildRequires:	webrtc-libilbc-devel
 BuildRequires:	w3m
+BuildRequires:	webrtc-libilbc-devel
+BuildRequires:	xxHash-devel
 BuildRequires:	xz
 BuildRequires:	zlib-devel
+BuildRequires:	zlib-ng-devel
 BuildRequires:	zstd-devel >= 1.0.0
 %if %{with gui}
 %if %{with qt5}
@@ -323,12 +327,10 @@ Pliki nagłówkowe bibliotek Wiresharka.
 	-DCMAKE_INSTALL_DOCDIR:PATH=%{_docdir}/wireshark \
 	-DCMAKE_INSTALL_INCLUDEDIR:PATH=include \
 	-DCMAKE_INSTALL_LIBDIR:PATH=%{_lib} \
-	-DDISABLE_WERROR=ON \
+	-DENABLE_WERROR=OFF \
 	-DENABLE_LUA=ON \
 	-DENABLE_NETLINK=ON \
 	-DENABLE_PLUGINS=ON \
-	-DENABLE_PORTAUDIO=ON \
-	-DENABLE_QT5=ON \
 	-DENABLE_SMI=ON \
 	-DUSE_qt6=%{!?with_qt5:ON}%{?with_qt5:OFF}
 
@@ -411,6 +413,7 @@ fi
 %doc %{_docdir}/wireshark
 %attr(755,root,root) %{_bindir}/capinfos
 %attr(755,root,root) %{_bindir}/captype
+%attr(755,root,root) %{_bindir}/dftest
 %attr(750,root,wireshark) %{_bindir}/dumpcap
 %attr(755,root,root) %{_bindir}/editcap
 %attr(755,root,root) %{_bindir}/idl2wrs
@@ -421,23 +424,24 @@ fi
 %attr(755,root,root) %{_bindir}/reordercap
 %attr(755,root,root) %{_bindir}/sharkd
 %attr(755,root,root) %{_bindir}/text2pcap
-%dir %{_libdir}/%{name}/extcap
-%attr(755,root,root) %{_libdir}/%{name}/extcap/androiddump
-%attr(755,root,root) %{_libdir}/%{name}/extcap/ciscodump
-%attr(755,root,root) %{_libdir}/%{name}/extcap/dpauxmon
-%attr(755,root,root) %{_libdir}/%{name}/extcap/randpktdump
-%attr(755,root,root) %{_libdir}/%{name}/extcap/sshdump
-%attr(755,root,root) %{_libdir}/%{name}/extcap/sdjournal
-%attr(755,root,root) %{_libdir}/%{name}/extcap/udpdump
-%attr(755,root,root) %{_libdir}/%{name}/extcap/wifidump
+%dir %{_prefix}/libexec/wireshark
+%dir %{_prefix}/libexec/wireshark/extcap
+%{_prefix}/libexec/wireshark/extcap/androiddump
+%{_prefix}/libexec/wireshark/extcap/ciscodump
+%{_prefix}/libexec/wireshark/extcap/dpauxmon
+%{_prefix}/libexec/wireshark/extcap/randpktdump
+%{_prefix}/libexec/wireshark/extcap/sdjournal
+%{_prefix}/libexec/wireshark/extcap/sshdump
+%{_prefix}/libexec/wireshark/extcap/udpdump
+%{_prefix}/libexec/wireshark/extcap/wifidump
 %dir %{_libdir}/%{name}/plugins
 %dir %{_libdir}/%{name}/plugins/%{branch_ver}
 %dir %{_libdir}/%{name}/plugins/%{branch_ver}/codecs
-%attr(755,root,root) %{_libdir}/%{name}/plugins/%{branch_ver}/codecs/*.so
+%{_libdir}/%{name}/plugins/%{branch_ver}/codecs/*.so
 %dir %{_libdir}/%{name}/plugins/%{branch_ver}/epan
-%attr(755,root,root) %{_libdir}/%{name}/plugins/%{branch_ver}/epan/*.so
+%{_libdir}/%{name}/plugins/%{branch_ver}/epan/*.so
 %dir %{_libdir}/%{name}/plugins/%{branch_ver}/wiretap
-%attr(755,root,root) %{_libdir}/%{name}/plugins/%{branch_ver}/wiretap/*.so
+%{_libdir}/%{name}/plugins/%{branch_ver}/wiretap/*.so
 %if %{with falcosecurity}
 %dir %{_libdir}/logray
 %dir %{_libdir}/logray/extcap
@@ -462,7 +466,10 @@ fi
 %{_mandir}/man1/randpktdump.1*
 %{_mandir}/man1/reordercap.1*
 %{_mandir}/man1/sdjournal.1*
+%{_mandir}/man1/sshdig.1*
 %{_mandir}/man1/sshdump.1*
+%{_mandir}/man1/strato.1*
+%{_mandir}/man1/stratoshark.1*
 %{_mandir}/man1/text2pcap.1*
 %{_mandir}/man1/udpdump.1*
 %{_mandir}/man1/wifidump.1*
@@ -476,20 +483,20 @@ fi
 
 %files libs
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libwireshark.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libwireshark.so.18
-%attr(755,root,root) %{_libdir}/libwiretap.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libwiretap.so.15
-%attr(755,root,root) %{_libdir}/libwsutil.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libwsutil.so.16
+%{_libdir}/libwireshark.so.*.*.*
+%ghost %{_libdir}/libwireshark.so.19
+%{_libdir}/libwiretap.so.*.*.*
+%ghost %{_libdir}/libwiretap.so.16
+%{_libdir}/libwsutil.so.*.*.*
+%ghost %{_libdir}/libwsutil.so.17
 %dir %{_libdir}/%{name}
 
 %files devel
 %defattr(644,root,root,755)
 %doc wiretap/{README,README.airmagnet}
-%attr(755,root,root) %{_libdir}/libwireshark.so
-%attr(755,root,root) %{_libdir}/libwiretap.so
-%attr(755,root,root) %{_libdir}/libwsutil.so
+%{_libdir}/libwireshark.so
+%{_libdir}/libwiretap.so
+%{_libdir}/libwsutil.so
 %{_includedir}/wireshark
 %{_pkgconfigdir}/wireshark.pc
 %{_libdir}/cmake/wireshark
