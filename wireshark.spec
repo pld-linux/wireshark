@@ -19,12 +19,12 @@ Summary(pt_BR.UTF-8):	Analisador de tráfego de rede
 Summary(ru.UTF-8):	Анализатор сетевого траффика
 Summary(uk.UTF-8):	Аналізатор мережевого трафіку
 Name:		wireshark
-Version:	4.6.4
+Version:	4.6.6
 Release:	1
 License:	GPL v2+
 Group:		Networking/Utilities
 Source0:	https://2.na.dl.wireshark.org/src/%{name}-%{version}.tar.xz
-# Source0-md5:	e4d1868c5d930371f60aef3c1c65c439
+# Source0-md5:	435ae3d7595a2d82b1187eee3ff3774e
 URL:		https://www.wireshark.org/
 BuildRequires:	bcg729-devel
 BuildRequires:	c-ares-devel >= 1.13.0
@@ -466,6 +466,7 @@ fi
 %{_mandir}/man1/randpktdump.1*
 %{_mandir}/man1/reordercap.1*
 %{_mandir}/man1/sdjournal.1*
+%{_mandir}/man1/sharkd.1*
 %{_mandir}/man1/sshdig.1*
 %{_mandir}/man1/sshdump.1*
 %{_mandir}/man1/strato.1*
